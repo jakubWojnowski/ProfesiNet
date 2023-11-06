@@ -1,0 +1,6 @@
+@ProfesiNetApi_HostAddress = http://localhost:5191
+
+GET {{ProfesiNetApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
