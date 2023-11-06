@@ -7,7 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProfesiNet.Posts.Domain\ProfesiNet.Posts.Domain.csproj" />
+      <ProjectReference Include="..\ProfesiNet.Users.Application\ProfesiNet.Users.Application.csproj" />
+      <ProjectReference Include="..\ProfesiNet.Users.Domain\ProfesiNet.Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

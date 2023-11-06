@@ -7,4 +7,10 @@
         <RootNamespace>ProfesiNet.USers.Api</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ProfesiNet.Users.Application\ProfesiNet.Users.Application.csproj" />
+      <ProjectReference Include="..\ProfesiNet.Users.Domain\ProfesiNet.Users.Domain.csproj" />
+      <ProjectReference Include="..\ProfesiNet.Users.Infrastructure\ProfesiNet.Users.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
