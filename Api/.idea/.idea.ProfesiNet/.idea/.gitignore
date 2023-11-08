@@ -3,8 +3,8 @@
 /workspace.xml
 # Rider ignored files
 /contentModel.xml
-/projectSettingsUpdater.xml
 /modules.xml
+/projectSettingsUpdater.xml
 /.idea.ProfesiNet.iml
 # Editor-based HTTP Client requests
 /httpRequests/
