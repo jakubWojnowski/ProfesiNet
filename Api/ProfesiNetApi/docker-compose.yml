@@ -1,0 +1,31 @@
+﻿version: '3.9'
+
+services:
+  # MSSQL Database Service
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_USERNAME: sa
+      SA_PASSWORD: YourComplexPassword123!
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"
+    networks:
+      - mynetwork
+    container_name: profesiNet-db
+
+  # Your .NET API Service (use the image you built)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    container_name: profesiNet-api
+
+networks:
+  mynetwork:

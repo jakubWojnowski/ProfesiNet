@@ -19,4 +19,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\modules\LiveChats\ProfesiNet.LiveChats.Api\ProfesiNet.LiveChats.Api.csproj" />
+      <ProjectReference Include="..\modules\Posts\ProfesiNet.Posts.Api\ProfesiNet.Posts.Api.csproj" />
+      <ProjectReference Include="..\modules\Users\ProfesiNet.Users.Api\ProfesiNet.Users.Api.csproj" />
+    </ItemGroup>
+
 </Project>

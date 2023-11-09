@@ -1,0 +1,24 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.9"
+services:
+  api:
+    build:
+      context: "D:\\Inzynierka\\ProfesiNet\\Api\\ProfesiNetApi"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/ProfesiNetApi.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      NUGET_PACKAGES: "C:\\Users\\jakub\\.nuget\\packages"
+      NUGET_FALLBACK_PACKAGES: "C:\\Users\\jakub\\.nuget\\packages"
+    image: "profesinetapi:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\jakub\\.nuget\\packages:/root/.nuget/fallbackpackages"
+    - "D:\\Inzynierka\\ProfesiNet\\Api\\ProfesiNetApi:/app:rw"
+    - "D:\\Inzynierka\\ProfesiNet\\Api:/src:rw"
+    working_dir: "/app"
