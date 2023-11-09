@@ -17,6 +17,6 @@ public class EducationConfiguration : IEntityTypeConfiguration<Education>
         builder.HasOne(x => x.Profile)
             .WithMany(x => x.Educations)
             .HasForeignKey(x => x.ProfileId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

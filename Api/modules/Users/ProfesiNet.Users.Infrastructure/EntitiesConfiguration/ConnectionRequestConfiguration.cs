@@ -10,12 +10,12 @@ public class ConnectionRequestConfiguration : IEntityTypeConfiguration<Connectio
     {
         builder.HasKey(x => new {x.ProfileId, x.SenderId});
         builder.HasOne(x => x.Profile)
-            .WithMany(x => x.ConnectionRequests)
+            .WithMany(x => x.ProfileConnectionRequests)
             .HasForeignKey(x => x.ProfileId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Sender)
-            .WithMany(x => x.ConnectionRequests)
+            .WithMany(x => x.SenderConnectionRequests)
             .HasForeignKey(x => x.SenderId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

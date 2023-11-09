@@ -11,12 +11,12 @@ public class ConnectionConfiguration : IEntityTypeConfiguration<Connection>
         builder.HasKey(x => new {x.ProfileId, x.FriendId});
         
         builder.HasOne(x => x.Profile)
-            .WithMany(x => x.Connections)
+            .WithMany(x => x.ProfileConnections)
             .HasForeignKey(x => x.ProfileId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Friend)
-            .WithMany(x => x.Connections)
+            .WithMany(x => x.FriendConnections)
             .HasForeignKey(x => x.FriendId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

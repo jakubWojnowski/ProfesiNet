@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\ProfesiNet.Posts.Application\ProfesiNet.Posts.Application.csproj" />
       <ProjectReference Include="..\ProfesiNet.Posts.Domain\ProfesiNet.Posts.Domain.csproj" />
-      <ProjectReference Include="..\ProfesiNet.Posts.Infrastructure\ProfesiNet.Posts.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,9 +3,9 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.Persistence;
 
-public class ProfesiNetDbContext : DbContext
+public class ProfesiNetUserDbContext : DbContext
 {
-    public ProfesiNetDbContext(DbContextOptions options) : base(options)
+    public ProfesiNetUserDbContext(DbContextOptions options) : base(options)
     {
         
     }

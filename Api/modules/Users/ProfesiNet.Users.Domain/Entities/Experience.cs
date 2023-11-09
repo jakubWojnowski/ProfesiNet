@@ -9,6 +9,6 @@ public class Experience
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public Guid ProfileId { get; set; }
-    public Profile Profile { get; set; }
+    public virtual Profile Profile { get; set; }
     
 }

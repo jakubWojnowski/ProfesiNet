@@ -4,7 +4,7 @@ public class Connection
 {
     public Guid ProfileId { get; set; }
     public Guid FriendId { get; set; }
-    public Profile Profile { get; set; }
-    public Profile Friend { get; set; }
+    public virtual Profile Profile { get; set; }
+    public virtual Profile Friend { get; set; }
     
 }

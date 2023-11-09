@@ -6,7 +6,5 @@ public class User
     public string? Name { get; set; }
     public string? Surname { get; set; }
     public Guid ProfileId { get; set; }
-    public Profile Profile { get; set; }
-    
-    
+    public virtual Profile Profile { get; set; }
 }

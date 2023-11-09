@@ -11,13 +11,13 @@ public class FollowingConfiguration : IEntityTypeConfiguration<Following>
         builder.HasKey(x => new {x.ObserverId, x.TargetId});
         
         builder.HasOne(x => x.Observer)
-            .WithMany(x => x.Followings)
+            .WithMany(x => x.ObserverFollowings)
             .HasForeignKey(x => x.ObserverId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Target)
-            .WithMany(x => x.Followings)
+            .WithMany(x => x.TargetFollowings)
             .HasForeignKey(x => x.TargetId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         
         
     }
