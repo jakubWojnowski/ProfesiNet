@@ -1,3 +1,4 @@
+using ProfesiNet.Posts.Api.Extension;
 using ProfesiNet.Users.Api.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUserModule()
+    .AddPostModule()
     .AddEndpointsApiExplorer()
     .AddControllers();
 
