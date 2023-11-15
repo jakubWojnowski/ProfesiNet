@@ -21,9 +21,8 @@
       <Folder Include="Likes\Mappings\" />
       <Folder Include="Likes\Queries\" />
       <Folder Include="Likes\Services\" />
-      <Folder Include="Posts\Commands\" />
-      <Folder Include="Posts\Dtos\" />
-      <Folder Include="Posts\Mappings\" />
+      <Folder Include="Posts\Commands\Delete\" />
+      <Folder Include="Posts\Commands\Update\" />
       <Folder Include="Posts\Queries\" />
       <Folder Include="Posts\Services\" />
       <Folder Include="Shares\Commands\" />
@@ -36,6 +35,7 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.1.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Riok.Mapperly" Version="3.2.0" />
     </ItemGroup>
 
 </Project>
