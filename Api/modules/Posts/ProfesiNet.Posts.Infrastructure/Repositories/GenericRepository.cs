@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Infrastructure.Persistence;
 
 namespace ProfesiNet.Posts.Infrastructure.Repositories;
 
-public class GenericRepository<TEntity, TKey>  where TEntity : class
+public class GenericRepository<TEntity, TKey> where TEntity : class
 {
     private readonly ProfesiNetPostDbContext _dbContext;
     private readonly DbSet<TEntity> _entities;
@@ -15,22 +15,16 @@ public class GenericRepository<TEntity, TKey>  where TEntity : class
         _entities = _dbContext.Set<TEntity>();
     }
 
-    public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken ct) => await _dbContext.Set<TEntity>().FindAsync(new object?[] { id, ct }, cancellationToken: ct);
+    public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken ct = default) =>
+        await _dbContext.Set<TEntity>().FindAsync(new object?[] { id, ct }, cancellationToken: ct);
 
-    public async Task<IQueryable<TEntity>> GetAllAsync(CancellationToken ct, Expression<Func<TEntity, object>>? include = null)
+    public async Task<IQueryable<TEntity>> GetAllAsync(CancellationToken ct = default)
     {
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
-
-        if (include != null)
-        {
-           query = query.Include(include);
-        }
-
-        var result = await query.ToListAsync(ct);
+        var result = await _entities.ToListAsync(ct);
         return result.AsQueryable();
-
     }
-    public async Task<Guid> AddAsync(TEntity entity, CancellationToken ct)
+
+    public async Task<Guid> AddAsync(TEntity entity, CancellationToken ct = default)
     {
         await _dbContext.Set<TEntity>().AddAsync(entity, ct);
         await _dbContext.SaveChangesAsync(ct);
@@ -38,26 +32,31 @@ public class GenericRepository<TEntity, TKey>  where TEntity : class
         return (Guid)(property.CurrentValue ?? throw new InvalidOperationException());
     }
 
-    public async Task UpdateAsync(TEntity entity, CancellationToken ct)
+    public async Task UpdateAsync(TEntity entity, CancellationToken ct = default)
     {
         _dbContext.Set<TEntity>().Update(entity);
         await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteAsync(TEntity entity,  CancellationToken ct)
+    public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
     {
         _dbContext.Set<TEntity>().Remove(entity);
         await _dbContext.SaveChangesAsync(ct);
     }
-    public async Task<TEntity?> GetRecordByFilterAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct)
+
+    public async Task<TEntity?> GetRecordByFilterAsync(Expression<Func<TEntity, bool>> filter,
+        CancellationToken ct = default)
     {
         return await _entities.Where(filter).FirstOrDefaultAsync(ct);
     }
-    public async Task<IEnumerable<TEntity?>> GetAllForConditionAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct)
+
+    public async Task<IEnumerable<TEntity?>> GetAllForConditionAsync(Expression<Func<TEntity, bool>> filter,
+        CancellationToken ct = default)
     {
         return await _entities.Where(filter).ToListAsync(ct);
     }
-    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct = default)
     {
         return await _dbContext.Set<TEntity>().AnyAsync(predicate, ct);
     }
