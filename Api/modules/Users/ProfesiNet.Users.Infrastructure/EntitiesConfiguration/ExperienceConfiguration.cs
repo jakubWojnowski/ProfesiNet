@@ -15,9 +15,9 @@ public class ExperienceConfiguration : IEntityTypeConfiguration<Experience>
         builder.Property(x => x.Description).HasMaxLength(500);
         builder.Property(x => x.StartDate).HasColumnType("date");
         builder.Property(x => x.EndDate).HasColumnType("date");
-        builder.HasOne(x => x.Profile)
+        builder.HasOne(x => x.User)
             .WithMany(x => x.Experiences)
-            .HasForeignKey(x => x.ProfileId)
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Restrict);
         
     }

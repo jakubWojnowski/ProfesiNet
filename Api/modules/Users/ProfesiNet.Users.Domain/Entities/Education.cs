@@ -7,6 +7,6 @@ public class Education
     public string? Description { get; set; }
     public DateTime StarDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public Guid ProfileId { get; set; }
-    public virtual Profile Profile { get; set; }
+    public Guid UserId { get; set; }
+    public virtual User User { get; set; }
 }

@@ -11,7 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
       <PackageReference Include="MediatR" Version="12.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Riok.Mapperly" Version="3.2.0" />
     </ItemGroup>
 
@@ -41,22 +43,11 @@
       <Folder Include="Followings\Mappings\" />
       <Folder Include="Followings\Queries\" />
       <Folder Include="Followings\Services\" />
-      <Folder Include="Profiles\Commands\Create\" />
-      <Folder Include="Profiles\Commands\Delete\" />
-      <Folder Include="Profiles\Commands\Update\" />
-      <Folder Include="Profiles\Dtos\" />
-      <Folder Include="Profiles\Mappings\" />
-      <Folder Include="Profiles\Queries\" />
-      <Folder Include="Profiles\Services\" />
       <Folder Include="Users\Commands\Delete\" />
-      <Folder Include="Users\Commands\Login\" />
       <Folder Include="Users\Commands\Logout\" />
-      <Folder Include="Users\Commands\Register\" />
       <Folder Include="Users\Commands\Update\" />
-      <Folder Include="Users\Dtos\" />
-      <Folder Include="Users\Mappings\" />
       <Folder Include="Users\Queries\" />
-      <Folder Include="Users\Services\" />
+      <Folder Include="Users\Services\UserContect\" />
     </ItemGroup>
 
 </Project>

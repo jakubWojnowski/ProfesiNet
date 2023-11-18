@@ -26,5 +26,5 @@ app.UseHttpsRedirection();
 
 
 
-app.Run();
+app.RunAsync();
 

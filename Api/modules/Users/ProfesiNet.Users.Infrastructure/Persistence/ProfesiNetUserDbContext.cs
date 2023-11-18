@@ -8,7 +8,6 @@ public class ProfesiNetUserDbContext : DbContext
     public ProfesiNetUserDbContext(DbContextOptions<ProfesiNetUserDbContext> options) : base(options)
     {
     }
-    public DbSet<Profile> Profiles { get; set; }
     public DbSet<Experience> Experiences { get; set; }
     public DbSet<Education> Educations { get; set; }
     public DbSet<Connection> Connections { get; set; }

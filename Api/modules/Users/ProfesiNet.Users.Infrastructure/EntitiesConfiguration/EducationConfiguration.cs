@@ -14,9 +14,9 @@ public class EducationConfiguration : IEntityTypeConfiguration<Education>
         builder.Property(x => x.Description).HasMaxLength(500);
         builder.Property(x => x.StarDate).HasColumnType("date");
         builder.Property(x => x.EndDate).HasColumnType("date");
-        builder.HasOne(x => x.Profile)
+        builder.HasOne(x => x.User)
             .WithMany(x => x.Educations)
-            .HasForeignKey(x => x.ProfileId)
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -15,10 +15,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
         builder.HasIndex(x => x.Email).IsUnique();
         builder.Property(x => x.EncodedPassword).HasMaxLength(500);
-        builder.HasOne(x => x.Profile)
-            .WithOne(x => x.User)
-            .HasForeignKey<Profile>(x => x.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(x => x.Name).HasMaxLength(50);
+        builder.Property(x => x.Surname).HasMaxLength(50);
+        builder.Property(x => x.Address).HasMaxLength(100);
+        builder.Property(x => x.Bio).HasMaxLength(500);
         
     }
 }

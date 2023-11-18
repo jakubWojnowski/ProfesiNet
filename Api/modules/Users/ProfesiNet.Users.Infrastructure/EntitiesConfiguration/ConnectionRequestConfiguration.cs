@@ -8,10 +8,10 @@ public class ConnectionRequestConfiguration : IEntityTypeConfiguration<Connectio
 {
     public void Configure(EntityTypeBuilder<ConnectionRequest> builder)
     {
-        builder.HasKey(x => new {x.ProfileId, x.SenderId});
-        builder.HasOne(x => x.Profile)
+        builder.HasKey(x => new {x.ReceiverId, x.SenderId});
+        builder.HasOne(x => x.Receiver)
             .WithMany(x => x.ProfileConnectionRequests)
-            .HasForeignKey(x => x.ProfileId)
+            .HasForeignKey(x => x.ReceiverId)
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Sender)
             .WithMany(x => x.SenderConnectionRequests)
