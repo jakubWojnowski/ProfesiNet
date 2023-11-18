@@ -10,8 +10,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).HasMaxLength(100);
-        builder.Property(x => x.Surname).HasMaxLength(100);
+        builder.Property(x => x.Email)
+            .HasMaxLength(50)
+            .IsRequired();
+        builder.HasIndex(x => x.Email).IsUnique();
+        builder.Property(x => x.EncodedPassword).HasMaxLength(500);
         builder.HasOne(x => x.Profile)
             .WithOne(x => x.User)
             .HasForeignKey<Profile>(x => x.UserId)

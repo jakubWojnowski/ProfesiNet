@@ -12,6 +12,51 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.1.1" />
+      <PackageReference Include="Riok.Mapperly" Version="3.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Conncections\Commands\" />
+      <Folder Include="Conncections\Dtos\" />
+      <Folder Include="Conncections\Mappings\" />
+      <Folder Include="Conncections\Queries\" />
+      <Folder Include="Conncections\Services\" />
+      <Folder Include="ConnectionRequests\Commands\" />
+      <Folder Include="ConnectionRequests\Dtos\" />
+      <Folder Include="ConnectionRequests\Mappings\" />
+      <Folder Include="ConnectionRequests\Queries\" />
+      <Folder Include="ConnectionRequests\Services\" />
+      <Folder Include="Educations\Commands\" />
+      <Folder Include="Educations\Dtos\" />
+      <Folder Include="Educations\Mappings\" />
+      <Folder Include="Educations\Queries\" />
+      <Folder Include="Educations\Services\" />
+      <Folder Include="Experiences\Commands\" />
+      <Folder Include="Experiences\Dtos\" />
+      <Folder Include="Experiences\Mappings\" />
+      <Folder Include="Experiences\Queries\" />
+      <Folder Include="Experiences\Services\" />
+      <Folder Include="Followings\Commands\" />
+      <Folder Include="Followings\Dtos\" />
+      <Folder Include="Followings\Mappings\" />
+      <Folder Include="Followings\Queries\" />
+      <Folder Include="Followings\Services\" />
+      <Folder Include="Profiles\Commands\Create\" />
+      <Folder Include="Profiles\Commands\Delete\" />
+      <Folder Include="Profiles\Commands\Update\" />
+      <Folder Include="Profiles\Dtos\" />
+      <Folder Include="Profiles\Mappings\" />
+      <Folder Include="Profiles\Queries\" />
+      <Folder Include="Profiles\Services\" />
+      <Folder Include="Users\Commands\Delete\" />
+      <Folder Include="Users\Commands\Login\" />
+      <Folder Include="Users\Commands\Logout\" />
+      <Folder Include="Users\Commands\Register\" />
+      <Folder Include="Users\Commands\Update\" />
+      <Folder Include="Users\Dtos\" />
+      <Folder Include="Users\Mappings\" />
+      <Folder Include="Users\Queries\" />
+      <Folder Include="Users\Services\" />
     </ItemGroup>
 
 </Project>

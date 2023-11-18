@@ -5,9 +5,8 @@ namespace ProfesiNet.Users.Infrastructure.Persistence;
 
 public class ProfesiNetUserDbContext : DbContext
 {
-    public ProfesiNetUserDbContext(DbContextOptions options) : base(options)
+    public ProfesiNetUserDbContext(DbContextOptions<ProfesiNetUserDbContext> options) : base(options)
     {
-        
     }
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Experience> Experiences { get; set; }

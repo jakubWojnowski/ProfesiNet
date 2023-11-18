@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 namespace ProfesiNet.Users.Infrastructure.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    partial class ProfesiNetUserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231118153606_AltTablesUserANdProfiles")]
+    partial class AltTablesUserANdProfiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,7 +180,6 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -189,9 +191,6 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("User");
                 });

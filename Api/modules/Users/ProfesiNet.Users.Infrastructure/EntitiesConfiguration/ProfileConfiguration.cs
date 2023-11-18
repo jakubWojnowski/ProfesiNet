@@ -10,10 +10,9 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Email).HasMaxLength(100);
-        builder.Property(x => x.Phone).HasMaxLength(20);
+        builder.Property(x => x.Name).HasMaxLength(50);
+        builder.Property(x => x.Surname).HasMaxLength(50);
         builder.Property(x => x.Address).HasMaxLength(100);
         builder.Property(x => x.Bio).HasMaxLength(500);
-    
     }
 }

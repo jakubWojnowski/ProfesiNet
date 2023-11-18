@@ -5,9 +5,9 @@ namespace ProfesiNet.Posts.Infrastructure.Persistence;
 
 public class ProfesiNetPostDbContext : DbContext
 {
-    public ProfesiNetPostDbContext(DbContextOptions options) : base(options)
+    public ProfesiNetPostDbContext(DbContextOptions<ProfesiNetPostDbContext> options) : base(options)
     {
-        
+      
     }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
