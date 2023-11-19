@@ -1,20 +1,20 @@
 ﻿using FluentValidation;
-using MallorcaTeslaRent.Application.Users.Validators.Helpers;
-using ProfesiNet.Users.Application.Users.Dtos;
+using ProfesiNet.Users.Application.Users.Commands.Register;
+using ProfesiNet.Users.Application.Users.Validations.Helpers;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Validations.Validators;
 
-internal sealed class RegisterUserDtoValidator : AbstractValidator<RegisterDto>
+public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
-    public RegisterUserDtoValidator(IUserRepository userRepository, CancellationToken ct = default)
+    public RegisterUserCommandValidator(IUserRepository userRepository, CancellationToken ct = default)
     {
         RuleFor(r => r.Email)
             .NotEmpty()
             .EmailAddress()
             .Custom((value, context) =>
             {
-                var user = userRepository.AnyAsync(u => u.Email == value, ct);
+                var user =  userRepository.AnyAsync(u => u.Email == value, ct);
                 if (user.Result) context.AddFailure("Email", "Email already exists");
             });
         RuleFor(r => r.Password)

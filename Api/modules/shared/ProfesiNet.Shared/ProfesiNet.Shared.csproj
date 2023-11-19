@@ -7,15 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProfesiNet.LiveChats.Domain\ProfesiNet.LiveChats.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+      <PackageReference Include="MediatR" Version="12.2.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extension\" />
     </ItemGroup>
 
 </Project>

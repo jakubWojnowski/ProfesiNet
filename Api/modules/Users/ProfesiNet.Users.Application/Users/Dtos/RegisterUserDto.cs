@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Users.Application.Users.Dtos;
 
-public class RegisterDto
+public class RegisterUserDto
 {
     public string Email { get; set; }
     public string Name { get; set; }

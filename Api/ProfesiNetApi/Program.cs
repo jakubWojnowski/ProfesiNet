@@ -1,16 +1,28 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using ProfesiNet.Posts.Api.Extension;
+using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Users.Api.Extension;
+using ProfesiNetApi.Configurations.DocumentationConfiguration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle=
-builder.Services.AddSwaggerGen();
 builder.Services
     .AddUserModule()
     .AddPostModule()
-    .AddEndpointsApiExplorer()
-    .AddControllers();
+    .RegisterDocumentation()
+    .AddProfesiNetShared()
+    .AddEndpointsApiExplorer();
+builder.Services.AddControllers().
+    AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
+    });
+
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -26,5 +38,5 @@ app.UseHttpsRedirection();
 
 
 
-app.RunAsync();
+app.Run();
 

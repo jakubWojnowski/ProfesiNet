@@ -1,4 +1,4 @@
-﻿namespace MallorcaTeslaRent.Application.Users.Validators.Helpers;
+﻿namespace ProfesiNet.Users.Application.Users.Validations.Helpers;
 
 internal static class PasswordHelper
 {

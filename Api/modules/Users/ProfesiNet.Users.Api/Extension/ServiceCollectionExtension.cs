@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProfesiNet.Users.Application.Extensions;
+using ProfesiNet.Users.Application.Configurations.Extensions;
 using ProfesiNet.Users.Infrastructure.Extension;
 
 namespace ProfesiNet.Users.Api.Extension;

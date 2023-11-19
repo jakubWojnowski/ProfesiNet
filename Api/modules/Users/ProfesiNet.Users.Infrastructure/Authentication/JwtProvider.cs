@@ -8,8 +8,15 @@ using ProfesiNet.Users.Infrastructure.Settings;
 
 namespace ProfesiNet.Users.Infrastructure.Authentication;
 
-internal class JwtProvider(AuthenticationSettings authenticationSettings) : IJwtProvider
+internal class JwtProvider : IJwtProvider
 {
+    private readonly AuthenticationSettings _authenticationSettings;
+
+    public JwtProvider(AuthenticationSettings authenticationSettings)
+    {
+        _authenticationSettings = authenticationSettings;
+    }
+
     public string GenerateJwtToken(User user)
     {
         var claims = new List<Claim>
@@ -19,12 +26,12 @@ internal class JwtProvider(AuthenticationSettings authenticationSettings) : IJwt
             new(ClaimTypes.Email, user.Email),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.Now.AddDays(Convert.ToDouble(authenticationSettings.JwtExpiredDays));
+        var expires = DateTime.Now.AddDays(Convert.ToDouble(_authenticationSettings.JwtExpiredDays));
 
-        var toke = new JwtSecurityToken(authenticationSettings.JwtIssuer,
-            authenticationSettings.JwtIssuer,
+        var toke = new JwtSecurityToken(_authenticationSettings.JwtIssuer,
+            _authenticationSettings.JwtIssuer,
             claims,
             expires: expires,
             signingCredentials: cred);

@@ -1,11 +1,13 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ProfesiNet.Users.Domain.Interfaces;
+using ProfesiNet.Users.Infrastructure.Authentication;
 using ProfesiNet.Users.Infrastructure.Persistence;
 using ProfesiNet.Users.Infrastructure.Repositories;
 using ProfesiNet.Users.Infrastructure.Settings;
@@ -52,7 +54,8 @@ public static class ServiceCollectionExtension
                 .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
         });
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>))
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }
 }
