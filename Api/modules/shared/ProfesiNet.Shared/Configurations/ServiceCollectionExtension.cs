@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares.ValidatorBehaviors;

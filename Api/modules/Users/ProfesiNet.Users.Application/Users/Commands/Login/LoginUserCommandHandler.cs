@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
+using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
@@ -24,12 +25,12 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
 
     public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Email == request.LoginUserDto.Email,
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Email == request.Email,
                        cancellationToken) ??
-                   throw new Exception("Invalid email or password");
-        var result = _passwordHasher.VerifyHashedPassword(user, user.EncodedPassword, request.LoginUserDto.Password);
+                   throw new NotFoundException("Invalid email");
+        var result = _passwordHasher.VerifyHashedPassword(user, user.EncodedPassword, request.Password);
 
-        if (result == PasswordVerificationResult.Failed) throw new Exception("Invalid email or password");
+        if (result == PasswordVerificationResult.Failed) throw new NotFoundException("Invalid  password");
 
         return _jwtProvider.GenerateJwtToken(user);
     }

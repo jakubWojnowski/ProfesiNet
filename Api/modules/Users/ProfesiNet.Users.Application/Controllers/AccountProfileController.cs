@@ -41,11 +41,11 @@ public class AccountProfileController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
+    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
     {
         try
         {
-            var token = await _mediator.Send(new LoginUserCommand(loginUserDto));
+            var token = await _mediator.Send(command);
             return Ok(token);
         }
         catch (ValidationException ex)

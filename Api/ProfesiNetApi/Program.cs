@@ -16,10 +16,11 @@ builder.Services
     .RegisterDocumentation()
     .AddProfesiNetShared()
     .AddEndpointsApiExplorer();
-builder.Services.AddControllers().
-    AddFluentValidation(fv =>
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
     {
         fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
+        fv.DisableDataAnnotationsValidation = true;
     });
 
 builder.Services.AddCors();
