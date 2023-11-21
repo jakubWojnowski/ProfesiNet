@@ -5,6 +5,9 @@ using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Login;
 using ProfesiNet.Users.Application.Users.Commands.Logout;
 using ProfesiNet.Users.Application.Users.Commands.Register;
+using ProfesiNet.Users.Application.Users.Commands.Update;
+using ProfesiNet.Users.Application.Users.Queries.Get;
+using ProfesiNet.Users.Application.Users.Queries.GetAll;
 using ProfesiNet.Users.Domain.Exceptions;
 
 namespace ProfesiNet.Users.Application.Controllers;
@@ -114,6 +117,97 @@ public class AccountProfileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
 
+    }
+    
+    [HttpPut("UpdateUserAddress")]
+    public async Task<IActionResult> UpdateUserAddress([FromBody] UpdateUserAddressCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
+    }
+    
+    [HttpPut("UpdateUserBio")]
+    public async Task<IActionResult> UpdateUserBio([FromBody] UpdateUserBioCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
+    }
+    [HttpGet("GetOwnProfile")]
+    public async Task<IActionResult> GetOwnProfile()
+    {
+        try
+        {
+            var user = await _mediator.Send(new GetOwnProfileQuery());
+            return Ok(user);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpGet("GetUserById")]
+    public async Task<IActionResult> GetUserById([FromQuery] GetUserByIdQuery query)
+    {
+        try
+        {
+            var user = await _mediator.Send(query);
+            return Ok(user);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpGet("GetAllUsers")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        try
+        {
+            var users = await _mediator.Send(new GetAllUsersQuery());
+            return Ok(users);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
 }

@@ -10,4 +10,31 @@ public partial class UserMapper
     public partial User MapRegistrationDtoToUser(RegisterUserDto registerUserDto);
     
     public partial User MapLoginDtoToUser(LoginUserDto loginUserDto);
+    
+    public partial UserDto MapUserToUserDto(User user);
+    
+    public partial User MapUserDtoToUser(UserDto userDto);
+
+    public  User MapUpdateUserBioDtoToUser(User user, UserBioDto userBio)
+    {
+        user.Bio = userBio.Bio;
+        return user;
+    }
+    
+    public User MapUpdateUser(User user, UserDto updateUserDto)
+    {
+        user.Name = updateUserDto.Name;
+        user.Surname = updateUserDto.Surname;
+        return user;
+    }
+    
+    public User MapUpdateUserAddressDtoToUser(User user, UserAddressDto updateUserDto)
+    {
+        user.Address = updateUserDto.Address;
+        return user;
+    }
+
+    public partial IReadOnlyList<UserDto> UserDtosToUsers(IEnumerable<User> users);
+
+
 }

@@ -1,0 +1,43 @@
+﻿using MediatR;
+using ProfesiNet.Users.Application.Users.Dtos;
+using ProfesiNet.Users.Application.Users.Mappings;
+using ProfesiNet.Users.Application.Users.Services.UserContext;
+using ProfesiNet.Users.Domain.Exceptions;
+using ProfesiNet.Users.Infrastructure.Repositories;
+
+namespace ProfesiNet.Users.Application.Users.Commands.Update;
+
+public class UpdateUserBioCommandHandler : IRequestHandler<UpdateUserBioCommand>
+{
+    private readonly IUserRepository _userRepository;
+    private readonly ICurrentUserContextService _currentUserContextService;
+    private static readonly UserMapper Mapper = new();
+
+    public UpdateUserBioCommandHandler(IUserRepository userRepository,
+        ICurrentUserContextService currentUserContextService)
+    {
+        _userRepository = userRepository;
+        _currentUserContextService = currentUserContextService;
+    }
+
+    public async Task Handle(UpdateUserBioCommand request, CancellationToken cancellationToken)
+    {
+        var tokeId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        if (tokeId == Guid.Empty)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        var user = await _userRepository.GetByIdAsync(tokeId, cancellationToken);
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+        var bioDto = new UserBioDto
+        {
+            Bio = request.Bio
+        };
+        var updatedUserBio = Mapper.MapUpdateUserBioDtoToUser(user, bioDto);
+        await _userRepository.UpdateAsync(updatedUserBio, cancellationToken);
+    }
+}

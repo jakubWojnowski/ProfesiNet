@@ -43,8 +43,6 @@
       <Folder Include="Followings\Mappings\" />
       <Folder Include="Followings\Queries\" />
       <Folder Include="Followings\Services\" />
-      <Folder Include="Users\Commands\Update\" />
-      <Folder Include="Users\Queries\" />
     </ItemGroup>
 
 </Project>

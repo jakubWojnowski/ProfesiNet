@@ -13,11 +13,11 @@ public class LoginCommandValidator : AbstractValidator<LoginUserCommand>, IUserV
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress()
-            .CustomAsync(async (email, context, ct) =>
+            .Custom( (email, context) =>
             {
                
-                var user = await userRepository.GetRecordByFilterAsync(u => u.Email == email, ct);
-                if (user == null)
+                var user =  userRepository.GetRecordByFilterAsync(u => u.Email == email);
+                if (user.Result == null)
                 {
                     context.AddFailure("Email", "There is no account for that email");
                 }
@@ -25,16 +25,16 @@ public class LoginCommandValidator : AbstractValidator<LoginUserCommand>, IUserV
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .CustomAsync(async (password, context, ct) =>
+            .Custom( (password, context) =>
             {
                 var email = context.InstanceToValidate.Email;
                 // Pass the cancellation token to the repository call
-                var user = await userRepository.GetRecordByFilterAsync(u => u.Email == email, ct);
-                if (user != null)
+                var user =  userRepository.GetRecordByFilterAsync(u => u.Email == email);
+                if (user.Result != null)
                 {
                     // The VerifyHashedPassword method is not async and does not accept a CancellationToken.
                     // If this method were long-running, ideally it would be async and accept a CancellationToken.
-                    var result = passwordHasher.VerifyHashedPassword(user, user.EncodedPassword, password);
+                    var result = passwordHasher.VerifyHashedPassword(user.Result, user.Result.EncodedPassword, password);
                     if (result == PasswordVerificationResult.Failed)
                     {
                         context.AddFailure("Password", "Invalid Password");
