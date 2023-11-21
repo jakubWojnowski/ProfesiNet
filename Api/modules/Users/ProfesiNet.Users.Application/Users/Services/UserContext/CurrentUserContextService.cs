@@ -1,29 +1,33 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using ProfesiNet.Users.Application.Users.Services.UserContect;
 
-namespace ProfesiNet.Users.Application.Users.Services.UserContext;
-
-public class CurrentUserContextService
+namespace ProfesiNet.Users.Application.Users.Services.UserContext
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-
-    public CurrentUserContextService(IHttpContextAccessor contextAccessor)
+    public class CurrentUserContextService : ICurrentUserContextService
     {
-        _contextAccessor = contextAccessor;
-    }
+        private readonly IHttpContextAccessor _contextAccessor;
 
-    public CurrentUserContext? GetCurrentUser()
-    {
-        var claims = _contextAccessor.HttpContext?.User.Claims;
-        if (claims == null)
+        public CurrentUserContextService(IHttpContextAccessor contextAccessor)
         {
-            return null;
+            _contextAccessor = contextAccessor;
         }
 
-        var enumerable = claims as Claim[] ?? claims.ToArray();
-        var fullname = enumerable.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-        var id = enumerable.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-        return new CurrentUserContext(fullname,id);
+        public CurrentUserContext? GetCurrentUser()
+        {
+            var user = _contextAccessor.HttpContext?.User;
+            if (user == null || !user.Claims.Any())
+            {
+                return null;
+            }
+
+            var fullName = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var id = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return new CurrentUserContext(fullName, id);
+        }
     }
 }

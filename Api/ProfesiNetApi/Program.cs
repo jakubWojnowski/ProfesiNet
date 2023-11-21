@@ -16,13 +16,15 @@ builder.Services
     .RegisterDocumentation()
     .AddProfesiNetShared()
     .AddEndpointsApiExplorer();
-builder.Services.AddControllers()
-    .AddFluentValidation(fv =>
-    {
-        fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
-        fv.DisableDataAnnotationsValidation = true;
-    });
-
+builder.Services.AddControllers();
+    // .AddFluentValidation(fv =>
+    // {
+    //     fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
+    //    
+    // });
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<IValidator>();
 builder.Services.AddCors();
 
 var app = builder.Build();
@@ -39,5 +41,5 @@ app.UseHttpsRedirection();
 
 
 
-app.Run();
+await app.RunAsync();
 

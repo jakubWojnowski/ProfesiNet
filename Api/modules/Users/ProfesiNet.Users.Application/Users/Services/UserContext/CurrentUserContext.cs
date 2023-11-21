@@ -2,7 +2,7 @@
 
 public class CurrentUserContext
 {
-    public CurrentUserContext(string? fullname, string id)
+    public CurrentUserContext(string? fullname, string? id)
     {
         FullName = fullname;
         Id = id;
