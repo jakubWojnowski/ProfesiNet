@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Users.Application.Experiences.Commands.Create;
+using ProfesiNet.Users.Application.Experiences.Commands.Delete;
+using ProfesiNet.Users.Application.Experiences.Commands.Update;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Login;
 using ProfesiNet.Users.Application.Users.Commands.Logout;
@@ -199,6 +202,60 @@ public class AccountProfileController : ControllerBase
         {
             var users = await _mediator.Send(new GetAllUsersQuery());
             return Ok(users);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpPost("AddUserExperience")]
+    public async Task<IActionResult> AddUserExperience([FromBody] AddUserExperienceCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpDelete("DeleteUserExperience")]
+    public async Task<IActionResult> DeleteUserExperience([FromBody] DeleteUserExperienceCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPut("UpdateUserExperience")]
+    public async Task<IActionResult> UpdateUserExperience([FromBody] UpdateUserExperienceCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
         }
         catch (NotFoundException ex)
         {

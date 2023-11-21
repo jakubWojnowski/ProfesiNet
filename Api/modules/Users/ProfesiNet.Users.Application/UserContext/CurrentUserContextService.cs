@@ -1,11 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using ProfesiNet.Users.Application.Users.Services.UserContect;
 
-namespace ProfesiNet.Users.Application.Users.Services.UserContext
+namespace ProfesiNet.Users.Application.UserContext
 {
     public class CurrentUserContextService : ICurrentUserContextService
     {

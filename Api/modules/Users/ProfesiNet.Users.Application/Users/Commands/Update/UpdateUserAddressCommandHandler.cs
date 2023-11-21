@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
-using ProfesiNet.Users.Application.Users.Services.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
@@ -37,7 +37,7 @@ public class UpdateUserAddressCommandHandler : IRequestHandler<UpdateUserAddress
         
         var addressDto = new UserAddressDto
         {
-            Address = request.Address,
+            Address = request.Address ?? user.Address,
         };
         
         var updatedUserAddress = Mapper.MapUpdateUserAddressDtoToUser(user, addressDto);

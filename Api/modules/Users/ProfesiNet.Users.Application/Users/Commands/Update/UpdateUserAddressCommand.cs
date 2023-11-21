@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Users.Commands.Update;
 
-public record UpdateUserAddressCommand(string Address) : IRequest;
+public record UpdateUserAddressCommand(string? Address) : IRequest;

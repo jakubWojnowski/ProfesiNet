@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProfesiNet.Users.Application.Users.Services.UserContext;
+using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Delete;

@@ -55,6 +55,7 @@ public static class ServiceCollectionExtension
         });
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>))
             .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IExperienceRepository, ExperienceRepository>()
             .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }

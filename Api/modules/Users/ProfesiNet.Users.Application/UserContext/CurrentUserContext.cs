@@ -1,4 +1,4 @@
-﻿namespace ProfesiNet.Users.Application.Users.Services.UserContect;
+﻿namespace ProfesiNet.Users.Application.UserContext;
 
 public class CurrentUserContext
 {

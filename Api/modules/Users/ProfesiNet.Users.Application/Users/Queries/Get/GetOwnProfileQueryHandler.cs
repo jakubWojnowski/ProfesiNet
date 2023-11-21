@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
-using ProfesiNet.Users.Application.Users.Services.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Infrastructure.Repositories;
 

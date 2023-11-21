@@ -33,16 +33,15 @@
       <Folder Include="Educations\Mappings\" />
       <Folder Include="Educations\Queries\" />
       <Folder Include="Educations\Services\" />
-      <Folder Include="Experiences\Commands\" />
-      <Folder Include="Experiences\Dtos\" />
-      <Folder Include="Experiences\Mappings\" />
-      <Folder Include="Experiences\Queries\" />
+      <Folder Include="Experiences\Queries\GetAll\" />
+      <Folder Include="Experiences\Queries\Get\" />
       <Folder Include="Experiences\Services\" />
       <Folder Include="Followings\Commands\" />
       <Folder Include="Followings\Dtos\" />
       <Folder Include="Followings\Mappings\" />
       <Folder Include="Followings\Queries\" />
       <Folder Include="Followings\Services\" />
+      <Folder Include="Users\Services\" />
     </ItemGroup>
 
 </Project>

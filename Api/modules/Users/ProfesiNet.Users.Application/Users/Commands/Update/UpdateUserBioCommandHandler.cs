@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
-using ProfesiNet.Users.Application.Users.Services.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
@@ -35,7 +35,7 @@ public class UpdateUserBioCommandHandler : IRequestHandler<UpdateUserBioCommand>
         }
         var bioDto = new UserBioDto
         {
-            Bio = request.Bio
+            Bio = request.Bio ?? user.Bio,
         };
         var updatedUserBio = Mapper.MapUpdateUserBioDtoToUser(user, bioDto);
         await _userRepository.UpdateAsync(updatedUserBio, cancellationToken);

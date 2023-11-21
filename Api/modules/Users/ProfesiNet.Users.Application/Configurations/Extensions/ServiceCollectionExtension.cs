@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using ProfesiNet.Users.Application.Users.Services.UserContext;
+using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Application.Users.Validations.Validators;
 using ProfesiNet.Users.Domain.Entities;
 
