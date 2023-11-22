@@ -4,6 +4,7 @@
     <option name="keyValueStorage">
       <map>
         <entry key="Common:0a078d9d-fe20-49fb-828b-94e81370e012:dbContext" value="ProfesiNet.Users.Infrastructure.Persistence.ProfesiNetUserDbContext" />
+        <entry key="Common:1131151b-544f-4499-a390-bfddddfacd71:dbContext" value="ProfesiNet.LiveChats.Infrastructure.Persistence.ProfesiNetLiveChatsDbContext" />
         <entry key="Common:8d9cb78e-2f52-4338-9af2-46e21c8bdc8f:dbContext" value="ProfesiNet.Posts.Infrastructure.Persistence.ProfesiNetPostDbContext" />
         <entry key="Common:buildConfiguration" value="Debug" />
         <entry key="Common:noBuild" value="false" />

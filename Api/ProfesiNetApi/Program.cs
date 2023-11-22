@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using ProfesiNet.LiveChats.Api.Extension;
 using ProfesiNet.Posts.Api.Extension;
 using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Users.Api.Extension;
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddUserModule()
     .AddPostModule()
+    .AddLiveChatsModule()
     .RegisterDocumentation()
     .AddProfesiNetShared()
     .AddEndpointsApiExplorer();
