@@ -9,8 +9,6 @@ public partial class UserMapper
 {
     public partial User MapRegistrationDtoToUser(RegisterUserDto registerUserDto);
     
-    public partial User MapLoginDtoToUser(LoginUserDto loginUserDto);
-    
     public partial UserDto MapUserToUserDto(User user);
     
     public partial User MapUserDtoToUser(UserDto userDto);

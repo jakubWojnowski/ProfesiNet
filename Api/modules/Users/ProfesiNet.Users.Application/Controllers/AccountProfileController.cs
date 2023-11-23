@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Users.Application.Experiences.Commands.Create;
 using ProfesiNet.Users.Application.Experiences.Commands.Delete;
 using ProfesiNet.Users.Application.Experiences.Commands.Update;
+using ProfesiNet.Users.Application.Experiences.Queries.Get;
+using ProfesiNet.Users.Application.Experiences.Queries.GetAll;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
-using ProfesiNet.Users.Application.Users.Commands.Login;
-using ProfesiNet.Users.Application.Users.Commands.Logout;
-using ProfesiNet.Users.Application.Users.Commands.Register;
 using ProfesiNet.Users.Application.Users.Commands.Update;
 using ProfesiNet.Users.Application.Users.Queries.Get;
 using ProfesiNet.Users.Application.Users.Queries.GetAll;
@@ -25,65 +24,6 @@ public class AccountProfileController : ControllerBase
     {
         _mediator = mediator;
     }
-
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
-    {
-        try
-        {
-            await _mediator.Send(command);
-            return Ok();
-        }
-        catch (UserAlreadyExistsException ex)
-        {
-            return StatusCode(StatusCodes.Status409Conflict, ex.Message);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
-    {
-        try
-        {
-            var token = await _mediator.Send(command);
-            return Ok(token);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        try
-        {
-            var token = await _mediator.Send(new LogoutUserCommand());
-            return Ok(token);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
     [HttpDelete("DeleteUser")]
     public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
     {
@@ -256,6 +196,42 @@ public class AccountProfileController : ControllerBase
         {
             await _mediator.Send(command);
             return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpGet("GetUserExperienceById")]
+    public async Task<IActionResult> GetUserExperienceById([FromQuery] GetUserExperienceByIdQuery query)
+    {
+        try
+        {
+            var experience = await _mediator.Send(query);
+            return Ok(experience);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpGet("GetAllUserExperience")]
+    public async Task<IActionResult> GetAllUserExperience()
+    {
+        try
+        {
+            var experiences = await _mediator.Send(new GetAllUserExperienceQuery());
+            return Ok(experiences);
         }
         catch (NotFoundException ex)
         {

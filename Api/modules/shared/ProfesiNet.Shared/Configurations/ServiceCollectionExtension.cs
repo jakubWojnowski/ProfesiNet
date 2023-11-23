@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Shared.Mediator;
-using ProfesiNet.Shared.Middlewares.ValidatorBehaviors;
 using ProfesiNet.Shared.Validators;
+using ProfesiNet.Shared.Validators.ValidatorBehaviors;
 
 namespace ProfesiNet.Shared.Configurations;
 

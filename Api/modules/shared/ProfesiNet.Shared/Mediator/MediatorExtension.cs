@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Reflection;
-using ProfesiNet.Shared.Middlewares.ValidatorBehaviors;
 
 namespace ProfesiNet.Shared.Mediator;
 

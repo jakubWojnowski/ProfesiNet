@@ -17,6 +17,11 @@ public partial class ExperienceMapper
         experience.EndDate = experienceDto.EndDate;
         return experience;
     }
+
+    public partial GetExperienceDto MapExperienceToGetExperienceDto(Experience experience);
     
+    public partial IReadOnlyList<GetExperienceDto> MapExperiencesToGetExperienceDtos(IEnumerable<Experience?> experiences);
+   
+
 
 }

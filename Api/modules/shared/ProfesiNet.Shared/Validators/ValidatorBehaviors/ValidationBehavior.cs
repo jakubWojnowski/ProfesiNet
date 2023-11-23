@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace ProfesiNet.Shared.Middlewares.ValidatorBehaviors;
+namespace ProfesiNet.Shared.Validators.ValidatorBehaviors;
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
