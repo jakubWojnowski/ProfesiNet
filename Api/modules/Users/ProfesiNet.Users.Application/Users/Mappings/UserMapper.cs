@@ -1,4 +1,5 @@
-﻿using ProfesiNet.Users.Application.Users.Dtos;
+﻿using ProfesiNet.Users.Application.Experiences.Dtos;
+using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Domain.Entities;
 using Riok.Mapperly.Abstractions;
 
@@ -33,6 +34,10 @@ public partial class UserMapper
     }
 
     public partial IReadOnlyList<UserDto> UserDtosToUsers(IEnumerable<User> users);
+    public partial UserAndExperienceDto UserAndExperienceDtosToUsers(User users);
+    
+    
+   
 
 
 }

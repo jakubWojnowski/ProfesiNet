@@ -22,13 +22,13 @@ public class UpdateUserAddressCommandHandler : IRequestHandler<UpdateUserAddress
 
     public async Task Handle(UpdateUserAddressCommand request, CancellationToken cancellationToken)
     {
-        var tokeId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (tokeId == Guid.Empty)
+        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        if (tokenId == Guid.Empty)
         {
             throw new NotFoundException("id in token not found");
         }
 
-        var user = await _userRepository.GetByIdAsync(tokeId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(tokenId, cancellationToken);
 
         if (user == null)
         {

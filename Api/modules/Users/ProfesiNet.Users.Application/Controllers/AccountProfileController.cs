@@ -242,5 +242,23 @@ public class AccountProfileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+    
+    [HttpGet("GetUserAndExperience")]
+    public async Task<IActionResult> GetUserAndExperience([FromQuery] GetUserAndExperienceQuery query)
+    {
+        try
+        {
+            var user = await _mediator.Send(query);
+            return Ok(user);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
 
 }

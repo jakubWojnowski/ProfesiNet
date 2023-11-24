@@ -56,6 +56,7 @@ public static class ServiceCollectionExtension
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>))
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IExperienceRepository, ExperienceRepository>()
+            .AddScoped<IEducationRepository, EducationRepository>()
             .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }
