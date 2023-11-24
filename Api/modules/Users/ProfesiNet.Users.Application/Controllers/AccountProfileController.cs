@@ -1,6 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Users.Application.Educations.Commands.Create;
+using ProfesiNet.Users.Application.Educations.Commands.Delete;
+using ProfesiNet.Users.Application.Educations.Commands.Update;
+using ProfesiNet.Users.Application.Educations.Queries.Get;
+using ProfesiNet.Users.Application.Educations.Queries.GetAll;
 using ProfesiNet.Users.Application.Experiences.Commands.Create;
 using ProfesiNet.Users.Application.Experiences.Commands.Delete;
 using ProfesiNet.Users.Application.Experiences.Commands.Update;
@@ -153,8 +158,8 @@ public class AccountProfileController : ControllerBase
         }
     }
     
-    [HttpPost("AddUserExperience")]
-    public async Task<IActionResult> AddUserExperience([FromBody] AddUserExperienceCommand command)
+    [HttpPost("CreateUserExperience")]
+    public async Task<IActionResult> AddUserExperience([FromBody] CreateUserExperienceCommand command)
     {
         try
         {
@@ -226,11 +231,11 @@ public class AccountProfileController : ControllerBase
     }
 
     [HttpGet("GetAllUserExperience")]
-    public async Task<IActionResult> GetAllUserExperience()
+    public async Task<IActionResult> GetAllUserExperience([FromQuery] GetAllUserExperienceQuery query)
     {
         try
         {
-            var experiences = await _mediator.Send(new GetAllUserExperienceQuery());
+            var experiences = await _mediator.Send(query);
             return Ok(experiences);
         }
         catch (NotFoundException ex)
@@ -260,5 +265,106 @@ public class AccountProfileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+    
+    [HttpPost("CreateUserEducation")]
+    public async Task<IActionResult> AddUserEducation([FromBody] CreateUserEducationCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpDelete("DeleteUserEducation")]
+    public async Task<IActionResult> DeleteUserEducation([FromBody] DeleteUserEducationCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    [HttpPut("UpdateUserEducation")]
+    public async Task<IActionResult> UpdateUserEducation([FromBody] UpdateUserEducationCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
 
+    [HttpGet("GetUserEducationById")]
+    public async Task<IActionResult> GetUserEducationById([FromQuery] GetUserEducationByIdQuery query)
+    {
+        try
+        {
+            var education = await _mediator.Send(query);
+            return Ok(education);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpGet("GetAllUserEducation")]
+    public async Task<IActionResult> GetAllUserEducation([FromQuery] GetAllUserEducationsQuery query)
+    {
+        try
+        {
+            var educations = await _mediator.Send(query);
+            return Ok(educations);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
 }

@@ -20,12 +20,7 @@ public class GetUserExperienceByIdQueryHandler : IRequestHandler<GetUserExperien
     }
     public async Task<GetExperienceDto> Handle(GetUserExperienceByIdQuery request, CancellationToken cancellationToken)
     {
-        var userId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (userId == Guid.Empty)
-        {
-            throw new NotFoundException("Token not Found");
-        }
-        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.UserId == userId && e.Id == request.Id, cancellationToken);
+        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.UserId == request.UserId && e.Id == request.ExperienceId, cancellationToken);
         if (experience is null)
         {
             throw new NotFoundException("Experience not found");

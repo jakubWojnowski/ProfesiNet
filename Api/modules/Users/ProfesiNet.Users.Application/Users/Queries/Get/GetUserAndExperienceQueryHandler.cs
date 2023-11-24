@@ -23,7 +23,6 @@ public class GetUserAndExperienceQueryHandler : IRequestHandler<GetUserAndExperi
             throw new NotFoundException("User not found");
         }
         
-
         return (Mapper.UserAndExperienceDtosToUsers(user));
         
     }

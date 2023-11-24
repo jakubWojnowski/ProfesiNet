@@ -28,8 +28,6 @@
       <Folder Include="ConnectionRequests\Mappings\" />
       <Folder Include="ConnectionRequests\Queries\" />
       <Folder Include="ConnectionRequests\Services\" />
-      <Folder Include="Educations\Commands\Update\" />
-      <Folder Include="Educations\Queries\" />
       <Folder Include="Educations\Services\" />
       <Folder Include="Experiences\Services\" />
       <Folder Include="Followings\Commands\" />

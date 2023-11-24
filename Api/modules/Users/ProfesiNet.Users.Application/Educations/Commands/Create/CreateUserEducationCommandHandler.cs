@@ -25,7 +25,7 @@ public class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEduca
        {
            throw new NotFoundException("Token not found");
        }
-       var educationDto = new AddEducationDto
+       var educationDto = new EducationDto
        {
            Name = request.Name,
            Degree = request.Degree,
@@ -34,7 +34,8 @@ public class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEduca
            EndDate = request.EndDate,
            Description = request.Description
        };
-       var education = Mapper.MapAddEducationDtoToEducation(educationDto);
+       var education = Mapper.MapEducationDtoToEducation(educationDto);
+       education.UserId = token;
        
        var result = await _educationRepository.AddAsync(education, cancellationToken);
 

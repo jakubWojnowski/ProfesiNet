@@ -8,20 +8,20 @@ using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Create;
 
-public class AddUserExperienceCommandHandler : IRequestHandler<AddUserExperienceCommand, Guid>
+public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExperienceCommand, Guid>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IExperienceRepository _experienceRepository;
     private static readonly ExperienceMapper Mapper = new();
 
-    public AddUserExperienceCommandHandler(IUserRepository userRepository, ICurrentUserContextService currentUserContextService, IExperienceRepository experienceRepository)
+    public CreateUserExperienceCommandHandler(IUserRepository userRepository, ICurrentUserContextService currentUserContextService, IExperienceRepository experienceRepository)
     {
         _userRepository = userRepository;
         _currentUserContextService = currentUserContextService;
         _experienceRepository = experienceRepository;
     }
-    public async Task<Guid> Handle(AddUserExperienceCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
         if (tokenId == Guid.Empty)

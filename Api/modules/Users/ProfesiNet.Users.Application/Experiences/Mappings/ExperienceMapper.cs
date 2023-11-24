@@ -20,7 +20,7 @@ public partial class ExperienceMapper
 
     public partial GetExperienceDto MapExperienceToGetExperienceDto(Experience experience);
     
-    public partial IReadOnlyList<GetExperienceDto> MapExperiencesToGetExperienceDtos(IEnumerable<Experience?> experiences);
+    public partial IReadOnlyCollection<GetExperienceDto> MapExperiencesToGetExperienceDtos(IEnumerable<Experience?> experiences);
    
 
 

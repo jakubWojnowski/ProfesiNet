@@ -5,7 +5,7 @@ using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Queries.GetAll;
 
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IReadOnlyList<UserDto>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IReadOnlyCollection<UserDto>>
 {
     private readonly IUserRepository _userRepository;
     private static readonly UserMapper Mapper = new();
@@ -14,7 +14,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IReadOn
     {
         _userRepository = userRepository;
     }
-    public async Task<IReadOnlyList<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var users = await _userRepository.GetAllAsync(cancellationToken);
         return Mapper.UserDtosToUsers(users);

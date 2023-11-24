@@ -6,11 +6,22 @@ namespace ProfesiNet.Users.Application.Educations.Mappings;
 [Mapper]
 public partial class EducationMapper
 {
-    public partial Education MapAddEducationDtoToEducation(AddEducationDto addEducationDto);
-    public partial EducationDto EducationToEducationDto(Education education);
-    public partial IReadOnlyList<Education> EducationDtosToEducations(IReadOnlyList<EducationDto> educationDtos);
+    public partial Education MapEducationDtoToEducation(EducationDto educationDto);
+    
+    public  Education MapUpdateEducationDtoToEducation(Education education, EducationDto educationDto)
+    {
+        education.Name = educationDto.Name;
+        education.Description = educationDto.Description;
+        education.FieldOfStudy = educationDto.FieldOfStudy;
+        education.StartDate = educationDto.StartDate;
+        education.EndDate = educationDto.EndDate;
+        return education;
+        
+    }
+    public partial GetEducationDto EducationToGetEducationDto(Education education);
+    public partial IReadOnlyCollection<GetEducationDto> GetEducationDtosToEducations(IEnumerable<Education?> educations);
     
    
-    public partial Education AddEducationDtoToEducation(AddEducationDto addEducationDto);
+    public partial Education AddEducationDtoToEducation(EducationDto educationDto);
     
 }

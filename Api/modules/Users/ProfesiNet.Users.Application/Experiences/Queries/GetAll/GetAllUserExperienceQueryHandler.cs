@@ -7,8 +7,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Experiences.Queries.GetAll;
 
-public class
-    GetAllUserExperienceQueryHandler : IRequestHandler<GetAllUserExperienceQuery, IEnumerable<GetExperienceDto>>
+public class GetAllUserExperienceQueryHandler : IRequestHandler<GetAllUserExperienceQuery, IEnumerable<GetExperienceDto>>
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
@@ -21,17 +20,9 @@ public class
         _currentUserContextService = currentUserContextService;
     }
 
-    public async Task<IEnumerable<GetExperienceDto>> Handle(GetAllUserExperienceQuery request,
-        CancellationToken cancellationToken)
-    {
-        var userId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (userId == Guid.Empty)
-        {
-            throw new NotFoundException("Token not Found");
-        }
-
+    public async Task<IEnumerable<GetExperienceDto>> Handle(GetAllUserExperienceQuery request, CancellationToken cancellationToken) {
         var experiences =
-            await _experienceRepository.GetAllForConditionAsync(e => e.UserId == userId, cancellationToken);
+            await _experienceRepository.GetAllForConditionAsync(e => e.UserId == request.Id, cancellationToken);
         if (experiences is null)
         {
             throw new NotFoundException("Experience not found");

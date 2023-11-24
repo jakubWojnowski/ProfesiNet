@@ -33,7 +33,7 @@ public partial class UserMapper
         return user;
     }
 
-    public partial IReadOnlyList<UserDto> UserDtosToUsers(IEnumerable<User> users);
+    public partial IReadOnlyCollection<UserDto> UserDtosToUsers(IEnumerable<User> users);
     public partial UserAndExperienceDto UserAndExperienceDtosToUsers(User users);
     
     
