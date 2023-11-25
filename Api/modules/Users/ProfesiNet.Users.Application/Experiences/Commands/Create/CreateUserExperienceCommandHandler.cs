@@ -24,11 +24,6 @@ public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExpe
     public async Task<Guid> Handle(CreateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (tokenId == Guid.Empty)
-        {
-            throw new NotFoundException("Token not Found");
-        }
-        
         var experienceDto = new ExperienceDto
         {
             Company = request.Company,
@@ -41,8 +36,8 @@ public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExpe
         var experience = Mapper.MapAddExperienceDtoToExperience(experienceDto);
         experience.UserId = tokenId;
         
-        var result =   await _experienceRepository.AddAsync(experience, cancellationToken);
+        var experienceId =   await _experienceRepository.AddAsync(experience, cancellationToken);
          
-         return result;
+         return experienceId;
     }
 }

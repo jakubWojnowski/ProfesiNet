@@ -21,17 +21,12 @@ public class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExpe
     public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var experience = await _experienceRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (experience == null)
+        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == tokenId, cancellationToken);
+
+        if (experience is null)
         {
             throw new NotFoundException("Experience not found");
         }
-        if (tokenId == Guid.Empty || experience.UserId != tokenId)
-        {
-            throw new NotFoundException("Token not Found or incorrect user");
-        }
-        //to do: create a helper method instead of fucking Dry Principle ^
-        
         var experienceToUpdateDto = new ExperienceDto()
         {
             Company = request.Company ?? experience.Company,

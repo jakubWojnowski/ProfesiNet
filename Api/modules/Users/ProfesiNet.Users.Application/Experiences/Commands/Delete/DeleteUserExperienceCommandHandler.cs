@@ -20,15 +20,10 @@ public class DeleteUserExperienceCommandHandler : IRequestHandler<DeleteUserExpe
     public async Task Handle(DeleteUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var experience = await _experienceRepository.GetByIdAsync(request.Id, cancellationToken);
+        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == tokenId, cancellationToken);
         if (experience == null)
         {
             throw new NotFoundException("Experience not found");
-        }
-
-        if (tokenId == Guid.Empty || experience.UserId != tokenId)
-        {
-            throw new NotFoundException("Token not Found or incorrect user");
         }
         
         await _experienceRepository.DeleteAsync(experience, cancellationToken);

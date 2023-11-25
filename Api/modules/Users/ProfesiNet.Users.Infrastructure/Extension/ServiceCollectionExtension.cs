@@ -57,6 +57,7 @@ public static class ServiceCollectionExtension
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IExperienceRepository, ExperienceRepository>()
             .AddScoped<IEducationRepository, EducationRepository>()
+            .AddScoped<ICertificateRepository, CertificateRepository>()
             .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }

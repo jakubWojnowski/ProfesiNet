@@ -29,32 +29,13 @@ public class AccountProfileController : ControllerBase
     {
         _mediator = mediator;
     }
-    [HttpDelete("DeleteUser")]
-    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
-    {
-        try
-        {
-            await _mediator.Send(command);
-            return Ok();
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-
-    }
-    
     [HttpDelete("DeleteOwnAccount")]
     public async Task<IActionResult> DeleteOwnAccount()
     {
         try
         {
             await _mediator.Send(new DeleteOwnAccountCommand());
-            return Ok();
+            return NotFound();
         }
         catch (ValidationException ex)
         {
@@ -163,8 +144,8 @@ public class AccountProfileController : ControllerBase
     {
         try
         {
-            await _mediator.Send(command);
-            return Ok();
+           var id = await _mediator.Send(command);
+            return Created($"api/AccountProfile/CreateUserExperience/{id}", id);
         }
         catch (NotFoundException ex)
         {
@@ -182,10 +163,11 @@ public class AccountProfileController : ControllerBase
         try
         {
             await _mediator.Send(command);
-            return Ok();
+            return NotFound();
         }
         catch (NotFoundException ex)
         {
+            
             return NotFound(ex.Message);
         }
         catch (Exception ex)
@@ -271,8 +253,8 @@ public class AccountProfileController : ControllerBase
     {
         try
         {
-            await _mediator.Send(command);
-            return Ok();
+            var id = await _mediator.Send(command);
+            return Created($"api/AccountProfile/CreateUserEducation/{id}", id);
         }
         catch (NotFoundException ex)
         {

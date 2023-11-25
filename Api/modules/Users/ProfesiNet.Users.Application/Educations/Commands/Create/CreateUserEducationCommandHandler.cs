@@ -37,8 +37,8 @@ public class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEduca
        var education = Mapper.MapEducationDtoToEducation(educationDto);
        education.UserId = token;
        
-       var result = await _educationRepository.AddAsync(education, cancellationToken);
+       var educationId = await _educationRepository.AddAsync(education, cancellationToken);
 
-       return result;
+       return educationId;
     }
 }

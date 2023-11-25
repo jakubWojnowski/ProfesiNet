@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Certificates\Services\" />
       <Folder Include="Conncections\Commands\" />
       <Folder Include="Conncections\Dtos\" />
       <Folder Include="Conncections\Mappings\" />
