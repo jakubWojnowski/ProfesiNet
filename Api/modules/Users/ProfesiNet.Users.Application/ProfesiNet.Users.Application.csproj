@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\ProfesiNet.Shared\ProfesiNet.Shared.csproj" />
       <ProjectReference Include="..\ProfesiNet.Users.Domain\ProfesiNet.Users.Domain.csproj" />
     </ItemGroup>
 

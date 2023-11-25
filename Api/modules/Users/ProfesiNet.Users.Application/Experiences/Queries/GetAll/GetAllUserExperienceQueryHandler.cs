@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Application.UserContext;

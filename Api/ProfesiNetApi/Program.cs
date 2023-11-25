@@ -31,6 +31,7 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
+app.UseExceptionHandler(_ => { });
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,6 +41,7 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.UseHttpsRedirection();
+
 
 
 

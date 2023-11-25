@@ -1,6 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Users.Application.Certificates.Commands.Create;
 using ProfesiNet.Users.Application.Educations.Commands.Create;
 using ProfesiNet.Users.Application.Educations.Commands.Delete;
 using ProfesiNet.Users.Application.Educations.Commands.Update;
@@ -21,6 +24,7 @@ namespace ProfesiNet.Users.Application.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class AccountProfileController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -309,23 +313,8 @@ public class AccountProfileController : ControllerBase
     [HttpGet("GetUserEducationById")]
     public async Task<IActionResult> GetUserEducationById([FromQuery] GetUserEducationByIdQuery query)
     {
-        try
-        {
             var education = await _mediator.Send(query);
             return Ok(education);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
     }
 
     [HttpGet("GetAllUserEducation")]
@@ -348,5 +337,12 @@ public class AccountProfileController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+    
+    [HttpPost("CreateUserCertificate")]
+    public async Task<IActionResult> AddUserCertification([FromBody] CreateUserCertificateCommand command)
+    {
+            var id = await _mediator.Send(command);
+            return Created($"api/AccountProfile/CreateUserCertificate/{id}", id);
     }
 }

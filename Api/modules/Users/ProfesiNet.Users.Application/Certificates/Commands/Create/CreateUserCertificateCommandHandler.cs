@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Application.UserContext;
@@ -21,10 +22,6 @@ public class CreateUserCertificateCommandHandler : IRequestHandler<CreateUserCer
     public async Task<Guid> Handle(CreateUserCertificateCommand request, CancellationToken cancellationToken)
     {
         var token = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (token == Guid.Empty)
-        {
-            throw new NotFoundException("Token not found");
-        }
         var certificateDto = new CertificateDto
         {
             Name = request.Name,

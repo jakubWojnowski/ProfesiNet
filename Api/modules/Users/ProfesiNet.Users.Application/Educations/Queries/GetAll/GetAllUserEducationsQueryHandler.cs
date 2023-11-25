@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
