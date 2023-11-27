@@ -9,6 +9,6 @@ public class GetEducationDto
     public string? FieldOfStudy { get; set; }
     public Guid UserId { get; set; }
 
-    public DateTime StarDate { get; set; }
-    public DateTime? EndDate { get; set; }
+    public DateOnly StarDate { get; set; }
+    public DateOnly? EndDate { get; set; }
 }
