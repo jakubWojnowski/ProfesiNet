@@ -1,22 +1,21 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
 namespace ProfesiNet.Users.Infrastructure.Repositories;
 
-public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : class
+public abstract class GenericRepository<TEntity, TKey>  where TEntity : class
 {
     private readonly ProfesiNetUserDbContext _dbContext;
     private readonly DbSet<TEntity> _entities;
 
-    public GenericRepository(ProfesiNetUserDbContext dbContext)
+    protected GenericRepository(ProfesiNetUserDbContext dbContext)
     {
         _dbContext = dbContext;
         _entities = _dbContext.Set<TEntity>();
     }
 
-    public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken ct = default) =>
+    public  async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken ct = default) =>
         await _dbContext.Set<TEntity>().FindAsync(new object?[] { id, ct }, cancellationToken: ct);
 
     public async Task<IQueryable<TEntity>> GetAllAsync(CancellationToken ct = default)

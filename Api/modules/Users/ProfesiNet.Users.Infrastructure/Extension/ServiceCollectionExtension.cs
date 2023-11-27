@@ -53,8 +53,7 @@ public static class ServiceCollectionExtension
                 .UseLazyLoadingProxies()
                 .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
         });
-        services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>))
-            .AddScoped<IUserRepository, UserRepository>()
+        services.AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IExperienceRepository, ExperienceRepository>()
             .AddScoped<IEducationRepository, EducationRepository>()
             .AddScoped<ICertificateRepository, CertificateRepository>()
