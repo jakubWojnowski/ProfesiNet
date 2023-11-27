@@ -23,58 +23,21 @@ public class UserAuthenticationController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
     {
-        try
-        {
             var token = await _mediator.Send(command);
             return Ok(token);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
     }
     
     [HttpPost("logout")]
     public async Task<IActionResult> Logout([FromBody] LogoutUserCommand command)
     {
-        try
-        {
             await _mediator.Send(command);
-            return Ok();
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
+            return Redirect("/");
     }
     
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
     {
-        try
-        {
             await _mediator.Send(command);
-            return Ok();
-        }
-        catch (UserAlreadyExistsException ex)
-        {
-            return StatusCode(StatusCodes.Status409Conflict, ex.Message);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
+            return Created("/api/user", null);
     }
 }
