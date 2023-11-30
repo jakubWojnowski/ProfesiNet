@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using ProfesiNet.Users.Application.Users.Commands.Register;
+using ProfesiNet.Users.Application.Users.Validations.Validators;
 using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Application.Configurations.Extensions;
@@ -11,8 +14,8 @@ public static class ServiceCollectionExtension
         services.AddHttpContextAccessor();
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-        
-        //services.AddValidatorsFromAssemblyContaining<IUserValidatorMarker>();
+
+        services.AddValidatorsFromAssemblyContaining(typeof(RegisterUserCommandValidator));
         return services;
     }
 }

@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using ProfesiNet.Users.Application.Users.Commands.Register;
+using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Validations.Helpers;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Validations.Validators;
 
-public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserDto>
 {
     public RegisterUserCommandValidator(IUserRepository userRepository, CancellationToken ct = default)
     {

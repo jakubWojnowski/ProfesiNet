@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
@@ -11,16 +12,19 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IValidator<RegisterUserDto> _validator;
     private static readonly UserMapper Mapper = new();
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+    public RegisterUserCommandHandler(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IValidator<RegisterUserDto> validator )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _validator = validator;
     }
    
     public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        
         var dto = new RegisterUserDto
         {
             Email = request.Email,
@@ -29,6 +33,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
             Password = request.Password,
             ConfirmPassword = request.ConfirmPassword
         };
+        
         var user = Mapper.MapRegistrationDtoToUser(dto);
         
         var encoded = _passwordHasher.HashPassword(user, dto.Password);
