@@ -30,13 +30,12 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-app.UseExceptionHandler(_ => { });
+//app.UseExceptionHandler(_ => { });
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+    app.UseInfrastructure();
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 app.MapControllers();
 
 app.UseHttpsRedirection();
