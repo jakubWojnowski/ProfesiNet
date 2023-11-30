@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,11 +13,13 @@ namespace ProfesiNet.Shared.Configurations;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddProfesiNetShared(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddErrorHandling();
         services.RegisterValidators();
         services.AddProfesiNetMediator();
+        services.AddControllers();
+       
         //services.AddExceptionHandler<ExceptionHandler>();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
         services.AddScoped<IIdentityService, IdentityService>();
@@ -26,6 +29,7 @@ public static class ServiceCollectionExtension
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseErrorHandling();
+        
         return app;
     }
 }

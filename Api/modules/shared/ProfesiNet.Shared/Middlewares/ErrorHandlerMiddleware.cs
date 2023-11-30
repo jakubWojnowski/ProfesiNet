@@ -27,7 +27,7 @@ internal class ErrorHandlerMiddleware : IMiddleware
         }
     }
 
-    private async Task HandleErrorAsync(HttpContext context, Exception exception)
+    private async Task HandleErrorAsync(HttpContext context, Exception exception, CancellationToken cancellationToken = default)
     {
         var errorResponse = _exceptionCompositionRoot.Map(exception);
         context.Response.StatusCode = (int)(errorResponse?.StatusCode ?? HttpStatusCode.InternalServerError);
@@ -36,6 +36,6 @@ internal class ErrorHandlerMiddleware : IMiddleware
         {
             return;
         }
-        await context.Response.WriteAsJsonAsync(errorResponse);
+        await context.Response.WriteAsJsonAsync(errorResponse, cancellationToken: cancellationToken);
     }
 }
