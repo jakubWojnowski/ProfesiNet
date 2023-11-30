@@ -1,4 +1,5 @@
-﻿using ProfesiNet.Shared.Interfaces;
+﻿using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Shared.Interfaces;
 
 namespace ProfesiNet.Shared.Middlewares;
 

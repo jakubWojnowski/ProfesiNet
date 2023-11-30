@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Shared.Interfaces;
 
 namespace ProfesiNet.Shared.Middlewares;

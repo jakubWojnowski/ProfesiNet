@@ -3,6 +3,7 @@ using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
+using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Repositories;
@@ -14,13 +15,16 @@ public class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEduca
     private readonly IEducationRepository _educationRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
+    private readonly ICannotSetDatePolicy _cannotSetDatePolicy;
     private static readonly EducationMapper Mapper = new();
 
-    public UpdateUserEducationCommandHandler(IEducationRepository educationRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
+    public UpdateUserEducationCommandHandler(IEducationRepository educationRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository,
+        ICannotSetDatePolicy cannotSetDatePolicy)
     {
         _educationRepository = educationRepository;
         _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
+        _cannotSetDatePolicy = cannotSetDatePolicy;
     }
     public async Task Handle(UpdateUserEducationCommand request, CancellationToken cancellationToken)
     {
@@ -44,6 +48,11 @@ public class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEduca
             StartDate = request.StartDate ?? education.StartDate,
             EndDate = request.EndDate ?? education.EndDate
         };
+        if (_cannotSetDatePolicy.IsSatisfiedBy(educationToUpdateDto.StartDate, educationToUpdateDto.EndDate) is false)
+        {
+            throw new CannotSetDateException(educationToUpdateDto.StartDate, educationToUpdateDto.EndDate);
+        }
+        
         var updatedEducation = Mapper.MapUpdateEducationDtoToEducation(education, educationToUpdateDto);
         await _educationRepository.UpdateAsync(updatedEducation, cancellationToken);
     }

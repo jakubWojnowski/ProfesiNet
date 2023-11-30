@@ -3,6 +3,7 @@ using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
+using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Repositories;
@@ -14,13 +15,16 @@ public class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExpe
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
+    private readonly ICannotSetDatePolicy _cannotSetDatePolicy;
     private static readonly ExperienceMapper Mapper = new();
 
-    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
+    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository,
+        ICannotSetDatePolicy cannotSetDatePolicy)
     {
         _experienceRepository = experienceRepository;
         _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
+        _cannotSetDatePolicy = cannotSetDatePolicy;
     }
     public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
@@ -44,6 +48,10 @@ public class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExpe
             StartDate = request.StartDate ?? experience.StartDate,
             EndDate = request.EndDate ?? experience.EndDate
         };
+        if (_cannotSetDatePolicy.IsSatisfiedBy(experienceToUpdateDto.StartDate, experienceToUpdateDto.EndDate) is false)
+        {
+            throw new CannotSetDateException(experienceToUpdateDto.StartDate, experienceToUpdateDto.EndDate);
+        }
         
         var updatedExperience = Mapper.MapUpdateExperienceDtoToExperience(experience, experienceToUpdateDto);
         

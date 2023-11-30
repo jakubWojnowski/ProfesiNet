@@ -1,4 +1,6 @@
-﻿namespace ProfesiNet.Shared.Interfaces;
+﻿using ProfesiNet.Shared.Exceptions;
+
+namespace ProfesiNet.Shared.Interfaces;
 
 public interface IExceptionResponseMapper
 {
