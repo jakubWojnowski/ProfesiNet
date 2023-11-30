@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProfesiNet.Users.Application.UserContext;
+using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Logout;
 

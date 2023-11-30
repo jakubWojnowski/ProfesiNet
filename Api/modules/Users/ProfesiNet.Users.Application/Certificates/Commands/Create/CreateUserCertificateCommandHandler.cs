@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
-using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
+using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Create;
 
@@ -12,16 +13,23 @@ public class CreateUserCertificateCommandHandler : IRequestHandler<CreateUserCer
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
+    private readonly IUserRepository _userRepository;
     private static readonly CertificateMapper Mapper = new();
 
-    public CreateUserCertificateCommandHandler(ICertificateRepository certificateRepository, ICurrentUserContextService currentUserContextService)
+    public CreateUserCertificateCommandHandler(ICertificateRepository certificateRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
     {
         _certificateRepository = certificateRepository;
         _currentUserContextService = currentUserContextService;
+        _userRepository = userRepository;
     }
     public async Task<Guid> Handle(CreateUserCertificateCommand request, CancellationToken cancellationToken)
     {
-        var token = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+        if (user is null)
+        {
+            throw new UserNotFoundException(tokenId);
+        }
         var certificateDto = new CertificateDto
         {
             Name = request.Name,
@@ -29,7 +37,7 @@ public class CreateUserCertificateCommandHandler : IRequestHandler<CreateUserCer
             Date = request.Date
         };
         var certificate = Mapper.MapCertificateDtoToCertificate(certificateDto);
-        certificate.UserId = token;
+        certificate.UserId = user.Id;
         
         var certificationId = await _certificateRepository.AddAsync(certificate, cancellationToken);
         

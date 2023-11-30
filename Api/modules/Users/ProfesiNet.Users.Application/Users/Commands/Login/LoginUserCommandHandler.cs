@@ -28,10 +28,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Email == request.Email,
                        cancellationToken) ??
-                   throw new NotFoundException("Invalid email");
+                   throw new InvalidEmailException(request.Email);
         var result = _passwordHasher.VerifyHashedPassword(user, user.EncodedPassword, request.Password);
 
-        if (result == PasswordVerificationResult.Failed) throw new NotFoundException("Invalid  password");
+        if (result == PasswordVerificationResult.Failed) throw new InvalidPasswordException();
 
         return _jwtProvider.GenerateJwtToken(user);
     }

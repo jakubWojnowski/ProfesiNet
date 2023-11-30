@@ -7,4 +7,8 @@
         <RootNamespace>ProfesiNet.Users.Domain</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\ProfesiNet.Shared\ProfesiNet.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

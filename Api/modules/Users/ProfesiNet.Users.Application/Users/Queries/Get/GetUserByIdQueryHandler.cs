@@ -21,7 +21,7 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
         if (user == null)
         {
-            throw new NotFoundException("User not found");
+            throw new UserNotFoundException(request.Id);
         }
         return Mapper.MapUserToUserDto(user);
     }

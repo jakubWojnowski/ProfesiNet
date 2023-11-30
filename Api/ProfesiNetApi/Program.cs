@@ -22,11 +22,7 @@ builder.Services
     .AddProfesiNetShared()
     .AddEndpointsApiExplorer();
 builder.Services.AddControllers();
-    // .AddFluentValidation(fv =>
-    // {
-    //     fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
-    //    
-    // });
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<IValidator>();

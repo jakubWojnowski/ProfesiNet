@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using ProfesiNet.Users.Application.UserContext;
+using ProfesiNet.Shared.UserContext;
+using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Delete;
@@ -27,8 +28,12 @@ public class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccountCo
         }
 
         var id = Guid.Parse(tokenId);
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == id, cancellationToken) ??
-                   throw new Exception("Invalid user id");
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == id, cancellationToken);
+        if (user == null)
+        {
+            throw new UserNotFoundException(id);
+        }
+            
         
         await _userRepository.DeleteAsync(user, cancellationToken);
         

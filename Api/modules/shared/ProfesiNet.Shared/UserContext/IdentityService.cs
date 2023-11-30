@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
-namespace ProfesiNet.Users.Application.UserContext;
+namespace ProfesiNet.Shared.UserContext;
 
 public class IdentityService : IIdentityService
 {

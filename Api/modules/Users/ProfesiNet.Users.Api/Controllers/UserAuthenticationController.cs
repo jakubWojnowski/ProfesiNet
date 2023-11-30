@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Users.Application.Users.Commands.Login;
 using ProfesiNet.Users.Application.Users.Commands.Logout;
 using ProfesiNet.Users.Application.Users.Commands.Register;
-using ProfesiNet.Users.Domain.Exceptions;
-using ValidationException = FluentValidation.ValidationException;
 
-namespace ProfesiNet.Users.Application.Controllers;
+namespace ProfesiNet.USers.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
-using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
+using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Update;
 
@@ -12,21 +13,28 @@ public class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExpe
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
+    private readonly IUserRepository _userRepository;
     private static readonly ExperienceMapper Mapper = new();
 
-    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService)
+    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
     {
         _experienceRepository = experienceRepository;
         _currentUserContextService = currentUserContextService;
+        _userRepository = userRepository;
     }
     public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == tokenId, cancellationToken);
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+        if (user is null)
+        {
+            throw new UserNotFoundException(tokenId);
+        }
+        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == user.Id, cancellationToken);
 
         if (experience is null)
         {
-            throw new NotFoundException("Experience not found");
+            throw new ExperienceNotFoundException(request.Id);
         }
         var experienceToUpdateDto = new ExperienceDto()
         {

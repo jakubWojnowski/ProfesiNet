@@ -1,4 +1,4 @@
-﻿namespace ProfesiNet.Users.Application.UserContext;
+﻿namespace ProfesiNet.Shared.UserContext;
 
 public interface IIdentityService
 {

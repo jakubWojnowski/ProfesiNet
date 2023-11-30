@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Certificates.Commands.Create;
 using ProfesiNet.Users.Application.Educations.Commands.Create;
 using ProfesiNet.Users.Application.Educations.Commands.Delete;
@@ -18,9 +16,8 @@ using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Update;
 using ProfesiNet.Users.Application.Users.Queries.Get;
 using ProfesiNet.Users.Application.Users.Queries.GetAll;
-using ProfesiNet.Users.Domain.Exceptions;
 
-namespace ProfesiNet.Users.Application.Controllers;
+namespace ProfesiNet.USers.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -159,3 +156,5 @@ public class AccountProfileController : ControllerBase
             return Created($"api/AccountProfile/CreateUserCertificate/{id}", id);
     }
 }
+
+//naprawic post certificate i education. daty sa zle

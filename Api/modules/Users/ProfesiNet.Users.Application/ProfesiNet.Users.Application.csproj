@@ -20,24 +20,8 @@
 
     <ItemGroup>
       <Folder Include="Certificates\Services\" />
-      <Folder Include="Conncections\Commands\" />
-      <Folder Include="Conncections\Dtos\" />
-      <Folder Include="Conncections\Mappings\" />
-      <Folder Include="Conncections\Queries\" />
-      <Folder Include="Conncections\Services\" />
-      <Folder Include="ConnectionRequests\Commands\" />
-      <Folder Include="ConnectionRequests\Dtos\" />
-      <Folder Include="ConnectionRequests\Mappings\" />
-      <Folder Include="ConnectionRequests\Queries\" />
-      <Folder Include="ConnectionRequests\Services\" />
       <Folder Include="Educations\Services\" />
       <Folder Include="Experiences\Services\" />
-      <Folder Include="Followings\Commands\" />
-      <Folder Include="Followings\Dtos\" />
-      <Folder Include="Followings\Mappings\" />
-      <Folder Include="Followings\Queries\" />
-      <Folder Include="Followings\Services\" />
-      <Folder Include="Users\Services\" />
     </ItemGroup>
 
 </Project>

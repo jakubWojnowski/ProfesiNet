@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace ProfesiNet.Users.Application.UserContext
+namespace ProfesiNet.Shared.UserContext
 {
     public class CurrentUserContextService : ICurrentUserContextService
     {

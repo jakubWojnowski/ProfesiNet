@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Certificates.Mappings;
-using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
+using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Delete;
 
@@ -11,24 +12,28 @@ public class DeleteUserCertificateCommandHandler : IRequestHandler<DeleteUserCer
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
+    private readonly IUserRepository _userRepository;
     private static readonly CertificateMapper Mapper = new();
 
-    public DeleteUserCertificateCommandHandler(ICertificateRepository certificateRepository, ICurrentUserContextService currentUserContextService)
+    public DeleteUserCertificateCommandHandler(ICertificateRepository certificateRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
     {
         _certificateRepository = certificateRepository;
         _currentUserContextService = currentUserContextService;
+        _userRepository = userRepository;
     }
     public async Task Handle(DeleteUserCertificateCommand request, CancellationToken cancellationToken)
     {
-        var token = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        if (token == Guid.Empty)
+        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+        if (user is null)
         {
-            throw new NotFoundException("Token not found");
+            throw new UserNotFoundException(tokenId);
         }
-        var certificate = await _certificateRepository.GetRecordByFilterAsync(c=> c.Id == request.Id && c.UserId == token, cancellationToken);
+      
+        var certificate = await _certificateRepository.GetRecordByFilterAsync(c=> c.Id == request.Id && c.UserId == user.Id, cancellationToken);
         if (certificate == null)
         {
-            throw new NotFoundException("Certificate not found");
+            throw new CertificateNotFoundException(request.Id);
         }
         
         await _certificateRepository.DeleteAsync(certificate, cancellationToken);

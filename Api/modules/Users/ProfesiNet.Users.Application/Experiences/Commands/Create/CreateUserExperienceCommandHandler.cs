@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
-using ProfesiNet.Users.Application.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Repositories;
@@ -24,6 +24,11 @@ public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExpe
     public async Task<Guid> Handle(CreateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+        if (user is null)
+        {
+            throw new UserNotFoundException(tokenId);
+        }
         var experienceDto = new ExperienceDto
         {
             Company = request.Company,
@@ -34,7 +39,7 @@ public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExpe
         };
 
         var experience = Mapper.MapAddExperienceDtoToExperience(experienceDto);
-        experience.UserId = tokenId;
+        experience.UserId = user.Id;
         
         var experienceId =   await _experienceRepository.AddAsync(experience, cancellationToken);
          
