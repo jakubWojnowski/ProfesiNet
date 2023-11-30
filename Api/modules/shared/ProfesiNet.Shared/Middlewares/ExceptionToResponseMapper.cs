@@ -15,6 +15,8 @@ internal class ExceptionToResponseMapper : IExceptionResponseMapper
         {
             ProfesiNetException ex => new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)),
                 HttpStatusCode.BadRequest),
+            ProfesiNetValidationException ex => new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)),
+                HttpStatusCode.ExpectationFailed),
             _ => new ExceptionResponse(new ErrorsResponse(new Error("error", "There was an error")),
                 HttpStatusCode.InternalServerError)
         };

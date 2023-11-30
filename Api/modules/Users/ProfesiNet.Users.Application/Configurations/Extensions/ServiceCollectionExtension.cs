@@ -16,6 +16,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         services.AddValidatorsFromAssemblyContaining(typeof(RegisterUserCommandValidator));
+        
         return services;
     }
 }

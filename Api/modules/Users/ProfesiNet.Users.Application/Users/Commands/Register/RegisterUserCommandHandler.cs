@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
+using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Register;
@@ -33,7 +34,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
             Password = request.Password,
             ConfirmPassword = request.ConfirmPassword
         };
-        
+        var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            var errorMessage = string.Join(" ", validationResult.Errors.Select(e => e.ErrorMessage));
+            throw new RegisterIncorrectFormatException(errorMessage);
+        }
         var user = Mapper.MapRegistrationDtoToUser(dto);
         
         var encoded = _passwordHasher.HashPassword(user, dto.Password);
