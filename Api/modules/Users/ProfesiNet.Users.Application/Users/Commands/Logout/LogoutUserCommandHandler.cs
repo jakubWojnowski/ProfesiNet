@@ -3,7 +3,7 @@ using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Logout;
 
-public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, bool>
+internal class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, bool>
 {
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserContextService _currentUserContext;

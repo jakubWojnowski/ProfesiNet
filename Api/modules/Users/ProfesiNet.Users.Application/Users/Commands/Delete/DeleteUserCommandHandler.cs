@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using ProfesiNet.Users.Domain.Exceptions;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Delete;
 
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
+internal class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IUserRepository _userRepository;
 

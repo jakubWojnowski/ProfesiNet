@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Delete;
 
-public class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccountCommand>
+internal class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccountCommand>
 {
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserContextService _currentUserContextService;

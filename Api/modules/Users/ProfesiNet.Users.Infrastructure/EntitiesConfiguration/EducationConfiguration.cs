@@ -4,7 +4,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.EntitiesConfiguration;
 
-public class EducationConfiguration : IEntityTypeConfiguration<Education>
+internal class EducationConfiguration : IEntityTypeConfiguration<Education>
 {
     public void Configure(EntityTypeBuilder<Education> builder)
     {

@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Queries.GetAll;
 
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IReadOnlyCollection<UserDto>>
+internal class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IReadOnlyCollection<UserDto>>
 {
     private readonly IUserRepository _userRepository;
     private static readonly UserMapper Mapper = new();

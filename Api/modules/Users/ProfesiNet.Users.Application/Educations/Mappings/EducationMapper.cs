@@ -4,7 +4,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace ProfesiNet.Users.Application.Educations.Mappings;
 [Mapper]
-public partial class EducationMapper
+internal partial class EducationMapper
 {
     public partial Education MapEducationDtoToEducation(EducationDto educationDto);
     

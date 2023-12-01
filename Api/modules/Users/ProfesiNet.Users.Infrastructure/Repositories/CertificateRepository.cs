@@ -4,7 +4,7 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 
 namespace ProfesiNet.Users.Infrastructure.Repositories;
 
-public class CertificateRepository : GenericRepository<Certificate,Guid>, ICertificateRepository
+internal class CertificateRepository : GenericRepository<Certificate,Guid>, ICertificateRepository
 {
     public CertificateRepository(ProfesiNetUserDbContext dbContext) : base(dbContext)
     {

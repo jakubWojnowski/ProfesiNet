@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +13,12 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 using ProfesiNet.Users.Infrastructure.Repositories;
 using ProfesiNet.Users.Infrastructure.Settings;
 
+[assembly: InternalsVisibleTo("ProfesiNet.Users.Api")]
 namespace ProfesiNet.Users.Infrastructure.Extension;
-
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+   
+    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var authenticationSettings = new AuthenticationSettings();
         configuration.GetSection(AuthenticationSettings.SectionName).Bind(authenticationSettings);

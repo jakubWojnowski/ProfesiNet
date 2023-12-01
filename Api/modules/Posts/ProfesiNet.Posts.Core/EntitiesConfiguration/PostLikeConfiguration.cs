@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.EntitiesConfiguration;
 
-internal class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
+public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
 {
     public void Configure(EntityTypeBuilder<PostLike> builder)
     {

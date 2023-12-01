@@ -1,4 +1,5 @@
 ﻿using Confab.Shared.Abstractions.Interfaces;
+using Confab.Shared.Infrastructure.Api;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -27,12 +28,18 @@ public static class ServiceCollectionExtension
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddControllers()
+            .ConfigureApplicationPartManager(manager =>
+                manager.FeatureProviders.Add(new InternalControllerFeatureProvider()
+                ));
         return services;
     }
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseErrorHandling();
-        
+        // app.UseHttpsRedirection();
+        // app.UseRouting();
+        // app.UseEndpoints(endpoints => endpoints.MapControllers());
         return app;
     }
 }

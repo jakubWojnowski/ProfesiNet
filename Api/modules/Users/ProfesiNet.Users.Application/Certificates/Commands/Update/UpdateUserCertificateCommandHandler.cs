@@ -5,11 +5,10 @@ using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Update;
 
-public class UpdateUserCertificateCommandHandler : IRequestHandler<UpdateUserCertificateCommand>
+internal class UpdateUserCertificateCommandHandler : IRequestHandler<UpdateUserCertificateCommand>
 {
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly ICertificateRepository _certificateRepository;

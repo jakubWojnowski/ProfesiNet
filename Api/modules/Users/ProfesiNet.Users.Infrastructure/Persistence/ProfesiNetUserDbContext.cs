@@ -3,7 +3,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.Persistence;
 
-public class ProfesiNetUserDbContext : DbContext
+internal class ProfesiNetUserDbContext : DbContext
 {
     public ProfesiNetUserDbContext(DbContextOptions<ProfesiNetUserDbContext> options) : base(options)
     {

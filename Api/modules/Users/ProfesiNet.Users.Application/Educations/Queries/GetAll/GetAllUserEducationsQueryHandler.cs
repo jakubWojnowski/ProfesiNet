@@ -4,11 +4,10 @@ using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.GetAll;
 
-public class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEducationsQuery, IReadOnlyCollection<GetEducationDto>>
+internal class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEducationsQuery, IReadOnlyCollection<GetEducationDto>>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly IUserRepository _userRepository;

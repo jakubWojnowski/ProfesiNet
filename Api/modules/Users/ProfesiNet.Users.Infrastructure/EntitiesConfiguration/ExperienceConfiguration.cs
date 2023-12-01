@@ -4,7 +4,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.EntitiesConfiguration;
 
-public class ExperienceConfiguration : IEntityTypeConfiguration<Experience>
+internal class ExperienceConfiguration : IEntityTypeConfiguration<Experience>
 {
     public void Configure(EntityTypeBuilder<Experience> builder)
     {

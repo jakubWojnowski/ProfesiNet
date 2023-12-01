@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.EntitiesConfiguration;
 
-internal class ShareConfiguration : IEntityTypeConfiguration<Share>
+public class ShareConfiguration : IEntityTypeConfiguration<Share>
 {
     public void Configure(EntityTypeBuilder<Share> builder)
     {

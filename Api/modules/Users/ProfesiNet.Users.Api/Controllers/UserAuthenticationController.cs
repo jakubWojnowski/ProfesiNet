@@ -8,7 +8,7 @@ namespace ProfesiNet.USers.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserAuthenticationController : ControllerBase
+internal class UserAuthenticationController : ControllerBase
 {
     private readonly IMediator _mediator;
 

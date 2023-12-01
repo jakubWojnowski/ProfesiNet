@@ -6,11 +6,10 @@ using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Educations.Commands.Create;
 
-public class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEducationCommand, Guid>
+internal class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEducationCommand, Guid>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

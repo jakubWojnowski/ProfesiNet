@@ -5,11 +5,10 @@ using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Create;
 
-public class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExperienceCommand, Guid>
+internal class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserExperienceCommand, Guid>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

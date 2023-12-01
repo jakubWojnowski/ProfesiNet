@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using ProfesiNet.Users.Domain.Entities;
 
-namespace ProfesiNet.Users.Infrastructure.Repositories;
+namespace ProfesiNet.Users.Domain.Interfaces;
 
 public interface IUserRepository
 {

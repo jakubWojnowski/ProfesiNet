@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Delete;
 
-public record DeleteUserExperienceCommand(Guid Id) : IRequest;
+internal record DeleteUserExperienceCommand(Guid Id) : IRequest;

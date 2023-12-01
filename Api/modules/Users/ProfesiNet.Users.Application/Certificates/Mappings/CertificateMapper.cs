@@ -4,7 +4,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace ProfesiNet.Users.Application.Certificates.Mappings;
 [Mapper]
-public partial class CertificateMapper
+internal partial class CertificateMapper
 {
 
     public partial Certificate MapCertificateDtoToCertificate(CertificateDto certificateDto);

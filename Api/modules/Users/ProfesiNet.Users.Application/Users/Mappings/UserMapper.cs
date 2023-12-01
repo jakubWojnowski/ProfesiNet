@@ -6,7 +6,7 @@ using Riok.Mapperly.Abstractions;
 namespace ProfesiNet.Users.Application.Users.Mappings;
 
 [Mapper]
-public partial class UserMapper
+internal partial class UserMapper
 {
     public partial User MapRegistrationDtoToUser(RegisterUserDto registerUserDto);
     

@@ -4,7 +4,7 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 
 namespace ProfesiNet.Users.Infrastructure.Repositories;
 
-public abstract class GenericRepository<TEntity, TKey>  where TEntity : class
+internal abstract class GenericRepository<TEntity, TKey>  where TEntity : class
 {
     private readonly ProfesiNetUserDbContext _dbContext;
     private readonly DbSet<TEntity> _entities;

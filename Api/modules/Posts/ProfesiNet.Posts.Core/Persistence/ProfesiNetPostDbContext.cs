@@ -3,7 +3,7 @@ using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.Persistence;
 
-internal class ProfesiNetPostDbContext : DbContext
+public class ProfesiNetPostDbContext : DbContext
 {
     public ProfesiNetPostDbContext(DbContextOptions<ProfesiNetPostDbContext> options) : base(options)
     {

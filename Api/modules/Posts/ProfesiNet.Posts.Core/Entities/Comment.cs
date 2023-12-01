@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Posts.Core.Entities;
 
-internal class Comment
+public class Comment
 {
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }

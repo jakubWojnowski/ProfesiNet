@@ -4,7 +4,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.EntitiesConfiguration;
 
-public class CertificateConfiguration : IEntityTypeConfiguration<Certificate>
+internal class CertificateConfiguration : IEntityTypeConfiguration<Certificate>
 {
     public void Configure(EntityTypeBuilder<Certificate> builder)
     {

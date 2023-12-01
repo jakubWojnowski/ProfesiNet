@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.EntitiesConfiguration;
 
-internal class PostConfiguration : IEntityTypeConfiguration<Post>
+public class PostConfiguration : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {

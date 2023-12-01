@@ -5,11 +5,11 @@ using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
 using ProfesiNet.Users.Domain.Exceptions;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Register;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
+internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;

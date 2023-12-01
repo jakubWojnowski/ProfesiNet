@@ -4,7 +4,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.EntitiesConfiguration;
 
-public class FollowingConfiguration : IEntityTypeConfiguration<Following>
+internal class FollowingConfiguration : IEntityTypeConfiguration<Following>
 {
     public void Configure(EntityTypeBuilder<Following> builder)
     {

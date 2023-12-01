@@ -5,11 +5,10 @@ using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Create;
 
-public class CreateUserCertificateCommandHandler : IRequestHandler<CreateUserCertificateCommand, Guid>
+internal class CreateUserCertificateCommandHandler : IRequestHandler<CreateUserCertificateCommand, Guid>
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

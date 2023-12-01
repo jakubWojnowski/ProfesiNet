@@ -5,11 +5,10 @@ using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Login;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
+internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;

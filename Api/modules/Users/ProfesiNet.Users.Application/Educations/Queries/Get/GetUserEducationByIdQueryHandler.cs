@@ -6,11 +6,10 @@ using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.Get;
 
-public class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, GetEducationDto>
+internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, GetEducationDto>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

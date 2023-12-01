@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.EntitiesConfiguration;
 
-internal class CommentLikeConfiguration : IEntityTypeConfiguration<CommentLike>
+public class CommentLikeConfiguration : IEntityTypeConfiguration<CommentLike>
 {
     public void Configure(EntityTypeBuilder<CommentLike> builder)
     {

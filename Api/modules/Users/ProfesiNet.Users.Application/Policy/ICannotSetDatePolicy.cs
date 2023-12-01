@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Users.Application.Policy;
 
-public interface ICannotSetDatePolicy
+internal interface ICannotSetDatePolicy
 {
     bool IsSatisfiedBy(DateTime? startDate, DateTime? endDate);
 }

@@ -3,11 +3,11 @@ using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Queries.Get;
 
-public class GetUserAndExperienceQueryHandler : IRequestHandler<GetUserAndExperienceQuery, UserAndExperienceDto> 
+internal class GetUserAndExperienceQueryHandler : IRequestHandler<GetUserAndExperienceQuery, UserAndExperienceDto> 
 {
     private readonly IUserRepository _userRepository;
     private static readonly UserMapper Mapper = new();

@@ -4,4 +4,4 @@ using ProfesiNet.Users.Application.Users.Dtos;
 
 namespace ProfesiNet.Users.Application.Users.Queries.Get;
 
-public record GetUserAndExperienceQuery(Guid Id) : IRequest<UserAndExperienceDto>;
+internal record GetUserAndExperienceQuery(Guid Id) : IRequest<UserAndExperienceDto>;

@@ -22,7 +22,7 @@ namespace ProfesiNet.USers.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class AccountProfileController : ControllerBase
+internal class AccountProfileController : ControllerBase
 {
     private readonly IMediator _mediator;
 

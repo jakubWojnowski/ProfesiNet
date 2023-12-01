@@ -6,11 +6,10 @@ using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Update;
 
-public class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExperienceCommand>
+internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExperienceCommand>
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

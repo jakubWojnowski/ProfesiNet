@@ -3,11 +3,10 @@ using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Delete;
 
-public class DeleteUserExperienceCommandHandler : IRequestHandler<DeleteUserExperienceCommand>
+internal class DeleteUserExperienceCommandHandler : IRequestHandler<DeleteUserExperienceCommand>
 {
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IExperienceRepository _experienceRepository;

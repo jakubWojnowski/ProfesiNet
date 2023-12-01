@@ -2,7 +2,7 @@
 using ProfesiNet.Users.Application.Users.Commands.Register;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Validations.Helpers;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Validations.Validators;
 

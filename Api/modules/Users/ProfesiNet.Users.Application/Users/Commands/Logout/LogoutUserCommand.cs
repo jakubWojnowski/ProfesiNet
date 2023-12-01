@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Users.Commands.Logout;
 
-public record LogoutUserCommand() : IRequest<bool>;
+internal record LogoutUserCommand() : IRequest<bool>;

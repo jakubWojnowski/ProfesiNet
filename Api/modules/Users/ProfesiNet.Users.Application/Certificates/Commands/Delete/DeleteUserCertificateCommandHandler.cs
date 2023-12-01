@@ -4,11 +4,10 @@ using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Delete;
 
-public class DeleteUserCertificateCommandHandler : IRequestHandler<DeleteUserCertificateCommand>
+internal class DeleteUserCertificateCommandHandler : IRequestHandler<DeleteUserCertificateCommand>
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

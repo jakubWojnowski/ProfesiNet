@@ -32,7 +32,7 @@ var app = builder.Build();
 
 //app.UseExceptionHandler(_ => { });
 // Configure the HTTP request pipeline.
-    app.UseInfrastructure();
+    
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -40,7 +40,7 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 
-
+app.UseInfrastructure();
 
 
 await app.RunAsync();

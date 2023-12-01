@@ -4,7 +4,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace ProfesiNet.Users.Application.Experiences.Mappings;
 [Mapper]
-public partial class ExperienceMapper
+internal partial class ExperienceMapper
 {
     public partial Experience MapAddExperienceDtoToExperience(ExperienceDto experienceDto);
 

@@ -5,11 +5,10 @@ using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Experiences.Queries.Get;
 
-public class GetUserExperienceByIdQueryHandler : IRequestHandler<GetUserExperienceByIdQuery, GetExperienceDto>
+internal class GetUserExperienceByIdQueryHandler : IRequestHandler<GetUserExperienceByIdQuery, GetExperienceDto>
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;

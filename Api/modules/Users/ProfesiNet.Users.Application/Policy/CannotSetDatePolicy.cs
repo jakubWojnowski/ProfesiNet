@@ -2,7 +2,7 @@
 
 namespace ProfesiNet.Users.Application.Policy;
 
-public class CannotSetDatePolicy : ICannotSetDatePolicy
+internal class CannotSetDatePolicy : ICannotSetDatePolicy
 {
     private readonly IClock _clock;
 

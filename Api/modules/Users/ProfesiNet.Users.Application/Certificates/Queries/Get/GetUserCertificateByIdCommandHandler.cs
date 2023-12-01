@@ -4,11 +4,10 @@ using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
-using ProfesiNet.Users.Infrastructure.Repositories;
 
 namespace ProfesiNet.Users.Application.Certificates.Queries.Get;
 
-public class GetUserCertificateByIdCommandHandler : IRequestHandler<GetUserCertificateByIdCommand, GetCertificateDto>
+internal class GetUserCertificateByIdCommandHandler : IRequestHandler<GetUserCertificateByIdCommand, GetCertificateDto>
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly IUserRepository _userRepository;

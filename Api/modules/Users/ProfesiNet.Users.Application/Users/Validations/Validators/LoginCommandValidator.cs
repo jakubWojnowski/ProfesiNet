@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using ProfesiNet.Users.Application.Users.Commands.Login;
 using ProfesiNet.Users.Domain.Entities;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Validations.Validators;
 
-public class LoginCommandValidator : AbstractValidator<LoginUserCommand>, IUserValidatorMarker
+internal class LoginCommandValidator : AbstractValidator<LoginUserCommand>, IUserValidatorMarker
 {
     public LoginCommandValidator(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
     {

@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Users.Commands.Update;
 
-public record UpdateUserBioCommand(string? Bio) : IRequest;
+internal record UpdateUserBioCommand(string? Bio) : IRequest;

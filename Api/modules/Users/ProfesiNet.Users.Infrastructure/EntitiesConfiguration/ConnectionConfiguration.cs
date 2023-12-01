@@ -4,7 +4,7 @@ using ProfesiNet.Users.Domain.Entities;
 
 namespace ProfesiNet.Users.Infrastructure.EntitiesConfiguration;
 
-public class ConnectionConfiguration : IEntityTypeConfiguration<Connection>
+internal class ConnectionConfiguration : IEntityTypeConfiguration<Connection>
 {
     public void Configure(EntityTypeBuilder<Connection> builder)
     {

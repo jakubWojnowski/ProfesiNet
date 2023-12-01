@@ -4,11 +4,11 @@ using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
-using ProfesiNet.Users.Infrastructure.Repositories;
+using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Update;
 
-public class UpdateUserBioCommandHandler : IRequestHandler<UpdateUserBioCommand>
+internal class UpdateUserBioCommandHandler : IRequestHandler<UpdateUserBioCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
