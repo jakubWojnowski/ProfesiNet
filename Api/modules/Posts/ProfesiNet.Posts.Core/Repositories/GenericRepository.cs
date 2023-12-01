@@ -4,7 +4,7 @@ using ProfesiNet.Posts.Core.Persistence;
 
 namespace ProfesiNet.Posts.Core.Repositories;
 
-internal abstract class GenericRepository<TEntity, TKey> where TEntity : class
+public abstract class GenericRepository<TEntity, TKey> where TEntity : class
 {
     private readonly ProfesiNetPostDbContext _dbContext;
     private readonly DbSet<TEntity> _entities;

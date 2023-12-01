@@ -15,16 +15,16 @@ internal class PostService : IPostService
         _postRepository = postRepository;
     }
 
-    public async Task AddAsync(PostDto postDto)
+    public async Task AddAsync(PostDto postDto, CancellationToken cancellationToken = default)
     {
         var post = Mapper.MapPostDtoToPost(postDto);
         post.Id = Guid.NewGuid();
-        await _postRepository.AddAsync(post);
+        await _postRepository.AddAsync(post, cancellationToken);
     }
 
-    public async Task<PostDto?> GetAsync(Guid id)
+    public async Task<PostDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var post = await _postRepository.GetByIdAsync(id);
+        var post = await _postRepository.GetByIdAsync(id, cancellationToken);
         if (post is null)
         {
             throw new PostNotFoundException(id);
@@ -34,15 +34,15 @@ internal class PostService : IPostService
         return dto;
     }
 
-    public async Task<IReadOnlyList<PostDto>> BrowseAsync()
+    public async Task<IReadOnlyList<PostDto>> BrowseAsync(CancellationToken cancellationToken = default)
     {
-        var posts = await _postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync(cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
 
-    public async Task UpdateAsync(UpdatePostDto updatePostDto)
+    public async Task UpdateAsync(UpdatePostDto updatePostDto, CancellationToken cancellationToken = default)
     {
-        var post = await _postRepository.GetByIdAsync(updatePostDto.Id);
+        var post = await _postRepository.GetByIdAsync(updatePostDto.Id, cancellationToken);
         if (post is null)
         {
             throw new PostNotFoundException(updatePostDto.Id);
@@ -51,17 +51,17 @@ internal class PostService : IPostService
         post.Description = updatePostDto.Description;
         post.Media = updatePostDto.Media;
         post.PublishedAt = updatePostDto.CreatedAt;
-        await _postRepository.UpdateAsync(post);
+        await _postRepository.UpdateAsync(post, cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id,CancellationToken cancellationToken = default)
     {
-        var post = await _postRepository.GetByIdAsync(id);
+        var post = await _postRepository.GetByIdAsync(id, cancellationToken);
         if (post is null)
         {
             throw new PostNotFoundException(id);
         }
         
-        await _postRepository.DeleteAsync(post);
+        await _postRepository.DeleteAsync(post, cancellationToken);
     }
 }

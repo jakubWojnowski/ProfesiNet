@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Persistence;
+using ProfesiNet.Posts.Core.Policies;
 using ProfesiNet.Posts.Core.Repositories;
 using ProfesiNet.Posts.Core.Services;
 
@@ -21,10 +22,26 @@ internal static class ServiceCollectionExtension
                 .UseLazyLoadingProxies()
                 .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
         });
+        
+        //Posts
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
         
+        //comments
+        services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<ICommentService, CommentService>();
         
+        //comment likes
+        services.AddScoped<ICommentLikeRepository, CommentLikeRepository>();
+        services.AddScoped<ICommentLikeService, CommentLikeService>();
+        services.AddScoped<IUserCantAddLikeToCommentPolicy, UserCantAddLikeToCommentPolicyPolicy>();
+        
+        //post likes
+        services.AddScoped<IPostLikeRepository, PostLikeRepository>();
+        services.AddScoped<IPostLikeService, PostLikeService>();
+        services.AddScoped<IUserCantAddLikeToPostPolicy, UserCantAddLikeToPostPolicy>();
         return services;
+        
+       
     }
 }
