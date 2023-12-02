@@ -1,11 +1,11 @@
 namespace ProfesiNet.Posts.Core.Dto;
 
-public class CommentLikeDto
+internal class CommentLikeDto
 {
     public Guid Id { get; set; }
 }
 
-public class CommentLikeDetailsDto : CommentLikeDto
+internal class CommentLikeDetailsDto : CommentLikeDto
 {
     public Guid CreatorId { get; set; }
     public Guid CommentId { get; set; }

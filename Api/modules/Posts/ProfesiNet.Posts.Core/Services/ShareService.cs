@@ -1,8 +1,11 @@
-﻿using ProfesiNet.Posts.Core.Dto;
+﻿using ProfesiNet.Posts.Core.Commands.Create;
+using ProfesiNet.Posts.Core.Commands.Delete;
+using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
 using ProfesiNet.Posts.Core.Policies;
+using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -11,44 +14,53 @@ internal class ShareService : IShareService
     private readonly IShareRepository _shareRepository;
     private readonly IUserCantSharePolicy _userCantSharePolicy;
     private readonly IPostRepository _postRepository;
-    private static readonly ShareMapper Mapper = new();
+    private readonly ICurrentUserContextService _currentUserContextService;
+    private static readonly PostShareMapper Mapper = new();
 
     public ShareService(IShareRepository shareRepository, IUserCantSharePolicy userCantSharePolicy,
-        IPostRepository postRepository)
+        IPostRepository postRepository, ICurrentUserContextService currentUserContextService)
     {
         _shareRepository = shareRepository;
         _userCantSharePolicy = userCantSharePolicy;
         _postRepository = postRepository;
+        _currentUserContextService = currentUserContextService;
     }
 
-    public async Task AddAsync(ShareDetailsDto shareDetailsDto, CancellationToken ct = default)
+    public async Task<Guid> AddAsync(CreatePostShareCommand command, CancellationToken ct = default)
     {
-        var shareDto = Mapper.MapShareDetailsDtoToShare(shareDetailsDto);
-        shareDto.Id = Guid.NewGuid();
-        if (await _postRepository.GetByIdAsync(shareDto.PostId, ct) == null)
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var share = Mapper.MapCreatePostShareCommandToShare(command with
         {
-            throw new PostNotFoundException(shareDto.PostId);
+            Id = Guid.NewGuid()
+        });
+        share.CreatorId = creatorId;
+
+        if (await _postRepository.GetRecordByFilterAsync(s => s.Id == command.PostId, ct) == null)
+        {
+            throw new PostNotFoundException(command.PostId);
         }
 
-        if (!await _userCantSharePolicy.CheckShareAsync(shareDto.CreatorId, shareDto.PostId, ct))
+        if (!await _userCantSharePolicy.CheckShareAsync(share.CreatorId, share.PostId, ct))
         {
-            throw new UserCannotSharePostException(shareDto.CreatorId, shareDto.PostId);
+            throw new UserCannotSharePostException(share.CreatorId, share.PostId);
         }
 
-        await _shareRepository.AddAsync(shareDto, ct);
+        return await _shareRepository.AddAsync(share, ct);
     }
-    
-    public async Task DeleteAsync(Guid id, CancellationToken ct = default)
+
+    public async Task DeleteAsync(DeletePostShareCommand command, CancellationToken ct = default)
     {
-        var share = await _shareRepository.GetByIdAsync(id, ct);
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var share = await _shareRepository.GetRecordByFilterAsync(s => s.Id == command.Id && s.CreatorId == creatorId,
+            ct);
         if (share == null)
         {
-            throw new ShareNotFoundException(id);
+            throw new ShareNotFoundException(command.Id);
         }
 
         await _shareRepository.DeleteAsync(share, ct);
     }
-    
+
     public async Task<ShareDetailsDto> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         var share = await _shareRepository.GetByIdAsync(id, ct);
@@ -59,14 +71,22 @@ internal class ShareService : IShareService
 
         return Mapper.MapShareToShareDetailsDto(share);
     }
-    
-    public async Task<IReadOnlyList<ShareDto>> BrowseAsync(Guid postId, CancellationToken ct = default)
+
+    public async Task<IReadOnlyList<ShareDto>> BrowseSharesPerPostAsync(Guid postId, CancellationToken ct = default)
     {
         if (await _postRepository.GetByIdAsync(postId, ct) == null)
         {
             throw new PostNotFoundException(postId);
         }
+
         var shares = await _shareRepository.GetAllForConditionAsync(p => p.PostId == postId, ct);
         return Mapper.MapShareToShareDto(shares);
+    }
+
+    public async Task<IReadOnlyList<ShareDetailsDto>> BrowseSharesPerUserAsync(Guid creatorId,
+        CancellationToken ct = default)
+    {
+        var shares = await _shareRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, ct);
+        return Mapper.MapShareToShareDetailsDto(shares);
     }
 }

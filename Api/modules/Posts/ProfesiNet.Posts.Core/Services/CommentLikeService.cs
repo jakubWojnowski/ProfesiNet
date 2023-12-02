@@ -1,8 +1,11 @@
-﻿using ProfesiNet.Posts.Core.Dto;
+﻿using ProfesiNet.Posts.Core.Commands.Create;
+using ProfesiNet.Posts.Core.Commands.Delete;
+using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
 using ProfesiNet.Posts.Core.Policies;
+using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -11,42 +14,53 @@ internal class CommentLikeService : ICommentLikeService
     private readonly ICommentLikeRepository _commentLikeRepository;
     private readonly ICommentRepository _commentRepository;
     private readonly IUserCantAddLikeToCommentPolicy _userCantAddLikeToCommentPolicy;
+    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly CommentLikeMapper Mapper = new();
 
     public CommentLikeService(ICommentLikeRepository commentLikeRepository, ICommentRepository commentRepository,
-        IUserCantAddLikeToCommentPolicy userCantAddLikeToCommentPolicy)
+        IUserCantAddLikeToCommentPolicy userCantAddLikeToCommentPolicy,
+        ICurrentUserContextService currentUserContextService)
     {
         _commentLikeRepository = commentLikeRepository;
         _commentRepository = commentRepository;
         _userCantAddLikeToCommentPolicy = userCantAddLikeToCommentPolicy;
+        _currentUserContextService = currentUserContextService;
     }
 
-    public async Task AddAsync(CommentLikeDetailsDto commentLikeDetailsDto, CancellationToken ct = default)
+    public async Task<Guid> AddAsync(CreateCommentLikeCommand command, CancellationToken ct = default)
     {
-        var commentLikeDto = Mapper.MapCommentLikeDetailsDtoToComment(commentLikeDetailsDto);
-        var comment = await _commentRepository.GetByIdAsync(commentLikeDetailsDto.CommentId, ct);
-        commentLikeDto.Id = Guid.NewGuid();
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var comment = await _commentRepository.GetByIdAsync(command.CommentId, ct);
         if (comment is null)
         {
-            throw new CommentNotFoundException(commentLikeDetailsDto.CommentId);
+            throw new CommentNotFoundException(command.CommentId);
         }
 
-        if (!await _userCantAddLikeToCommentPolicy.CheckCommentLikeAsync(commentLikeDetailsDto.CreatorId,
-                commentLikeDetailsDto.CommentId, ct))
+        var commentLike = Mapper.MapCreatePostLikeCommandToComment(command with
         {
-            throw new UserCannotLikeException(commentLikeDetailsDto.CreatorId, commentLikeDetailsDto.CommentId);
-        }
-       
+            Id = Guid.NewGuid(),
+        });
+        commentLike.CreatorId = creatorId;
 
-        await _commentLikeRepository.AddAsync(commentLikeDto, ct);
+        if (!await _userCantAddLikeToCommentPolicy.CheckCommentLikeAsync(creatorId,
+                command.CommentId, ct))
+        {
+            throw new UserCannotLikeException(commentLike.CreatorId, commentLike.CommentId);
+        }
+
+
+        return await _commentLikeRepository.AddAsync(commentLike, ct);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken ct = default)
+    public async Task DeleteAsync(DeleteCommentLikeCommand command, CancellationToken ct = default)
     {
-        var commentLike = await _commentLikeRepository.GetByIdAsync(id, ct);
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var commentLike =
+            await _commentLikeRepository.GetRecordByFilterAsync(
+                l => l.Id == command.Id && l.CreatorId == creatorId, ct);
         if (commentLike is null)
         {
-            throw new CommentLikeNotFoundException(id);
+            throw new CommentLikeNotFoundException(command.Id);
         }
 
         await _commentLikeRepository.DeleteAsync(commentLike, ct);
@@ -63,10 +77,11 @@ internal class CommentLikeService : ICommentLikeService
         return Mapper.MapCommentLikeToCommentLikeDetailsDto(commentLike);
     }
 
-    public async Task<IReadOnlyList<CommentLikeDto>> BrowseAsync(Guid commentId,CancellationToken ct = default)
+    public async Task<IReadOnlyList<CommentLikeDto>> BrowseLikesPerCommentAsync(Guid commentId,
+        CancellationToken ct = default)
     {
         var commentLikes = await _commentLikeRepository.GetAllForConditionAsync(l => l.CommentId == commentId, ct);
-        
+
         return Mapper.MapCommentLikeToCommentLikeDto(commentLikes);
     }
 }

@@ -1,6 +1,6 @@
 namespace ProfesiNet.Posts.Core.Dto;
 
-public class UpdateCommentDto
+internal class UpdateCommentDto
 {
     public Guid Id { get; set; }
     public string? Content { get; set; }

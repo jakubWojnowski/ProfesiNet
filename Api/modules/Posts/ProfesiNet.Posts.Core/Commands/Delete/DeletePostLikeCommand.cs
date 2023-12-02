@@ -1,3 +1,3 @@
 ﻿namespace ProfesiNet.Posts.Core.Commands.Delete;
 
-internal record DeletePostCommand(Guid PostId);
+internal record DeletePostLikeCommand(Guid Id);

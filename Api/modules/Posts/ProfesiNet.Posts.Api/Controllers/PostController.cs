@@ -52,17 +52,17 @@ internal class PostController : BaseController
 
     //likes
     [HttpPost("PostLike")]
-    public async Task<ActionResult> AddPostLikeAsync(PostLikeDetailsDto dto,
+    public async Task<ActionResult> AddPostLikeAsync(CreatePostLikeCommand command,
         CancellationToken cancellationToken = default)
     {
-        await _postLikeService.AddAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
+        await _postLikeService.AddAsync(command, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
-    [HttpDelete("PostLike/{id:guid}")]
-    public async Task<ActionResult> DeletePostLikeAsync(Guid id, CancellationToken cancellationToken = default)
+    [HttpDelete("PostLike")]
+    public async Task<ActionResult> DeletePostLikeAsync(DeletePostLikeCommand command, CancellationToken cancellationToken = default)
     {
-        await _postLikeService.DeleteAsync(id, cancellationToken);
+        await _postLikeService.DeleteAsync(command, cancellationToken);
         return NoContent();
     }
 
@@ -79,17 +79,17 @@ internal class PostController : BaseController
     //shares
 
     [HttpPost("Share")]
-    public async Task<ActionResult> AddShareAsync(ShareDetailsDto dto,
+    public async Task<ActionResult> AddShareAsync(CreatePostShareCommand command,
         CancellationToken cancellationToken = default)
     {
-        await _shareService.AddAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
+        await _shareService.AddAsync(command, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
-    [HttpDelete("Share/{id:guid}")]
-    public async Task<ActionResult> DeleteShareAsync(Guid id, CancellationToken cancellationToken = default)
+    [HttpDelete("Share")]
+    public async Task<ActionResult> DeleteShareAsync(DeletePostShareCommand command, CancellationToken cancellationToken = default)
     {
-        await _shareService.DeleteAsync(id, cancellationToken);
+        await _shareService.DeleteAsync(command, cancellationToken);
         return NoContent();
     }
 
@@ -98,8 +98,13 @@ internal class PostController : BaseController
         CancellationToken cancellationToken = default) =>
         OkOrNotFound(await _shareService.GetByIdAsync(id, cancellationToken));
 
-    [HttpGet("Shares/{id:guid}")]
+    [HttpGet("SharesPerPost/{id:guid}")]
     public async Task<ActionResult<IReadOnlyList<ShareDto>>> BrowseSharesAsync(Guid id,
         CancellationToken cancellationToken = default) =>
-        Ok(await _shareService.BrowseAsync(id, cancellationToken));
+        Ok(await _shareService.BrowseSharesPerPostAsync(id, cancellationToken));
+    
+    [HttpGet("SharesPerUser/{id:guid}")]
+    public async Task<ActionResult<IReadOnlyList<ShareDetailsDto>>> BrowseSharesPerUserAsync(Guid id,
+        CancellationToken cancellationToken = default) =>
+        Ok(await _shareService.BrowseSharesPerUserAsync(id, cancellationToken));
 }

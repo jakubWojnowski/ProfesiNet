@@ -16,7 +16,7 @@ internal partial class PostMapper
     
     public partial Post MapCreatePostCommandToPost(CreatePostCommand createPostCommand);
 
-    public partial IReadOnlyList<PostDto> MapPostsToPostDtos(IEnumerable<Post> posts);
+    public partial IReadOnlyList<PostDto> MapPostsToPostDtos(IEnumerable<Post?> posts);
 
     public Post MapAndUpdateUpdatePostCommandToPost(Post post, UpdatePostCommand command)
     {

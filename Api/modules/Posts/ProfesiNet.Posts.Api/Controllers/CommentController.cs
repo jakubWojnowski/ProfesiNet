@@ -54,21 +54,21 @@ internal class CommentController : BaseController
 
     [HttpGet("CommentLikes/{id:guid}")]
     public async Task<ActionResult<IReadOnlyList<CommentLikeDto>>> BrowseCommentLikesAsync(Guid id,CancellationToken cancellationToken) =>
-        Ok(await _commentLikeService.BrowseAsync(id, cancellationToken));
+        Ok(await _commentLikeService.BrowseLikesPerCommentAsync(id, cancellationToken));
 
 
     [HttpPost("CommentLike")]
-    public async Task<ActionResult> AddCommentLikeAsync(CommentLikeDetailsDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult> AddCommentLikeAsync(CreateCommentLikeCommand command, CancellationToken cancellationToken)
     {
-        await _commentLikeService.AddAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
+        await _commentLikeService.AddAsync(command, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
 
-    [HttpDelete("CommentLike/{id:guid}")]
-    public async Task<ActionResult> DeleteCommentLikeAsync(Guid id, CancellationToken cancellationToken)
+    [HttpDelete("CommentLike")]
+    public async Task<ActionResult> DeleteCommentLikeAsync(DeleteCommentLikeCommand command, CancellationToken cancellationToken)
     {
-        await _commentLikeService.DeleteAsync(id, cancellationToken);
+        await _commentLikeService.DeleteAsync(command, cancellationToken);
         return NoContent();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Posts.Core.Dto;
 
-public class CommentDto
+internal class CommentDto
 {
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }

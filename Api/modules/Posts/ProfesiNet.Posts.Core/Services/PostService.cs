@@ -54,6 +54,13 @@ internal class PostService : IPostService
         var posts = await _postRepository.GetAllAsync(cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
+    public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,CancellationToken cancellationToken = default)
+    {
+        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
+        return Mapper.MapPostsToPostDtos(posts);
+    }
+    
+    
 
     public async Task UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
