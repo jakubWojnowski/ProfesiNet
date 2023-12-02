@@ -3,8 +3,6 @@ namespace ProfesiNet.Posts.Core.Dto;
 public class CommentLikeDto
 {
     public Guid Id { get; set; }
-
-
 }
 
 public class CommentLikeDetailsDto : CommentLikeDto

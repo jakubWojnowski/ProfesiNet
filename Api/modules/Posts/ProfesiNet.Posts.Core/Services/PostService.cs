@@ -1,25 +1,40 @@
-﻿using ProfesiNet.Posts.Core.Dto;
+﻿using Confab.Shared.Abstractions.Interfaces;
+using ProfesiNet.Posts.Core.Commands.Create;
+using ProfesiNet.Posts.Core.Commands.Delete;
+using ProfesiNet.Posts.Core.Commands.Update;
+using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
+using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
 internal class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
+    private readonly ICurrentUserContextService _currentUserContextService;
+    private readonly IClock _clock;
     private static readonly PostMapper Mapper = new();
 
-    public PostService(IPostRepository postRepository)
+    public PostService(IPostRepository postRepository, ICurrentUserContextService currentUserContextService,
+        IClock clock)
     {
         _postRepository = postRepository;
+        _currentUserContextService = currentUserContextService;
+        _clock = clock;
     }
 
-    public async Task AddAsync(PostDto postDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
     {
-        var post = Mapper.MapPostDtoToPost(postDto);
-        post.Id = Guid.NewGuid();
-        await _postRepository.AddAsync(post, cancellationToken);
+        var post = Mapper.MapCreatePostCommandToPost(command with
+        {
+            Id = Guid.NewGuid(),
+        });
+        post.PublishedAt = _clock.CurrentDate();
+        post.CreatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+
+        return await _postRepository.AddAsync(post, cancellationToken);
     }
 
     public async Task<PostDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)
@@ -40,28 +55,36 @@ internal class PostService : IPostService
         return Mapper.MapPostsToPostDtos(posts);
     }
 
-    public async Task UpdateAsync(UpdatePostDto updatePostDto, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
-        var post = await _postRepository.GetByIdAsync(updatePostDto.Id, cancellationToken);
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.Id,
+            cancellationToken);
         if (post is null)
         {
-            throw new PostNotFoundException(updatePostDto.Id);
+            throw new PostNotFoundException(command.Id);
         }
 
-        post.Description = updatePostDto.Description;
-        post.Media = updatePostDto.Media;
-        post.PublishedAt = updatePostDto.CreatedAt;
-        await _postRepository.UpdateAsync(post, cancellationToken);
+        var updatedPost = Mapper.MapAndUpdateUpdatePostCommandToPost(post, command);
+        await _postRepository.UpdateAsync(updatedPost, cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid id,CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(DeletePostCommand command, CancellationToken cancellationToken = default)
     {
-        var post = await _postRepository.GetByIdAsync(id, cancellationToken);
+        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.PostId,
+            cancellationToken);
         if (post is null)
         {
-            throw new PostNotFoundException(id);
+            throw new PostNotFoundException(command.PostId);
         }
-        
+
         await _postRepository.DeleteAsync(post, cancellationToken);
     }
 }
+
+// to do: check if creator exists
+// if(_CreatorRepository.GetByIdAsync(post.CreatorId, cancellationToken) is null)
+// {
+//     throw new CreatorNotFoundException(post.CreatorId);
+// }

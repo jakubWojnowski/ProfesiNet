@@ -4,5 +4,5 @@ namespace ProfesiNet.Shared.Time;
 
 internal class UtcClock : IClock
 {
-    public DateTime CurrentDate() => DateTime.UtcNow;
+    public DateTime CurrentDate() => DateTime.Now;
 }

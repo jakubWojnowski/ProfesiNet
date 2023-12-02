@@ -6,5 +6,5 @@ internal class PostDto
     public Guid CreatorId { get; set; }
     public string? Media { get; set; }
     public string? Description { get; set; }
-    public DateTime CreatedAt { get; set; } 
+    public DateTime PublishedAt { get; set; } 
 }

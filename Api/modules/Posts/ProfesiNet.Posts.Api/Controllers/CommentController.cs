@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Posts.Core.Commands.Create;
+using ProfesiNet.Posts.Core.Commands.Delete;
+using ProfesiNet.Posts.Core.Commands.Update;
 using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Interfaces;
 
@@ -15,30 +18,30 @@ internal class CommentController : BaseController
         _commentLikeService = commentLikeService;
     }
     
-    [HttpGet("{id:guid}")]
+    [HttpGet("GetById{id:guid}")]
     public async Task<ActionResult<CommentDetailsDto?>> Get(Guid id, CancellationToken cancellationToken ) => OkOrNotFound(await _commentService.GetAsync(id, cancellationToken));
     
-    [HttpGet]
+    [HttpGet("GetAllPerPost/{postId:guid}")]
     public async Task<ActionResult<IReadOnlyList<CommentDto>>> BrowseAsync(Guid postId,CancellationToken cancellationToken) => Ok(await _commentService.BrowseAsync(postId, cancellationToken));
     
     [HttpPost]
-    public async Task<ActionResult> AddAsync(CommentDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.AddAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new {id = dto.Id}, null);
+        await _commentService.AddAsync(command, cancellationToken);
+        return CreatedAtAction(nameof(Get), new {id = command.Id}, null);
     }
     
     [HttpPut]
-    public async Task<ActionResult> UpdateAsync( UpdateCommentDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult> UpdateAsync( UpdateCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.UpdateAsync(dto, cancellationToken);
+        await _commentService.UpdateAsync(command, cancellationToken);
         return NoContent();
     }
     
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteAsync( Guid id, CancellationToken cancellationToken)
+    [HttpDelete()]
+    public async Task<ActionResult> DeleteAsync( DeleteCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.DeleteAsync(id, cancellationToken);
+        await _commentService.DeleteAsync(command, cancellationToken);
         return NoContent();
     }
     

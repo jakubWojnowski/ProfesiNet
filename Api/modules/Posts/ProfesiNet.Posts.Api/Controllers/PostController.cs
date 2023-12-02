@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Posts.Core.Commands.Create;
+using ProfesiNet.Posts.Core.Commands.Delete;
+using ProfesiNet.Posts.Core.Commands.Update;
 using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Interfaces;
-using ProfesiNet.Posts.Core.Services;
+
 
 namespace ProfesiNet.Posts.Api.Controllers;
 
@@ -18,34 +21,32 @@ internal class PostController : BaseController
         _shareService = shareService;
     }
 
+    [HttpGet("GetById{id:guid}")]
+    public async Task<ActionResult<PostDto?>> Get(Guid id, CancellationToken cancellationToken = default)
+        => OkOrNotFound(await _postService.GetAsync(id, cancellationToken));
 
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<PostDto?>> Get(Guid id, CancellationToken cancellationToken = default) =>
-        OkOrNotFound(await _postService.GetAsync(id, cancellationToken));
-
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<PostDto>>>
-        BrowseAsync(CancellationToken cancellationToken = default) =>
-        Ok(await _postService.BrowseAsync(cancellationToken));
+    [HttpGet("GetAll")]
+    public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAsync(CancellationToken cancellationToken = default)
+        => Ok(await _postService.BrowseAsync(cancellationToken));
 
     [HttpPost]
-    public async Task<ActionResult> AddAsync(PostDto dto, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.AddAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
+        var id = await _postService.AddAsync(command, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id }, null);
     }
 
     [HttpPut]
-    public async Task<ActionResult> UpdateAsync(UpdatePostDto dto, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.UpdateAsync(dto, cancellationToken);
+        await _postService.UpdateAsync(command, cancellationToken);
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    [HttpDelete]
+    public async Task<ActionResult> DeleteAsync(DeletePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.DeleteAsync(id, cancellationToken);
+        await _postService.DeleteAsync(command, cancellationToken);
         return NoContent();
     }
 
@@ -74,9 +75,9 @@ internal class PostController : BaseController
     public async Task<ActionResult<IReadOnlyList<PostLikeDto>>> BrowsePostLikesAsync(Guid id,
         CancellationToken cancellationToken = default) =>
         Ok(await _postLikeService.BrowseAsync(id, cancellationToken));
-    
+
     //shares
-    
+
     [HttpPost("Share")]
     public async Task<ActionResult> AddShareAsync(ShareDetailsDto dto,
         CancellationToken cancellationToken = default)
@@ -84,24 +85,21 @@ internal class PostController : BaseController
         await _shareService.AddAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
     }
-    
+
     [HttpDelete("Share/{id:guid}")]
     public async Task<ActionResult> DeleteShareAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await _shareService.DeleteAsync(id, cancellationToken);
         return NoContent();
     }
-    
+
     [HttpGet("Share/{id:guid}")]
     public async Task<ActionResult<ShareDetailsDto>> GetShareAsync(Guid id,
         CancellationToken cancellationToken = default) =>
         OkOrNotFound(await _shareService.GetByIdAsync(id, cancellationToken));
-    
+
     [HttpGet("Shares/{id:guid}")]
     public async Task<ActionResult<IReadOnlyList<ShareDto>>> BrowseSharesAsync(Guid id,
         CancellationToken cancellationToken = default) =>
         Ok(await _shareService.BrowseAsync(id, cancellationToken));
-    
-    
-    
 }
