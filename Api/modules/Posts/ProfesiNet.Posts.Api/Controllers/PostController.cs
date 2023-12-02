@@ -29,6 +29,14 @@ internal class PostController : BaseController
     public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAsync(CancellationToken cancellationToken = default)
         => Ok(await _postService.BrowseAsync(cancellationToken));
 
+    [HttpGet("GetAllPerCreator/{creatorId:guid}")]
+    public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowsePerCreatorAsync(Guid creatorId,
+        CancellationToken cancellationToken = default) =>
+        Ok(await _postService.BrowsePerCreatorAsync(creatorId, cancellationToken));
+    
+    [HttpGet("GetAllOwn")]
+    public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAllOwnAsync(CancellationToken cancellationToken = default)
+        => Ok(await _postService.BrowseAllOwnAsync(cancellationToken));
     [HttpPost]
     public async Task<ActionResult> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
     {

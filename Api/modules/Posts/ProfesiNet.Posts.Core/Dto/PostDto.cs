@@ -7,4 +7,9 @@ internal class PostDto
     public string? Media { get; set; }
     public string? Description { get; set; }
     public DateTime PublishedAt { get; set; } 
+    public int LikesCount { get; set; }
+    public int CommentsCount { get; set; }
+    public int SharesCount { get; set; }
+    
+    
 }
