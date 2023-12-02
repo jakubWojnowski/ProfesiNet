@@ -17,12 +17,10 @@ internal partial class PostMapper
     public partial Post MapCreatePostCommandToPost(CreatePostCommand createPostCommand);
 
     public partial IReadOnlyList<PostDto> MapPostsToPostDtos(IEnumerable<Post?> posts);
+    
 
-    public Post MapAndUpdateUpdatePostCommandToPost(Post post, UpdatePostCommand command)
-    {
-        post.Description = command.Description;
-        post.Media = command.Media;
+    [MapperIgnoreSource(nameof(UpdatePostCommand.Id))]
+    public partial Post MapAndUpdateUpdatePostCommandToPost(UpdatePostCommand command);
 
-        return post;
-    }
+
 }

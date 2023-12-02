@@ -71,7 +71,7 @@ internal class CommentService : ICommentService
             throw new CommentNotFoundException(command.Id);
         }
 
-        var commentUpdated = Mapper.MapAndUpdateCommentCommandToComment(comment, command);
+        var commentUpdated = Mapper.MapAndUpdateCommentCommandToComment( command);
         await _commentRepository.UpdateAsync(commentUpdated, cancellationToken);
     }
 

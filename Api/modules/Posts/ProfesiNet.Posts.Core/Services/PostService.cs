@@ -78,7 +78,7 @@ internal class PostService : IPostService
             throw new PostNotFoundException(command.Id);
         }
 
-        var updatedPost = Mapper.MapAndUpdateUpdatePostCommandToPost(post, command);
+        var updatedPost = Mapper.MapAndUpdateUpdatePostCommandToPost(command);
         await _postRepository.UpdateAsync(updatedPost, cancellationToken);
     }
 
