@@ -40,6 +40,12 @@ internal static class ServiceCollectionExtension
         services.AddScoped<IPostLikeRepository, PostLikeRepository>();
         services.AddScoped<IPostLikeService, PostLikeService>();
         services.AddScoped<IUserCantAddLikeToPostPolicy, UserCantAddLikeToPostPolicy>();
+        
+        //shares
+        services.AddScoped<IShareRepository, ShareRepository>();
+        services.AddScoped<IShareService, ShareService>();
+        services.AddScoped<IUserCantSharePolicy, UserCantSharePolicy>();
+        
         return services;
         
        

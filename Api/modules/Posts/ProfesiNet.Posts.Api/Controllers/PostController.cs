@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Interfaces;
+using ProfesiNet.Posts.Core.Services;
 
 namespace ProfesiNet.Posts.Api.Controllers;
 
@@ -8,11 +9,13 @@ internal class PostController : BaseController
 {
     private readonly IPostService _postService;
     private readonly IPostLikeService _postLikeService;
+    private readonly IShareService _shareService;
 
-    public PostController(IPostService postService, IPostLikeService postLikeService)
+    public PostController(IPostService postService, IPostLikeService postLikeService, IShareService shareService)
     {
         _postService = postService;
         _postLikeService = postLikeService;
+        _shareService = shareService;
     }
 
 
@@ -71,4 +74,34 @@ internal class PostController : BaseController
     public async Task<ActionResult<IReadOnlyList<PostLikeDto>>> BrowsePostLikesAsync(Guid id,
         CancellationToken cancellationToken = default) =>
         Ok(await _postLikeService.BrowseAsync(id, cancellationToken));
+    
+    //shares
+    
+    [HttpPost("Share")]
+    public async Task<ActionResult> AddShareAsync(ShareDetailsDto dto,
+        CancellationToken cancellationToken = default)
+    {
+        await _shareService.AddAsync(dto, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = dto.Id }, null);
+    }
+    
+    [HttpDelete("Share/{id:guid}")]
+    public async Task<ActionResult> DeleteShareAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await _shareService.DeleteAsync(id, cancellationToken);
+        return NoContent();
+    }
+    
+    [HttpGet("Share/{id:guid}")]
+    public async Task<ActionResult<ShareDetailsDto>> GetShareAsync(Guid id,
+        CancellationToken cancellationToken = default) =>
+        OkOrNotFound(await _shareService.GetByIdAsync(id, cancellationToken));
+    
+    [HttpGet("Shares/{id:guid}")]
+    public async Task<ActionResult<IReadOnlyList<ShareDto>>> BrowseSharesAsync(Guid id,
+        CancellationToken cancellationToken = default) =>
+        Ok(await _shareService.BrowseAsync(id, cancellationToken));
+    
+    
+    
 }
