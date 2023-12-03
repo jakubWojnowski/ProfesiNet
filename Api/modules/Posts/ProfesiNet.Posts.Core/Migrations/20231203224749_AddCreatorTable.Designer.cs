@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Posts.Core.Persistence;
 
@@ -11,9 +12,11 @@ using ProfesiNet.Posts.Core.Persistence;
 namespace ProfesiNet.Posts.Core.Migrations
 {
     [DbContext(typeof(ProfesiNetPostDbContext))]
-    partial class ProfesiNetPostDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231203224749_AddCreatorTable")]
+    partial class AddCreatorTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ProfesiNet.LiveChats.Infrastructure.Migrations
+namespace ProfesiNet.LiveChats.Core.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -11,6 +11,19 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ChatMembers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatMembers", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Chats",
                 columns: table => new
@@ -23,6 +36,30 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatChatMember",
+                columns: table => new
+                {
+                    ChatMembersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatChatMember", x => new { x.ChatMembersId, x.ChatsId });
+                    table.ForeignKey(
+                        name: "FK_ChatChatMember_ChatMembers_ChatMembersId",
+                        column: x => x.ChatMembersId,
+                        principalTable: "ChatMembers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatChatMember_Chats_ChatsId",
+                        column: x => x.ChatsId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +84,11 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChatChatMember_ChatsId",
+                table: "ChatChatMember",
+                column: "ChatsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_ChatId",
                 table: "ChatMessages",
                 column: "ChatId");
@@ -56,7 +98,13 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ChatChatMember");
+
+            migrationBuilder.DropTable(
                 name: "ChatMessages");
+
+            migrationBuilder.DropTable(
+                name: "ChatMembers");
 
             migrationBuilder.DropTable(
                 name: "Chats");

@@ -14,6 +14,7 @@ internal class ProfesiNetUserDbContext : DbContext
     public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
     public DbSet<Following> Followings { get; set; }
     public DbSet<Certificate> Certificates { get; set; }
+    public DbSet<Skill> Skills { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

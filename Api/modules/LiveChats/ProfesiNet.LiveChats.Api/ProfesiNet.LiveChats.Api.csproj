@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProfesiNet.LiveChats.Application\ProfesiNet.LiveChats.Application.csproj" />
-      <ProjectReference Include="..\ProfesiNet.LiveChats.Domain\ProfesiNet.LiveChats.Domain.csproj" />
-      <ProjectReference Include="..\ProfesiNet.LiveChats.Infrastructure\ProfesiNet.LiveChats.Infrastructure.csproj" />
+      <ProjectReference Include="..\ProfesiNet.LiveChats.Core\ProfesiNet.LiveChats.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>

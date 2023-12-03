@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProfesiNet.LiveChats.Domain.Entities;
+using ProfesiNet.LiveChats.Core.Entities;
 
-namespace ProfesiNet.LiveChats.Infrastructure.Persistence;
+namespace ProfesiNet.LiveChats.Core.Persistence;
 
 public class ProfesiNetLiveChatsDbContext : DbContext
 {
@@ -11,6 +11,7 @@ public class ProfesiNetLiveChatsDbContext : DbContext
     }
     
     public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatMember> ChatMembers { get; set; }
     public DbSet<Message> ChatMessages { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProfesiNet.LiveChats.Infrastructure.Extension;
+using ProfesiNet.LiveChats.Core.Extension;
 
 namespace ProfesiNet.LiveChats.Api.Extension;
 

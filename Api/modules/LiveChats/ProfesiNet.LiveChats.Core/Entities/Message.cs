@@ -1,4 +1,4 @@
-﻿namespace ProfesiNet.LiveChats.Domain.Entities;
+﻿namespace ProfesiNet.LiveChats.Core.Entities;
 
 public class Message
 {

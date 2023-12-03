@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProfesiNet.LiveChats.Infrastructure.Persistence;
+using ProfesiNet.LiveChats.Core.Persistence;
 
 #nullable disable
 
-namespace ProfesiNet.LiveChats.Infrastructure.Migrations
+namespace ProfesiNet.LiveChats.Core.Migrations
 {
     [DbContext(typeof(ProfesiNetLiveChatsDbContext))]
     partial class ProfesiNetLiveChatsDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -25,7 +25,22 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProfesiNet.LiveChats.Domain.Entities.Chat", b =>
+            modelBuilder.Entity("ChatChatMember", b =>
+                {
+                    b.Property<Guid>("ChatMembersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChatsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ChatMembersId", "ChatsId");
+
+                    b.HasIndex("ChatsId");
+
+                    b.ToTable("ChatChatMember");
+                });
+
+            modelBuilder.Entity("ProfesiNet.LiveChats.Core.Entities.Chat", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +61,26 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("ProfesiNet.LiveChats.Domain.Entities.Message", b =>
+            modelBuilder.Entity("ProfesiNet.LiveChats.Core.Entities.ChatMember", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Surname")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMembers", (string)null);
+                });
+
+            modelBuilder.Entity("ProfesiNet.LiveChats.Core.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,16 +109,31 @@ namespace ProfesiNet.LiveChats.Infrastructure.Migrations
                     b.ToTable("ChatMessages");
                 });
 
-            modelBuilder.Entity("ProfesiNet.LiveChats.Domain.Entities.Message", b =>
+            modelBuilder.Entity("ChatChatMember", b =>
                 {
-                    b.HasOne("ProfesiNet.LiveChats.Domain.Entities.Chat", "Chat")
+                    b.HasOne("ProfesiNet.LiveChats.Core.Entities.ChatMember", null)
+                        .WithMany()
+                        .HasForeignKey("ChatMembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProfesiNet.LiveChats.Core.Entities.Chat", null)
+                        .WithMany()
+                        .HasForeignKey("ChatsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProfesiNet.LiveChats.Core.Entities.Message", b =>
+                {
+                    b.HasOne("ProfesiNet.LiveChats.Core.Entities.Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId");
 
                     b.Navigation("Chat");
                 });
 
-            modelBuilder.Entity("ProfesiNet.LiveChats.Domain.Entities.Chat", b =>
+            modelBuilder.Entity("ProfesiNet.LiveChats.Core.Entities.Chat", b =>
                 {
                     b.Navigation("Messages");
                 });

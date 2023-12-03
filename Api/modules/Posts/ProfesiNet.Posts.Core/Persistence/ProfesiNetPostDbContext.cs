@@ -14,6 +14,7 @@ public class ProfesiNetPostDbContext : DbContext
     public DbSet<Share> Shares { get; set; }
     public DbSet<PostLike> PostLikes { get; set; }
     public DbSet<CommentLike> CommentLikes { get; set; }
+    public DbSet<Creator> Creators { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

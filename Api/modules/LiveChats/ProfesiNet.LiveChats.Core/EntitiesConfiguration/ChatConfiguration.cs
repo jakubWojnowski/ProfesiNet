@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProfesiNet.LiveChats.Domain.Entities;
+using ProfesiNet.LiveChats.Core.Entities;
 
-namespace ProfesiNet.LiveChats.Infrastructure.EntitiesConfiguration;
+namespace ProfesiNet.LiveChats.Core.EntitiesConfiguration;
 
 public class ChatConfiguration : IEntityTypeConfiguration<Chat>
 {

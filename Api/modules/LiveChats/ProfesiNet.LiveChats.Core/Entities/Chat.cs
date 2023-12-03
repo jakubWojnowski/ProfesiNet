@@ -1,4 +1,4 @@
-﻿namespace ProfesiNet.LiveChats.Domain.Entities;
+﻿namespace ProfesiNet.LiveChats.Core.Entities;
 
 public class Chat
 {
@@ -7,4 +7,5 @@ public class Chat
     public Guid? FirstUserId { get; set; }
     public Guid? SecondUserId { get; set; }
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+    public virtual ICollection<ChatMember> ChatMembers { get; set; } = new List<ChatMember>();
 }

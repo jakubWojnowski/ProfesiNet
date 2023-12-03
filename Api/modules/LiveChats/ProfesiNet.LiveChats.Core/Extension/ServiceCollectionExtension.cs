@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProfesiNet.LiveChats.Infrastructure.Persistence;
+using ProfesiNet.LiveChats.Core.Persistence;
 
-namespace ProfesiNet.LiveChats.Infrastructure.Extension;
+namespace ProfesiNet.LiveChats.Core.Extension;
 
 public static class ServiceCollectionExtension
 {

@@ -20,4 +20,5 @@ public class User
     public virtual ICollection<Following> ObserverFollowings { get; set; } = new List<Following>();
     public virtual ICollection<Following> TargetFollowings { get; set; } = new List<Following>();
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
+    public virtual ICollection<Skill> Skills { get; set; } = new List<Skill>();
 }
