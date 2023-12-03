@@ -15,6 +15,7 @@ namespace ProfesiNet.Shared.UserContext
         public CurrentUserContext? GetCurrentUser()
         {
             var user = _contextAccessor.HttpContext?.User;
+            var token = _contextAccessor.HttpContext?.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             if (user is null || !user.Claims.Any())
             {
                 return null;
@@ -27,7 +28,7 @@ namespace ProfesiNet.Shared.UserContext
                 throw new UnauthorizedAccessException();
             }
 
-            return new CurrentUserContext(fullName, id);
+            return new CurrentUserContext(fullName, id, token!);
         }
     }
 }

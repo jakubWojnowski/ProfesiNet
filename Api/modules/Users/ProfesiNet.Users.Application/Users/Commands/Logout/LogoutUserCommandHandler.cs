@@ -20,6 +20,13 @@ internal class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, boo
         {
             return false;
         }
-        return await _identityService.Logout();
+        
+        var isTokenInvalidated = await _identityService.InvalidateUserToken(user.Token);
+        if (isTokenInvalidated)
+        {
+            await _identityService.Logout();
+        }
+
+        return isTokenInvalidated;
     }
 }

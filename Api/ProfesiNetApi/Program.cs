@@ -26,7 +26,7 @@ builder.Services
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<IValidator>();
-builder.Services.AddCors();
+builder.Services.AddCors(opt=>opt.AddPolicy("CorsPolicy",policy=>policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000")));
 
 var app = builder.Build();
 
@@ -42,6 +42,7 @@ app.UseHttpsRedirection();
 
 app.UseInfrastructure();
 
+app.UseCors("CorsPolicy");
 
 await app.RunAsync();
 

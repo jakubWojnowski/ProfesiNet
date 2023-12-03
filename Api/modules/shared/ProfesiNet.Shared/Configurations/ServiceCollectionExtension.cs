@@ -26,6 +26,8 @@ public static class ServiceCollectionExtension
        
         //services.AddExceptionHandler<ExceptionHandler>();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
+        services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
+
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddControllers()
