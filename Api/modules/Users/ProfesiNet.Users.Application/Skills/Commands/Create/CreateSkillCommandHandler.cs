@@ -29,11 +29,7 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateSkillCommand, G
             throw new UserNotFoundException(token);
         }
 
-        var skill = Mapper.MapSkillDtoToSkill(request with
-        {
-            Id = Guid.NewGuid(),
-        });
-        skill.UserID = user.Id;
+        var skill = Mapper.MapSkillDtoToSkill(request);
 
         return await _skillRepository.AddAsync(skill, cancellationToken);
     }
