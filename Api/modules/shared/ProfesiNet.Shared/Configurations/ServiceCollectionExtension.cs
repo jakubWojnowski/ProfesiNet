@@ -4,9 +4,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares;
+using ProfesiNet.Shared.Services;
 using ProfesiNet.Shared.Time;
 using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Shared.Validators;
@@ -23,6 +25,7 @@ public static class ServiceCollectionExtension
         services.AddProfesiNetMediator();
         services.AddControllers();
         services.AddSingleton<IClock, UtcClock>();
+        services.AddHostedService<ApiInitializer>();
        
         //services.AddExceptionHandler<ExceptionHandler>();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
@@ -41,7 +44,27 @@ public static class ServiceCollectionExtension
         app.UseErrorHandling();
         // app.UseHttpsRedirection();
         // app.UseRouting();
-        // app.UseEndpoints(endpoints => endpoints.MapControllers());
+        // app.UseEndpoints(endpoints =>
+        // {
+        //     endpoints.MapControllers();
+        //     endpoints.MapGet("/", context => context.Response.WriteAsync("ProfesiNet!!!!"));
+        // });
+        
         return app;
+    }
+    public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
+    {
+        using var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        return configuration.GetOptions<T>(sectionName);
+
+    }
+
+    private static T GetOptions<T>(this IConfiguration configuration, string sectionName)
+        where T : new()
+    {
+        var options = new T();
+        configuration.GetSection(sectionName).Bind(options);
+        return options;
     }
 }

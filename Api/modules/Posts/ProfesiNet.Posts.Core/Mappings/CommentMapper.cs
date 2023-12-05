@@ -1,7 +1,7 @@
 ﻿using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Update;
+using ProfesiNet.Posts.Core.DAL.Entities;
 using ProfesiNet.Posts.Core.Dto;
-using ProfesiNet.Posts.Core.Entities;
 using Riok.Mapperly.Abstractions;
 
 namespace ProfesiNet.Posts.Core.Mappings;

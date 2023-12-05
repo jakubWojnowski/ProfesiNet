@@ -5,7 +5,6 @@ using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
 using ProfesiNet.Posts.Core.Policies;
-using ProfesiNet.Posts.Core.Repositories;
 using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;

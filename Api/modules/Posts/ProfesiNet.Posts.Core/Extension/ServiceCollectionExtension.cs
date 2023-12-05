@@ -3,11 +3,12 @@ using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProfesiNet.Posts.Core.DAL.Persistence;
+using ProfesiNet.Posts.Core.DAL.Repositories;
 using ProfesiNet.Posts.Core.Interfaces;
-using ProfesiNet.Posts.Core.Persistence;
 using ProfesiNet.Posts.Core.Policies;
-using ProfesiNet.Posts.Core.Repositories;
 using ProfesiNet.Posts.Core.Services;
+using ProfesiNet.Shared.MsSql;
 
 [assembly: InternalsVisibleTo("ProfesiNet.Posts.Api")]
 namespace ProfesiNet.Posts.Core.Extension;
@@ -16,13 +17,14 @@ internal static class ServiceCollectionExtension
 {
     public static IServiceCollection AddInfrastructure (this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ProfesiNetPostDbContext>(options =>
-        {
-            options
-                .UseLazyLoadingProxies()
-                .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
-        });
-        
+        // services.AddDbContext<ProfesiNetPostDbContext>(options =>
+        // {
+        //     options
+        //         .UseLazyLoadingProxies()
+        //         .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
+        // });
+        //
+        services.AddMsSql<ProfesiNetPostDbContext>();
         //Posts
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
