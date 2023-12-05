@@ -6,7 +6,7 @@ namespace ProfesiNet.Shared.MsSql;
 
 public static class Extensions
 {
-    internal static IServiceCollection AddMsSql(this IServiceCollection services, string connectionString)
+    internal static IServiceCollection AddMsSql(this IServiceCollection services)
     {
         var options = services.GetOptions<MsSqlOptions>("mssql");
         services.AddSingleton(options);

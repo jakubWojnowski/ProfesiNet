@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares;
+using ProfesiNet.Shared.MsSql;
 using ProfesiNet.Shared.Services;
 using ProfesiNet.Shared.Time;
 using ProfesiNet.Shared.UserContext;
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddErrorHandling();
+        services.AddMsSql();
         services.RegisterValidators();
         services.AddProfesiNetMediator();
         services.AddControllers();
