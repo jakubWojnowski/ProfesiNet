@@ -20,6 +20,5 @@ public class UsersModule : IModule
 
     public void Use(IApplicationBuilder app)
     {
-        throw new NotImplementedException();
     }
 }

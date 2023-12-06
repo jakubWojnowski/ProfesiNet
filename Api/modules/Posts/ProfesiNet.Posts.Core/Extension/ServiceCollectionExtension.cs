@@ -15,7 +15,7 @@ namespace ProfesiNet.Posts.Core.Extension;
 
 internal static class ServiceCollectionExtension 
 {
-    public static IServiceCollection AddInfrastructure (this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCore (this IServiceCollection services)
     {
    
         services.AddMsSql<ProfesiNetPostDbContext>();
