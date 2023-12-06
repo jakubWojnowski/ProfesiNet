@@ -2,5 +2,5 @@
 
 public class MsSqlOptions
 {
-    public string ConnectionString { get; set; }
+    public string ProfesiNet { get; set; }
 }

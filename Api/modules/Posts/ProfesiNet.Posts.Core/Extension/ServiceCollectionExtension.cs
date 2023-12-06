@@ -17,13 +17,7 @@ internal static class ServiceCollectionExtension
 {
     public static IServiceCollection AddInfrastructure (this IServiceCollection services, IConfiguration configuration)
     {
-        // services.AddDbContext<ProfesiNetPostDbContext>(options =>
-        // {
-        //     options
-        //         .UseLazyLoadingProxies()
-        //         .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
-        // });
-        //
+   
         services.AddMsSql<ProfesiNetPostDbContext>();
         //Posts
         services.AddScoped<IPostRepository, PostRepository>();

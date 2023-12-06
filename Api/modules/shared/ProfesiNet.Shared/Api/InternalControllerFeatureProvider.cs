@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace Confab.Shared.Infrastructure.Api;
+namespace ProfesiNet.Shared.Api;
 
 internal class InternalControllerFeatureProvider : ControllerFeatureProvider
 {

@@ -1,11 +1,11 @@
 ﻿using Confab.Shared.Abstractions.Interfaces;
-using Confab.Shared.Infrastructure.Api;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProfesiNet.Shared.Api;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares;
 using ProfesiNet.Shared.MsSql;
