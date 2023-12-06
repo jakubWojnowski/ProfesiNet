@@ -8,7 +8,7 @@ namespace ProfesiNet.LiveChats.Core.Extension;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCore(this IServiceCollection services)
     {
         // services.AddDbContext<ProfesiNetLiveChatsDbContext>(options =>
         // {

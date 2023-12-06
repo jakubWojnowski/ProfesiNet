@@ -1,48 +1,47 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using NLog.Web;
-using ProfesiNet.LiveChats.Api.Extension;
-using ProfesiNet.Posts.Api.Extension;
 using ProfesiNet.Shared.Configurations;
-using ProfesiNet.Users.Api.Extension;
+using ProfesiNetApi;
 using ProfesiNetApi.Configurations.DocumentationConfiguration;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var assemblies = ModuleLoader.LoadAssemblies();
+var modules = ModuleLoader.LoadModules(assemblies);
 builder.Logging.ClearProviders();
 builder.WebHost.UseNLog();
+builder.Services.RegisterDocumentation();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddInfrastructure();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle=
-builder.Services
-    .AddInfrastructure()
-    .AddUserModule()
-    .AddPostModule()
-    .AddLiveChatsModule()
-    .RegisterDocumentation()
-    .AddEndpointsApiExplorer();
-//builder.Services.AddControllers();
-
+foreach (var module in modules)
+{
+    module.Register(builder.Services);
+}
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<IValidator>();
 builder.Services.AddCors(opt=>opt.AddPolicy("CorsPolicy",policy=>policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000")));
 
 var app = builder.Build();
-
-//app.UseExceptionHandler(_ => { });
-// Configure the HTTP request pipeline.
     
     app.UseSwagger();
     app.UseSwaggerUI();
 
+app.UseInfrastructure();
+app.UseCors("CorsPolicy");
+foreach (var module in modules)
+{
+    module.Use(app);
+}
 app.MapControllers();
 
 app.UseHttpsRedirection();
 
-app.UseInfrastructure();
-
-app.UseCors("CorsPolicy");
 
 await app.RunAsync();
+
+modules.Clear();
+assemblies.Clear();
 
