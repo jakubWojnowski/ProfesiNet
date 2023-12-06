@@ -39,9 +39,9 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 
-
-await app.RunAsync();
-
 modules.Clear();
 assemblies.Clear();
+await app.RunAsync();
+
+
 

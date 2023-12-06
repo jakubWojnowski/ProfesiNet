@@ -18,6 +18,5 @@ public class PostsModule : IModule
 
     public void Use(IApplicationBuilder app)
     {
-        throw new NotImplementedException();
     }
 }
