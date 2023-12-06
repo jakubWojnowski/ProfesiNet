@@ -23,7 +23,7 @@ const PostList: FC<Props> = ({posts}: Props) => {
                                 <Button color='red'>
                                     <Icon name='heart'/>
                                     Like
-                                </Button>
+                                </Button >
                                 <Label as='a' basic color='red' pointing='left'>
                                     {post.likesCount}
                                 </Label>

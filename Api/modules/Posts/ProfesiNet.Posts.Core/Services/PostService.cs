@@ -54,25 +54,28 @@ internal class PostService : IPostService
         var posts = await _postRepository.GetAllAsync(cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
-    public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,CancellationToken cancellationToken = default)
+
+    public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,
+        CancellationToken cancellationToken = default)
     {
         var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
+
     public async Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(CancellationToken cancellationToken = default)
     {
         var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
         var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
-    
-    
+
 
     public async Task UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
         var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
         var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.Id,
             cancellationToken);
+        
         if (post is null)
         {
             throw new PostNotFoundException(command.Id);
@@ -87,6 +90,7 @@ internal class PostService : IPostService
         var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
         var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.PostId,
             cancellationToken);
+        
         if (post is null)
         {
             throw new PostNotFoundException(command.PostId);

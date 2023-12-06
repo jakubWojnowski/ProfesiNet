@@ -7,28 +7,23 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Certificates.Queries.Get;
 
-internal class GetUserCertificateByIdCommandHandler : IRequestHandler<GetUserCertificateByIdCommand, GetCertificateDto>
+internal class GetCertificateByIdCommandHandler : IRequestHandler<GetCertificateByIdCommand, GetCertificateDto>
 {
     private readonly ICertificateRepository _certificateRepository;
     private readonly IUserRepository _userRepository;
     private static readonly CertificateMapper Mapper = new();
 
-    public GetUserCertificateByIdCommandHandler(ICertificateRepository certificateRepository, IUserRepository userRepository)
+    public GetCertificateByIdCommandHandler(ICertificateRepository certificateRepository, IUserRepository userRepository)
     {
         _certificateRepository = certificateRepository;
         _userRepository = userRepository;
     }
 
-    public async Task<GetCertificateDto> Handle(GetUserCertificateByIdCommand request,
+    public async Task<GetCertificateDto> Handle(GetCertificateByIdCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.userId, cancellationToken);
-        if (user is null)
-        {
-            throw new UserNotFoundException(request.userId);
-        }
         var certificate =
-            await _certificateRepository.GetRecordByFilterAsync(c => c.Id == request.CertificateId && c.UserId == user.Id, cancellationToken);
+            await _certificateRepository.GetRecordByFilterAsync(c => c.Id == request.CertificateId, cancellationToken);
         if (certificate == null)
         {
             throw new CertificateNotFoundException(request.CertificateId);

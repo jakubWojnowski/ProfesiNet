@@ -6,7 +6,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Certificates.Queries.GetAll;
 
-internal class GetAllUserCertificatesCommandHandler: IRequestHandler<GetAllUserCertificatesCommand, IReadOnlyCollection<GetCertificateDto>>
+internal class GetAllUserCertificatesCommandHandler: IRequestHandler<GetAllUserCertificatesQuery, IReadOnlyCollection<GetCertificateDto>>
 {
     public IUserRepository UserRepository { get; }
     private readonly ICertificateRepository _certificateRepository;
@@ -17,7 +17,7 @@ internal class GetAllUserCertificatesCommandHandler: IRequestHandler<GetAllUserC
         UserRepository = userRepository;
         _certificateRepository = certificateRepository;
     }
-    public async Task<IReadOnlyCollection<GetCertificateDto>> Handle(GetAllUserCertificatesCommand request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<GetCertificateDto>> Handle(GetAllUserCertificatesQuery request, CancellationToken cancellationToken)
     {
         var user = await UserRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)

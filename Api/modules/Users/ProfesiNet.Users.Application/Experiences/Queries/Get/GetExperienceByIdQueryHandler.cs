@@ -8,27 +8,22 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Experiences.Queries.Get;
 
-internal class GetUserExperienceByIdQueryHandler : IRequestHandler<GetUserExperienceByIdQuery, GetExperienceDto>
+internal class GetExperienceByIdQueryHandler : IRequestHandler<GetExperienceByIdQuery, GetExperienceDto>
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
     private static readonly ExperienceMapper Mapper = new();
 
-    public GetUserExperienceByIdQueryHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
+    public GetExperienceByIdQueryHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
     {
         _experienceRepository = experienceRepository;
         _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
     }
-    public async Task<GetExperienceDto> Handle(GetUserExperienceByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetExperienceDto> Handle(GetExperienceByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
-        if (user is null)
-        {
-            throw new UserNotFoundException(request.UserId);
-        }
-        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.UserId == user.Id && e.Id == request.ExperienceId, cancellationToken);
+        var experience = await _experienceRepository.GetByIdAsync(request.ExperienceId, cancellationToken);
         if (experience is null)
         {
             throw new ExperienceNotFoundException(request.ExperienceId);

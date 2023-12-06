@@ -3,4 +3,4 @@ using ProfesiNet.Users.Application.Educations.Dtos;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.Get;
 
-internal record GetUserEducationByIdQuery(Guid EducationId, Guid UserId) : IRequest<GetEducationDto>;
+internal record GetEducationByIdQuery(Guid EducationId) : IRequest<GetEducationDto>;
