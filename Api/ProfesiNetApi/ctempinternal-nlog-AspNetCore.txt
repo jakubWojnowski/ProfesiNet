@@ -194,3 +194,24 @@
 2023-12-06 12:14:58.3101 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
 2023-12-06 12:14:58.3272 Info Configuration initialized.
 2023-12-06 12:14:58.3272 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:03:19.2822 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-12-06 18:03:19.2965 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-12-06 18:03:19.3051 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'request-time' not found for logging rule: *.
+2023-12-06 18:03:19.3168 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-12-06 18:03:19.3324 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:03:19.3496 Info Configuration initialized.
+2023-12-06 18:03:19.3496 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:12:18.4025 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-12-06 18:12:18.4120 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-12-06 18:12:18.4120 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'request-time' not found for logging rule: *.
+2023-12-06 18:12:18.4252 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-12-06 18:12:18.4366 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:12:18.4492 Info Configuration initialized.
+2023-12-06 18:12:18.4517 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:16:36.2280 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-12-06 18:16:36.2374 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-12-06 18:16:36.2434 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'request-time' not found for logging rule: *.
+2023-12-06 18:16:36.2511 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-12-06 18:16:36.2622 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config
+2023-12-06 18:16:36.2741 Info Configuration initialized.
+2023-12-06 18:16:36.2741 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=71, FilePath=/app/bin/Debug/net8.0/NLog.config

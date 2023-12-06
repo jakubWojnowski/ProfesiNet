@@ -7,7 +7,8 @@ internal class ModuleLoader
 {
     public static IList<Assembly> LoadAssemblies()
     {
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => !string.Equals(a.FullName, "Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5", StringComparison.OrdinalIgnoreCase)).ToList();
         var locations = assemblies.Where(x => !x.IsDynamic).Select(x => x.Location).ToArray();
         
         var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
