@@ -2,18 +2,20 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using NLog.Web;
 using ProfesiNet.Shared.Configurations;
+using ProfesiNet.Shared.Modules;
 using ProfesiNetApi;
 using ProfesiNetApi.Configurations.DocumentationConfiguration;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var assemblies = ModuleLoader.LoadAssemblies();
+builder.Host.ConfigureModules();
+var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
 builder.Logging.ClearProviders();
 builder.WebHost.UseNLog();
 builder.Services.RegisterDocumentation();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(assemblies, modules);
 
 foreach (var module in modules)
 {

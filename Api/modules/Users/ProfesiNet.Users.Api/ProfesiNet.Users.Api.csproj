@@ -13,4 +13,15 @@
       <ProjectReference Include="..\ProfesiNet.Users.Infrastructure\ProfesiNet.Users.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="module.users.json" />
+      <Content Include="module.users.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="module.users.development.json" />
+      <Content Include="module.users.development.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

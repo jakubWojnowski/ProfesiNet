@@ -10,4 +10,15 @@
       <ProjectReference Include="..\ProfesiNet.Posts.Core\ProfesiNet.Posts.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="module.posts.json" />
+      <Content Include="module.posts.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="module.posts.development.json" />
+      <Content Include="module.posts.development.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

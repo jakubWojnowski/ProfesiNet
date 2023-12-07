@@ -17,28 +17,23 @@ public class ApiInitializer : IHostedService
     }
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .Where(x => typeof(DbContext).IsAssignableFrom(x) && !x.IsAbstract && x != typeof(DbContext));
+        var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(x => x.GetTypes())
+            .Where(x => typeof(DbContext).IsAssignableFrom(x) && x != typeof(DbContext));
 
-            using var scope = _serviceProvider.CreateScope();
-            foreach (var dbContextType in dbContextTypes)
-            {
-                if (scope.ServiceProvider.GetRequiredService(dbContextType) is not DbContext dbContext) continue;
-                _logger.LogInformation($"Starting database migration for {dbContextType.Name}...");
-                await dbContext.Database.MigrateAsync(cancellationToken);
-                _logger.LogInformation($"Database migration for {dbContextType.Name} completed.");
-            }
-        }
-        catch (Exception ex)
+        using var scope = _serviceProvider.CreateScope();
+        foreach (var dbContextType in dbContextTypes)
         {
-            _logger.LogError(ex, "An error occurred while migrating the database.");
-            // Rethrow the exception if you want to stop the app startup
-            throw;
+            var dbContext = scope.ServiceProvider.GetService(dbContextType) as DbContext;
+            if (dbContext is null)
+            {
+                continue;
+            }
+
+            await dbContext.Database.MigrateAsync(cancellationToken);
         }
     }
+
 
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

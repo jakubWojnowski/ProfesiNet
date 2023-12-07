@@ -1,0 +1,8 @@
+{
+  "posts": {
+    "module": {
+      "name": "Posts",
+      "enabled": true
+    }
+  }
+}
