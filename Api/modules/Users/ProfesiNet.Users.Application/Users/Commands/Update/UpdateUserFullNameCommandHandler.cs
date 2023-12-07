@@ -27,9 +27,15 @@ internal class UpdateUserFullNameCommandHandler : IRequestHandler<UpdateUserFull
         {
             throw new UserNotFoundException(token);
         }
-
-        var updatedFullName = Mapper.MapUpdateUserFullNameCommandToUser(request);
+        // var updatedUser = Mapper.MapUpdateUserFullNameCommandToUser(request with
+        // {
+        //     Id = token
+        // });
         
-        await _userRepository.UpdateAsync(updatedFullName, cancellationToken);
+
+        user.Name = request.Name ?? user.Name;
+        user.Surname = request.Surname ?? user.Surname;
+
+        await _userRepository.UpdateAsync(user, cancellationToken);
     }
 }

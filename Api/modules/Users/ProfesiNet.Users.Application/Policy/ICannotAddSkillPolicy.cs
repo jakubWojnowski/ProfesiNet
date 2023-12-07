@@ -2,5 +2,5 @@
 
 internal interface ICannotAddSkillPolicy
 {
-    Task<bool> CheckSkillsAsync(string name, CancellationToken ct = default );
+    Task<bool> CheckSkillsAsync(string name,Guid userId, CancellationToken ct = default );
 }

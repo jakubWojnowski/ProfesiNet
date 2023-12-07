@@ -14,10 +14,9 @@ internal class CannotAddSkillPolicy : ICannotAddSkillPolicy
         _skillRepository = skillRepository;
     }
     
-    public async Task<bool> CheckSkillsAsync(string name, CancellationToken ct = default )   
-    {
-        var token = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
-        var skill = await _skillRepository.GetRecordByFilterAsync(u => u.Id == token && u.Name == name, ct);
+    public async Task<bool> CheckSkillsAsync(string name, Guid userId, CancellationToken ct = default )   
+    { 
+        var skill = await _skillRepository.GetRecordByFilterAsync(u => u.UserID == userId && u.Name == name, ct);
         return skill == null;
     }
 }

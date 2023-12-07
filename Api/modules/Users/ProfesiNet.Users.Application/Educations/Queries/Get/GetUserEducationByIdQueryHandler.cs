@@ -9,7 +9,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.Get;
 
-internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetEducationByIdQuery, GetEducationDto>
+internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, GetEducationDto>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
@@ -22,7 +22,7 @@ internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetEducationBy
         _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
     }
-    public async Task<GetEducationDto> Handle(GetEducationByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetEducationDto> Handle(GetUserEducationByIdQuery request, CancellationToken cancellationToken)
     {
         var education = await _educationRepository.GetByIdAsync(request.EducationId, cancellationToken);
         if (education is null)

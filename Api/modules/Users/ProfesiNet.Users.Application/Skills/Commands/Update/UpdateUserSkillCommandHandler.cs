@@ -30,7 +30,7 @@ internal class UpdateUserSkillCommandHandler : IRequestHandler<UpdateUserSkillCo
             throw new SkillNotFoundException(request.Id);
         }
 
-        if (await _cannotAddSkillPolicy.CheckSkillsAsync(request.Name, cancellationToken))
+        if (!await _cannotAddSkillPolicy.CheckSkillsAsync(request.Name, token, cancellationToken))
         {
             throw new UserCannotAddSkillException(request.Name);
         }

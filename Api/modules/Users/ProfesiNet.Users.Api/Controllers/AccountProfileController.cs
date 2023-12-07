@@ -18,7 +18,6 @@ using ProfesiNet.Users.Application.Experiences.Queries.GetAll;
 using ProfesiNet.Users.Application.Skills.Commands.Create;
 using ProfesiNet.Users.Application.Skills.Commands.Delete;
 using ProfesiNet.Users.Application.Skills.Commands.Update;
-using ProfesiNet.Users.Application.Skills.Queries.Get;
 using ProfesiNet.Users.Application.Skills.Queries.GetAll;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Update;
@@ -71,10 +70,10 @@ internal class AccountProfileController : BaseController
         return Ok(user);
     }
 
-    [HttpGet("GetUserById")]
-    public async Task<IActionResult> GetUserById(GetUserByIdQuery query)
+    [HttpGet("GetUserById/{userId:guid}")]
+    public async Task<IActionResult> GetUserById(Guid userId)
     {
-        var user = await _mediator.Send(query);
+        var user = await _mediator.Send(new GetUserByIdQuery(userId));
         return Ok(user);
     }
 
@@ -107,24 +106,24 @@ internal class AccountProfileController : BaseController
         return Ok();
     }
 
-    [HttpGet("GetUserExperienceById")]
-    public async Task<IActionResult> GetUserExperienceById(GetExperienceByIdQuery query)
+    [HttpGet("GetUserExperienceById/{id:guid}")]
+    public async Task<IActionResult> GetUserExperienceById(Guid id)
     {
-        var experience = await _mediator.Send(query);
+        var experience = await _mediator.Send(new GetExperienceByIdQuery(id));
         return Ok(experience);
     }
 
-    [HttpGet("GetAllUserExperience")]
-    public async Task<IActionResult> GetAllUserExperience(GetAllUserExperienceQuery query)
+    [HttpGet("GetAllUserExperience/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserExperience(Guid userId)
     {
-        var experiences = await _mediator.Send(query);
+        var experiences = await _mediator.Send(new GetAllUserExperienceQuery(userId));
         return Ok(experiences);
     }
 
-    [HttpGet("GetUserAndExperience")]
-    public async Task<IActionResult> GetUserAndExperience(GetUserAndExperienceQuery query)
+    [HttpGet("GetUserAndExperience{userId:guid}")]
+    public async Task<IActionResult> GetUserAndExperience(Guid userId)
     {
-        var user = await _mediator.Send(query);
+        var user = await _mediator.Send(new GetUserAndExperienceQuery(userId));
         return Ok(user);
     }
 
@@ -149,17 +148,17 @@ internal class AccountProfileController : BaseController
         return Ok();
     }
 
-    [HttpGet("GetUserEducationById")]
-    public async Task<IActionResult> GetUserEducationById(GetEducationByIdQuery query)
+    [HttpGet("GetUserEducationById/{id:guid}")]
+    public async Task<IActionResult> GetUserEducationById(Guid id)
     {
-        var education = await _mediator.Send(query);
+        var education = await _mediator.Send(new GetUserEducationByIdQuery(id));
         return Ok(education);
     }
 
-    [HttpGet("GetAllUserEducation")]
-    public async Task<IActionResult> GetAllUserEducation(GetAllUserEducationsQuery query)
+    [HttpGet("GetAllUserEducation/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserEducation(Guid userId)
     {
-        var educations = await _mediator.Send(query);
+        var educations = await _mediator.Send(new GetAllUserEducationsQuery(userId));
         return Ok(educations);
     }
 
@@ -184,17 +183,17 @@ internal class AccountProfileController : BaseController
         return NotFound();
     }
 
-    [HttpGet("GetUserCertificateById")]
-    public async Task<IActionResult> GetUserCertificateById(GetCertificateByIdCommand query)
+    [HttpGet("GetUserCertificateById/{id:guid}")]
+    public async Task<IActionResult> GetUserCertificateById(Guid id)
     {
-        var certificate = await _mediator.Send(query);
+        var certificate = await _mediator.Send(new GetCertificateByIdCommand(id));
         return Ok(certificate);
     }
 
-    [HttpGet("GetAllUserCertificates")]
-    public async Task<IActionResult> GetAllUserCertificates(GetAllUserCertificatesQuery query)
+    [HttpGet("GetAllUserCertificates/{userId:guid}")]   
+    public async Task<IActionResult> GetAllUserCertificates(Guid userId)
     {
-        var certificates = await _mediator.Send(query);
+        var certificates = await _mediator.Send(new GetAllUserCertificatesQuery(userId));
         return Ok(certificates);
     }
     
@@ -219,17 +218,17 @@ internal class AccountProfileController : BaseController
         return Ok();
     }
     
-    [HttpGet("GetSkillById")]
-    public async Task<IActionResult> GetUserSkillById(GetSkillByIdQuery query)
+    [HttpGet("GetSkillById/{id:guid}")]
+    public async Task<IActionResult> GetUserSkillById(Guid id)
     {
-        var skill = await _mediator.Send(query);
+        var skill = await _mediator.Send(new GetExperienceByIdQuery(id));
         return Ok(skill);
     }
     
-    [HttpGet("GetAllUserSkills")]
-    public async Task<IActionResult> GetAllUserSkills(GetAllSkillsPerUserQuery query)
+    [HttpGet("GetAllUserSkills/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserSkills(Guid userId)
     {
-        var skills = await _mediator.Send(query);
+        var skills = await _mediator.Send(new GetAllSkillsPerUserQuery(userId));
         return Ok(skills);
     }
     
