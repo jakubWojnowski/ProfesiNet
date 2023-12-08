@@ -4,7 +4,6 @@ using NLog.Web;
 using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Shared.Modules;
 using ProfesiNetApi;
-using ProfesiNetApi.Configurations.DocumentationConfiguration;
 
 
 var builder = WebApplication.CreateBuilder(args);
