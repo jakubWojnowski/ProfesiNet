@@ -35,10 +35,6 @@
       <ProjectReference Include="..\modules\Shared\ProfesiNet.Shared\ProfesiNet.Shared.csproj" />
       <ProjectReference Include="..\modules\Users\ProfesiNet.Users.Api\ProfesiNet.Users.Api.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Configurations\" />
-    </ItemGroup>
     <PropertyGroup>
         <InvariantGlobalization>false</InvariantGlobalization>
     </PropertyGroup>

@@ -62,6 +62,30 @@ internal static class ServiceCollectionExtension
                 Title = "ProfesiNet API",
                 Version = "v1"
             });
+            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme.",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
+            swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
         });
         services.AddErrorHandling();
         services.AddMsSql();
@@ -71,7 +95,6 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IClock, UtcClock>();
         services.AddHostedService<ApiInitializer>();
        
-        //services.AddExceptionHandler<ExceptionHandler>();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
         services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
 
@@ -108,8 +131,7 @@ internal static class ServiceCollectionExtension
         });
      
         app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseRouting();
+        // app.UseRouting(); tu jest jakis problem wywala apke
         
         return app;
     }
