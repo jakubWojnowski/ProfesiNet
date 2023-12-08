@@ -13,7 +13,7 @@ var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
 builder.Logging.ClearProviders();
 builder.WebHost.UseNLog();
-builder.Services.RegisterDocumentation();
+//builder.Services.RegisterDocumentation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(assemblies, modules);
 
@@ -28,8 +28,8 @@ builder.Services.AddCors(opt=>opt.AddPolicy("CorsPolicy",policy=>policy.AllowAny
 
 var app = builder.Build();
     
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // app.UseSwagger();
+    // app.UseSwaggerUI();
 
 app.UseInfrastructure();
 app.UseCors("CorsPolicy");

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using ProfesiNet.Shared.Api;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares;
@@ -22,9 +23,11 @@ using ProfesiNet.Shared.Validators.ValidatorBehaviors;
 [assembly: InternalsVisibleTo("ProfesiNetApi")]
 namespace ProfesiNet.Shared.Configurations;
 
-public static class ServiceCollectionExtension
+internal static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> models)
+    private const string CorsPolicy = "cors";
+
+    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> models)
     {
         var disabledModules = new List<string>();
         using (var servicesProvider = services.BuildServiceProvider())
@@ -42,6 +45,24 @@ public static class ServiceCollectionExtension
 
           
         }
+        services.AddCors(cors =>
+        {
+            cors.AddPolicy(CorsPolicy, x =>
+            {
+                x.WithOrigins("http://localhost:3000")
+                    .WithMethods("POST","GET", "PUT", "DELETE", "PATCH")
+                    .WithHeaders("Content-Type", "Authorization");
+            });
+        });
+        services.AddSwaggerGen(swagger =>
+        {
+            swagger.CustomSchemaIds(x => x.FullName);
+            swagger.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "ProfesiNet API",
+                Version = "v1"
+            });
+        });
         services.AddErrorHandling();
         services.AddMsSql();
         services.RegisterValidators();
@@ -77,14 +98,18 @@ public static class ServiceCollectionExtension
     }
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
+        app.UseCors(CorsPolicy);
         app.UseErrorHandling();
-        // app.UseHttpsRedirection();
-        // app.UseRouting();
-        // app.UseEndpoints(endpoints =>
-        // {
-        //     endpoints.MapControllers();
-        //     endpoints.MapGet("/", context => context.Response.WriteAsync("ProfesiNet!!!!"));
-        // });
+        app.UseSwagger();
+        app.UseSwaggerUI(swagger =>
+        {
+            swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "ProfesiNet API");
+            swagger.RoutePrefix = string.Empty;
+        });
+     
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseRouting();
         
         return app;
     }
