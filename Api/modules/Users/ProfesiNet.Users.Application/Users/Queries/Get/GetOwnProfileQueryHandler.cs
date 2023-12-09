@@ -12,16 +12,18 @@ internal class GetOwnProfileQueryHandler : IRequestHandler<GetOwnProfileQuery, U
 {
     private readonly IUserRepository _userRepository;
     private readonly ICurrentUserContextService _currentUserContextService;
+    private readonly IContext _context;
     private static readonly UserMapper Mapper = new();
 
-    public GetOwnProfileQueryHandler(IUserRepository userRepository, ICurrentUserContextService currentUserContextService)
+    public GetOwnProfileQueryHandler(IUserRepository userRepository, ICurrentUserContextService currentUserContextService, IContext context)
     {
         _userRepository = userRepository;
         _currentUserContextService = currentUserContextService;
+        _context = context;
     }
     public async Task<UserDto> Handle(GetOwnProfileQuery request, CancellationToken cancellationToken)
     {
-        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
+        var tokenId = _context.Id;
         var user = await _userRepository.GetByIdAsync(tokenId, cancellationToken);
         if (user == null)
         {

@@ -96,6 +96,7 @@ internal static class ServiceCollectionExtension
         services.AddHostedService<ApiInitializer>();
        
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
+        services.AddScoped<IContext, Context>();
         services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
 
         services.AddScoped<IIdentityService, IdentityService>();
