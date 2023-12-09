@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using Confab.Shared.Abstractions.Contexts;
 using Confab.Shared.Abstractions.Interfaces;
-using Confab.Shared.Infrastructure.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using ProfesiNet.Shared.Api;
+using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Shared.Mediator;
 using ProfesiNet.Shared.Middlewares;
 using ProfesiNet.Shared.Modules;

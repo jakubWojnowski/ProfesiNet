@@ -1,10 +1,10 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Delete;
 using ProfesiNet.Posts.Core.Commands.Update;
 using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Interfaces;
+using ProfesiNet.Shared.Contexts;
 
 namespace ProfesiNet.Posts.Api.Controllers;
 

@@ -1,4 +1,4 @@
-﻿namespace Confab.Shared.Abstractions.Contexts
+﻿namespace ProfesiNet.Shared.Contexts
 {
     public interface IContext
     {

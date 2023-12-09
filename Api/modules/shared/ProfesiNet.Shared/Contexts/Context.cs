@@ -1,6 +1,4 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-using Confab.Shared.Infrastructure.Contexts;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace ProfesiNet.Shared.Contexts
 {

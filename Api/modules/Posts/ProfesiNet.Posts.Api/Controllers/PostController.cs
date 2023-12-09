@@ -1,10 +1,10 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Delete;
 using ProfesiNet.Posts.Core.Commands.Update;
 using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Interfaces;
+using ProfesiNet.Shared.Contexts;
 
 
 namespace ProfesiNet.Posts.Api.Controllers;
@@ -44,6 +44,7 @@ internal class PostController : BaseController
     public async Task<ActionResult> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
     {
         var id = await _postService.AddAsync(command,_context.Identity.Id, cancellationToken);
+        Console.WriteLine(_context.Identity.Id);
         return CreatedAtAction(nameof(Get), new { id }, null);
     }
 

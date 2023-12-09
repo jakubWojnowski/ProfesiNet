@@ -1,6 +1,4 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-
-namespace Confab.Shared.Infrastructure.Contexts
+﻿namespace ProfesiNet.Shared.Contexts
 {
     internal interface IContextFactory
     {

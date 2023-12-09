@@ -1,8 +1,6 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-using Microsoft.AspNetCore.Http;
-using ProfesiNet.Shared.Contexts;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace Confab.Shared.Infrastructure.Contexts
+namespace ProfesiNet.Shared.Contexts
 {
     internal class ContextFactory : IContextFactory
     {

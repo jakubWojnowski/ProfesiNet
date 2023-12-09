@@ -1,7 +1,7 @@
-﻿using Confab.Shared.Abstractions.Contexts;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Users.Application.Certificates.Commands.Create;
 using ProfesiNet.Users.Application.Certificates.Commands.Delete;
 using ProfesiNet.Users.Application.Certificates.Commands.Update;
