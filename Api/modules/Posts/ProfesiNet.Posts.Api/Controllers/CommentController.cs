@@ -30,21 +30,21 @@ internal class CommentController : BaseController
     [HttpPost]
     public async Task<ActionResult> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.AddAsync(command,_context.Identity.Id, cancellationToken);
+        await _commentService.AddAsync(command,_context.Id, cancellationToken);
         return CreatedAtAction(nameof(Get), new {id = command.Id}, null);
     }
     
     [HttpPut]
     public async Task<ActionResult> UpdateAsync( UpdateCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.UpdateAsync(command,_context.Identity.Id, cancellationToken);
+        await _commentService.UpdateAsync(command,_context.Id, cancellationToken);
         return NoContent();
     }
     
     [HttpDelete()]
     public async Task<ActionResult> DeleteAsync( DeleteCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.DeleteAsync(command,_context.Identity.Id, cancellationToken);
+        await _commentService.DeleteAsync(command,_context.Id, cancellationToken);
         return NoContent();
     }
     
@@ -63,7 +63,7 @@ internal class CommentController : BaseController
     [HttpPost("CommentLike")]
     public async Task<ActionResult> AddCommentLikeAsync(CreateCommentLikeCommand command, CancellationToken cancellationToken)
     {
-        await _commentLikeService.AddAsync(command,_context.Identity.Id, cancellationToken);
+        await _commentLikeService.AddAsync(command,_context.Id, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
@@ -71,7 +71,7 @@ internal class CommentController : BaseController
     [HttpDelete("CommentLike")]
     public async Task<ActionResult> DeleteCommentLikeAsync(DeleteCommentLikeCommand command, CancellationToken cancellationToken)
     {
-        await _commentLikeService.DeleteAsync(command,_context.Identity.Id, cancellationToken);
+        await _commentLikeService.DeleteAsync(command,_context.Id, cancellationToken);
         return NoContent();
     }
 }

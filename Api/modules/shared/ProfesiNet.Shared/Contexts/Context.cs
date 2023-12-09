@@ -1,27 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
-namespace ProfesiNet.Shared.Contexts
+namespace ProfesiNet.Shared.Contexts;
+
+public class Context : IContext
 {
-    internal class Context : IContext
+    public Guid Id { get; }
+    public string FullName { get; }
+    public string Token { get; }
+
+    public Context(IHttpContextAccessor contextAccessor)
     {
-        public string RequestId { get; } = $"{Guid.NewGuid():N}";
-        public string TraceId { get; }
-        public IIdentityContext Identity { get; }
-
-        internal Context()
-        {
-        }
-
-        public Context(HttpContext context) : this(context.TraceIdentifier, new IdentityContext(context.User))
-        {
-        }
-
-        internal Context(string traceId, IIdentityContext identity)
-        {
-            TraceId = traceId;
-            Identity = identity;
-        }
-
-        public static IContext Empty => new Context();
+        Id = Guid.Parse(contextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException());
+        FullName = contextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new UnauthorizedAccessException();
+        Token = contextAccessor.HttpContext?.Request.Headers.Authorization.ToString().Replace("Bearer ", "") ?? throw new UnauthorizedAccessException();
     }
 }

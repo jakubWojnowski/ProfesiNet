@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,9 +94,12 @@ internal static class ServiceCollectionExtension
         services.AddControllers();
         services.AddSingleton<IClock, UtcClock>();
         services.AddHostedService<ApiInitializer>();
-        services.AddSingleton<IContextFactory, ContextFactory>();
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddTransient<IContext>(sp => sp.GetRequiredService<IContextFactory>().Create());
+       
+        services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
+        services.AddScoped<IContext, Context>();
+        services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
+
+        services.AddScoped<IIdentityService, IdentityService>();
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddControllers()
             .ConfigureApplicationPartManager(manager =>
@@ -128,9 +132,6 @@ internal static class ServiceCollectionExtension
         });
      
         app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.UseAuthentication();
-
         // app.UseRouting(); tu jest jakis problem wywala apke
         
         return app;

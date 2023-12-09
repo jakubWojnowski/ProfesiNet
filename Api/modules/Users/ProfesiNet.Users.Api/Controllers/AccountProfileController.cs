@@ -32,6 +32,7 @@ internal class AccountProfileController : BaseController
 {
     private readonly IMediator _mediator;
     private readonly IContext _context;
+   
 
     public AccountProfileController(IMediator mediator, IContext context)
     {
@@ -42,13 +43,13 @@ internal class AccountProfileController : BaseController
     [HttpDelete("DeleteOwnAccount")]
     public async Task<IActionResult> DeleteOwnAccount()
     {
-        await _mediator.Send(new DeleteOwnAccountCommand(_context.Identity.Id));
+        await _mediator.Send(new DeleteOwnAccountCommand(_context.Id));
         return NotFound();
     }
     [HttpPatch("UpdateUserFullName")]
     public async Task<IActionResult> UpdateUserFullName(UpdateUserFullNameCommand command)
     {
-        await _mediator.Send(command with{ UserId = _context.Identity.Id});
+        await _mediator.Send(command with{ UserId = _context.Id});
         return Ok(command.Name + " " + command.Surname);
     }
     
@@ -56,21 +57,21 @@ internal class AccountProfileController : BaseController
     [HttpPatch("UpdateUserAddress")]
     public async Task<IActionResult> UpdateUserAddress(UpdateUserAddressCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId =_context.Id});
         return Ok(command.Address);
     }
 
     [HttpPatch("UpdateUserBio")]
     public async Task<IActionResult> UpdateUserBio(UpdateUserBioCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return Ok(command.Bio);
     }
 
     [HttpGet("GetOwnProfile")]
     public async Task<IActionResult> GetOwnProfile()
     {
-        var user = await _mediator.Send(new GetOwnProfileQuery(_context.Identity.Id));
+        var user = await _mediator.Send(new GetOwnProfileQuery(_context.Id));
         return Ok(user);
     }
 
@@ -92,21 +93,21 @@ internal class AccountProfileController : BaseController
     [HttpPost("CreateUserExperience")]
     public async Task<IActionResult> AddUserExperience(CreateUserExperienceCommand command)
     {
-        var id = await _mediator.Send(command with{UserId = _context.Identity.Id});
+        var id = await _mediator.Send(command with{UserId = _context.Id});
         return Created($"api/AccountProfile/CreateUserExperience/{id}", id);
     }
 
     [HttpDelete("DeleteUserExperience")]
     public async Task<IActionResult> DeleteUserExperience(DeleteUserExperienceCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return NotFound();
     }
 
     [HttpPut("UpdateUserExperience")]
     public async Task<IActionResult> UpdateUserExperience(UpdateUserExperienceCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return Ok();
     }
 
@@ -134,21 +135,21 @@ internal class AccountProfileController : BaseController
     [HttpPost("CreateUserEducation")]
     public async Task<IActionResult> AddUserEducation(CreateUserEducationCommand command)
     {
-        var id = await _mediator.Send(command with{UserId = _context.Identity.Id});
+        var id = await _mediator.Send(command with{UserId = _context.Id});
         return Created($"api/AccountProfile/CreateUserEducation/{id}", id);
     }
 
     [HttpDelete("DeleteUserEducation")]
     public async Task<IActionResult> DeleteUserEducation(DeleteUserEducationCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return NotFound();
     }
 
     [HttpPut("UpdateUserEducation")]
     public async Task<IActionResult> UpdateUserEducation(UpdateUserEducationCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return Ok();
     }
 
@@ -169,21 +170,21 @@ internal class AccountProfileController : BaseController
     [HttpPost("CreateUserCertificate")]
     public async Task<IActionResult> AddUserCertification(CreateUserCertificateCommand command)
     {
-        var id = await _mediator.Send(command with{UserId = _context.Identity.Id});
+        var id = await _mediator.Send(command with{UserId = _context.Id});
         return Created($"api/AccountProfile/CreateUserCertificate/{id}", id);
     }
 
     [HttpPost("UpdateUserCertificate")]
     public async Task<IActionResult> UpdateUserCertificate(UpdateUserCertificateCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return Ok();
     }
 
     [HttpDelete("DeleteUserCertificate")]
     public async Task<IActionResult> DeleteUserCertificate(DeleteUserCertificateCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return NotFound();
     }
 
@@ -204,21 +205,21 @@ internal class AccountProfileController : BaseController
     [HttpPost("CreateUserSkill")]
     public async Task<IActionResult> AddUserSkill(CreateUserSkillCommand command)
     {
-        var id = await _mediator.Send(command with{UserId = _context.Identity.Id});
+        var id = await _mediator.Send(command with{UserId = _context.Id});
         return Created($"api/AccountProfile/CreateUserSkill/{id}", id);
     }
     
     [HttpDelete("DeleteUserSkill")]
     public async Task<IActionResult> DeleteUserSkill(DeleteUserSkillCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return NotFound();
     }
     
     [HttpPut("UpdateUserSkill")]
     public async Task<IActionResult> UpdateUserSkill(UpdateUserSkillCommand command)
     {
-        await _mediator.Send(command with{UserId = _context.Identity.Id});
+        await _mediator.Send(command with{UserId = _context.Id});
         return Ok();
     }
     

@@ -1,9 +1,8 @@
-﻿namespace ProfesiNet.Shared.Contexts
+﻿namespace ProfesiNet.Shared.Contexts;
+
+public interface IContext
 {
-    public interface IContext
-    {
-        string RequestId { get; }
-        string TraceId { get; }
-        IIdentityContext Identity { get; }
-    }
+    Guid Id { get; }
+    string FullName { get; }
+    string Token { get; }
 }
