@@ -1,5 +1,6 @@
 ﻿using Confab.Shared.Abstractions.Contexts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Users.Application.Certificates.Commands.Create;
 using ProfesiNet.Users.Application.Certificates.Commands.Delete;
@@ -26,7 +27,7 @@ using ProfesiNet.Users.Application.Users.Queries.Get;
 using ProfesiNet.Users.Application.Users.Queries.GetAll;
 
 namespace ProfesiNet.Users.Api.Controllers;
-
+[Authorize]
 internal class AccountProfileController : BaseController
 {
     private readonly IMediator _mediator;
