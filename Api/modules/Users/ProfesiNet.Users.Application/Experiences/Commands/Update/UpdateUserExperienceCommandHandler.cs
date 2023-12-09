@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Application.Policy;
@@ -12,26 +10,23 @@ namespace ProfesiNet.Users.Application.Experiences.Commands.Update;
 internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExperienceCommand>
 {
     private readonly IExperienceRepository _experienceRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
     private readonly ICannotSetDatePolicy _cannotSetDatePolicy;
     private static readonly ExperienceMapper Mapper = new();
 
-    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository,
+    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, IUserRepository userRepository,
         ICannotSetDatePolicy cannotSetDatePolicy)
     {
         _experienceRepository = experienceRepository;
-        _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
         _cannotSetDatePolicy = cannotSetDatePolicy;
     }
     public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
-        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.Id, cancellationToken);
         if (user is null)
         {
-            throw new UserNotFoundException(tokenId);
+            throw new UserNotFoundException(request.Id);
         }
         var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == user.Id, cancellationToken);
 

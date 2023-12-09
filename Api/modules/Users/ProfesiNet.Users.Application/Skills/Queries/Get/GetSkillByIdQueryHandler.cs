@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Skills.Dtos;
 using ProfesiNet.Users.Application.Skills.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -10,12 +9,10 @@ namespace ProfesiNet.Users.Application.Skills.Queries.Get;
 internal class GetSkillByIdQueryHandler : IRequestHandler<GetSkillByIdQuery, SkillDto>
 {
     private readonly ISkillRepository _skillRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly SkillMapper Mapper = new();
-    public GetSkillByIdQueryHandler(ISkillRepository skillRepository, ICurrentUserContextService currentUserContextService)
+    public GetSkillByIdQueryHandler(ISkillRepository skillRepository)
     {
         _skillRepository = skillRepository;
-        _currentUserContextService = currentUserContextService;
     }
     public async Task<SkillDto> Handle(GetSkillByIdQuery request, CancellationToken cancellationToken)
     {

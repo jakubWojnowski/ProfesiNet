@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Certificates.Commands.Update;
 
-internal record UpdateUserCertificateCommand(Guid Id, string Name, string? Description, DateTime Date) : IRequest;
+internal record UpdateUserCertificateCommand(Guid Id, string Name, string? Description, DateTime Date, Guid UserId) : IRequest;

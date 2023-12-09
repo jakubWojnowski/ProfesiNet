@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Experiences.Dtos;
 using ProfesiNet.Users.Application.Experiences.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -11,14 +9,12 @@ namespace ProfesiNet.Users.Application.Experiences.Queries.Get;
 internal class GetExperienceByIdQueryHandler : IRequestHandler<GetExperienceByIdQuery, GetExperienceDto>
 {
     private readonly IExperienceRepository _experienceRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
     private static readonly ExperienceMapper Mapper = new();
 
-    public GetExperienceByIdQueryHandler(IExperienceRepository experienceRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
+    public GetExperienceByIdQueryHandler(IExperienceRepository experienceRepository, IUserRepository userRepository)
     {
         _experienceRepository = experienceRepository;
-        _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
     }
     public async Task<GetExperienceDto> Handle(GetExperienceByIdQuery request, CancellationToken cancellationToken)

@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -11,23 +9,19 @@ namespace ProfesiNet.Users.Application.Users.Commands.Update;
 internal class UpdateUserAddressCommandHandler : IRequestHandler<UpdateUserAddressCommand>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly UserMapper Mapper = new();
 
-    public UpdateUserAddressCommandHandler(IUserRepository userRepository,
-        ICurrentUserContextService currentUserContextService)
+    public UpdateUserAddressCommandHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _currentUserContextService = currentUserContextService;
     }
 
     public async Task Handle(UpdateUserAddressCommand request, CancellationToken cancellationToken)
     {
-        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var user = await _userRepository.GetByIdAsync(tokenId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
         if (user == null)
         {
-            throw new UserNotFoundException(tokenId);
+            throw new UserNotFoundException(request.UserId);
         }
         
         var addressDto = new UserAddressDto

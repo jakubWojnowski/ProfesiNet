@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Confab.Shared.Abstractions.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Delete;
 using ProfesiNet.Posts.Core.Commands.Update;
@@ -13,12 +14,14 @@ internal class PostController : BaseController
     private readonly IPostService _postService;
     private readonly IPostLikeService _postLikeService;
     private readonly IShareService _shareService;
+    private readonly IContext _context;
 
-    public PostController(IPostService postService, IPostLikeService postLikeService, IShareService shareService)
+    public PostController(IPostService postService, IPostLikeService postLikeService, IShareService shareService, IContext context)
     {
         _postService = postService;
         _postLikeService = postLikeService;
         _shareService = shareService;
+        _context = context;
     }
 
     [HttpGet("GetById{id:guid}")]
@@ -36,25 +39,25 @@ internal class PostController : BaseController
     
     [HttpGet("GetAllOwn")]
     public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAllOwnAsync(CancellationToken cancellationToken = default)
-        => Ok(await _postService.BrowseAllOwnAsync(cancellationToken));
+        => Ok(await _postService.BrowseAllOwnAsync(_context.Identity.Id,cancellationToken));
     [HttpPost]
     public async Task<ActionResult> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
     {
-        var id = await _postService.AddAsync(command, cancellationToken);
+        var id = await _postService.AddAsync(command,_context.Identity.Id, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id }, null);
     }
 
     [HttpPut]
     public async Task<ActionResult> UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.UpdateAsync(command, cancellationToken);
+        await _postService.UpdateAsync(command,_context.Identity.Id, cancellationToken);
         return NoContent();
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteAsync(DeletePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.DeleteAsync(command, cancellationToken);
+        await _postService.DeleteAsync(command,_context.Identity.Id, cancellationToken);
         return NoContent();
     }
 
@@ -63,14 +66,14 @@ internal class PostController : BaseController
     public async Task<ActionResult> AddPostLikeAsync(CreatePostLikeCommand command,
         CancellationToken cancellationToken = default)
     {
-        await _postLikeService.AddAsync(command, cancellationToken);
+        await _postLikeService.AddAsync(command,_context.Identity.Id, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
     [HttpDelete("PostLike")]
     public async Task<ActionResult> DeletePostLikeAsync(DeletePostLikeCommand command, CancellationToken cancellationToken = default)
     {
-        await _postLikeService.DeleteAsync(command, cancellationToken);
+        await _postLikeService.DeleteAsync(command,_context.Identity.Id, cancellationToken);
         return NoContent();
     }
 
@@ -90,14 +93,14 @@ internal class PostController : BaseController
     public async Task<ActionResult> AddShareAsync(CreatePostShareCommand command,
         CancellationToken cancellationToken = default)
     {
-        await _shareService.AddAsync(command, cancellationToken);
+        await _shareService.AddAsync(command,_context.Identity.Id, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
     [HttpDelete("Share")]
     public async Task<ActionResult> DeleteShareAsync(DeletePostShareCommand command, CancellationToken cancellationToken = default)
     {
-        await _shareService.DeleteAsync(command, cancellationToken);
+        await _shareService.DeleteAsync(command,_context.Identity.Id, cancellationToken);
         return NoContent();
     }
 

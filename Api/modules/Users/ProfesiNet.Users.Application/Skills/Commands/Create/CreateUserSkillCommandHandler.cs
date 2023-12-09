@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Policy;
 using ProfesiNet.Users.Application.Skills.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -9,16 +8,14 @@ namespace ProfesiNet.Users.Application.Skills.Commands.Create;
 
 internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillCommand, Guid>
 {
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly ISkillRepository _skillRepository;
     private readonly ICannotAddSkillPolicy _cannotAddSkillPolicy;
     private readonly IUserRepository _userRepository;
     private static readonly SkillMapper Mapper = new();
 
-    public CreateSkillCommandHandler(ICurrentUserContextService currentUserContextService,
-        ISkillRepository skillRepository, ICannotAddSkillPolicy cannotAddSkillPolicy, IUserRepository userRepository)
+    public CreateSkillCommandHandler(ISkillRepository skillRepository, ICannotAddSkillPolicy cannotAddSkillPolicy,
+        IUserRepository userRepository)
     {
-        _currentUserContextService = currentUserContextService;
         _skillRepository = skillRepository;
         _cannotAddSkillPolicy = cannotAddSkillPolicy;
         _userRepository = userRepository;
@@ -26,15 +23,13 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
 
     public async Task<Guid> Handle(CreateUserSkillCommand request, CancellationToken cancellationToken)
     {
-        var token = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
-
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == token, cancellationToken);
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
         {
-            throw new UserNotFoundException(token);
+            throw new UserNotFoundException(request.UserId);
         }
 
-        if (!await _cannotAddSkillPolicy.CheckSkillsAsync(request.Name, token, cancellationToken))
+        if (!await _cannotAddSkillPolicy.CheckSkillsAsync(request.Name, request.UserId, cancellationToken))
         {
             throw new UserCannotAddSkillException(request.Name);
         }

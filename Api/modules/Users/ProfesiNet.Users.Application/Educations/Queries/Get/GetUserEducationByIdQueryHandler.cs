@@ -1,7 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -12,14 +9,13 @@ namespace ProfesiNet.Users.Application.Educations.Queries.Get;
 internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, GetEducationDto>
 {
     private readonly IEducationRepository _educationRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
+
     private readonly IUserRepository _userRepository;
     private static readonly EducationMapper Mapper = new();
 
-    public GetUserEducationByIdQueryHandler(IEducationRepository educationRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository)
+    public GetUserEducationByIdQueryHandler(IEducationRepository educationRepository, IUserRepository userRepository)
     {
         _educationRepository = educationRepository;
-        _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
     }
     public async Task<GetEducationDto> Handle(GetUserEducationByIdQuery request, CancellationToken cancellationToken)

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Users.Application.Users.Commands.Login;
-using ProfesiNet.Users.Application.Users.Commands.Logout;
 using ProfesiNet.Users.Application.Users.Commands.Register;
 
 namespace ProfesiNet.Users.Api.Controllers;
@@ -21,14 +20,6 @@ internal class UserAuthenticationController : BaseController
             var token = await _mediator.Send(command);
             return Ok(token);
     }
-    
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout( LogoutUserCommand command)
-    {
-            await _mediator.Send(command);
-            return Redirect("/");
-    }
-    
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterUserCommand command)
     {

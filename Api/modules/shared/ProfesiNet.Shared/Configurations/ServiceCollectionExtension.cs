@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using Confab.Shared.Abstractions.Contexts;
 using Confab.Shared.Abstractions.Interfaces;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+using Confab.Shared.Infrastructure.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,6 @@ using ProfesiNet.Shared.Modules;
 using ProfesiNet.Shared.MsSql;
 using ProfesiNet.Shared.Services;
 using ProfesiNet.Shared.Time;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Shared.Validators;
 using ProfesiNet.Shared.Validators.ValidatorBehaviors;
 
@@ -94,11 +94,9 @@ internal static class ServiceCollectionExtension
         services.AddControllers();
         services.AddSingleton<IClock, UtcClock>();
         services.AddHostedService<ApiInitializer>();
-       
-        services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
-        services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
-
-        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddSingleton<IContextFactory, ContextFactory>();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddTransient<IContext>(sp => sp.GetRequiredService<IContextFactory>().Create());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddControllers()
             .ConfigureApplicationPartManager(manager =>
@@ -131,6 +129,9 @@ internal static class ServiceCollectionExtension
         });
      
         app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.UseAuthentication();
+
         // app.UseRouting(); tu jest jakis problem wywala apke
         
         return app;

@@ -1,5 +1,4 @@
 using MediatR;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Skills.Dtos;
 using ProfesiNet.Users.Application.Skills.Mappings;
 using ProfesiNet.Users.Domain.Interfaces;
@@ -9,13 +8,11 @@ namespace ProfesiNet.Users.Application.Skills.Queries.GetAll;
 internal class GetAllSkillsPerUserQueryHandler : IRequestHandler<GetAllSkillsPerUserQuery, IReadOnlyCollection<SkillDto>>
 {
     private readonly ISkillRepository _skillRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly SkillMapper Mapper = new();
 
-    public GetAllSkillsPerUserQueryHandler(ISkillRepository skillRepository, ICurrentUserContextService currentUserContextService)
+    public GetAllSkillsPerUserQueryHandler(ISkillRepository skillRepository)
     {
         _skillRepository = skillRepository;
-        _currentUserContextService = currentUserContextService;
     }
     public async Task<IReadOnlyCollection<SkillDto>> Handle(GetAllSkillsPerUserQuery request, CancellationToken cancellationToken)
     {
