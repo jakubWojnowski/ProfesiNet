@@ -39,6 +39,9 @@ internal static class ServiceCollectionExtension
         services.AddScoped<IShareService, ShareService>();
         services.AddScoped<IUserCantSharePolicy, UserCantSharePolicy>();
         
+        //creators
+        services.AddScoped<ICreatorRepository, CreatorRepository>();
+        
         return services;
         
        

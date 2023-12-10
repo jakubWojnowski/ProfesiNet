@@ -13,20 +13,27 @@ internal class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IClock _clock;
+    private readonly ICreatorRepository _creatorRepository;
     private static readonly PostMapper Mapper = new();
 
     public PostService(IPostRepository postRepository,  
-        IClock clock)
+        IClock clock, ICreatorRepository creatorRepository)
     {
         _postRepository = postRepository;
         _clock = clock;
+        _creatorRepository = creatorRepository;
     }
 
     public async Task<Guid> AddAsync(CreatePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
         var post = Mapper.MapCreatePostCommandToPost(command);
         post.PublishedAt = _clock.CurrentDate();
-        post.CreatorId = id;
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        post.CreatorId = creator.Id;
 
         return await _postRepository.AddAsync(post, cancellationToken);
     }

@@ -1,17 +1,18 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions.Interfaces;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using ProfesiNet.Shared.Api;
 using ProfesiNet.Shared.Contexts;
+using ProfesiNet.Shared.Events;
 using ProfesiNet.Shared.Mediator;
+using ProfesiNet.Shared.Messaging;
 using ProfesiNet.Shared.Middlewares;
 using ProfesiNet.Shared.Modules;
 using ProfesiNet.Shared.MsSql;
@@ -27,7 +28,7 @@ internal static class ServiceCollectionExtension
 {
     private const string CorsPolicy = "cors";
 
-    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> models)
+    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules)
     {
         var disabledModules = new List<string>();
         using (var servicesProvider = services.BuildServiceProvider())
@@ -94,9 +95,15 @@ internal static class ServiceCollectionExtension
         services.AddControllers();
         services.AddSingleton<IClock, UtcClock>();
         services.AddHostedService<ApiInitializer>();
-       
+        services.AddModuleInfo(modules);
+        services.AddModulesRequests(assemblies);
+        services.AddMemoryCache();
+        services.AddEvents(assemblies);
+        services.AddMessaging();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
         services.AddScoped<IContext, Context>();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         services.AddSingleton<ITokenRevocationListService, TokenRevocationListService>();
 
         services.AddScoped<IIdentityService, IdentityService>();
