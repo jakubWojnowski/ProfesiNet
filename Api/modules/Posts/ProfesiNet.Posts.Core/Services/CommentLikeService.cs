@@ -5,7 +5,6 @@ using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
 using ProfesiNet.Posts.Core.Policies;
-using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -14,22 +13,19 @@ internal class CommentLikeService : ICommentLikeService
     private readonly ICommentLikeRepository _commentLikeRepository;
     private readonly ICommentRepository _commentRepository;
     private readonly IUserCantAddLikeToCommentPolicy _userCantAddLikeToCommentPolicy;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly CommentLikeMapper Mapper = new();
 
     public CommentLikeService(ICommentLikeRepository commentLikeRepository, ICommentRepository commentRepository,
-        IUserCantAddLikeToCommentPolicy userCantAddLikeToCommentPolicy,
-        ICurrentUserContextService currentUserContextService)
+        IUserCantAddLikeToCommentPolicy userCantAddLikeToCommentPolicy)
     {
         _commentLikeRepository = commentLikeRepository;
         _commentRepository = commentRepository;
         _userCantAddLikeToCommentPolicy = userCantAddLikeToCommentPolicy;
-        _currentUserContextService = currentUserContextService;
     }
 
-    public async Task<Guid> AddAsync(CreateCommentLikeCommand command, CancellationToken ct = default)
+    public async Task<Guid> AddAsync(CreateCommentLikeCommand command, Guid id, CancellationToken ct = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var comment = await _commentRepository.GetByIdAsync(command.CommentId, ct);
         if (comment is null)
         {
@@ -52,9 +48,9 @@ internal class CommentLikeService : ICommentLikeService
         return await _commentLikeRepository.AddAsync(commentLike, ct);
     }
 
-    public async Task DeleteAsync(DeleteCommentLikeCommand command, CancellationToken ct = default)
+    public async Task DeleteAsync(DeleteCommentLikeCommand command, Guid id, CancellationToken ct = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var commentLike =
             await _commentLikeRepository.GetRecordByFilterAsync(
                 l => l.Id == command.Id && l.CreatorId == creatorId, ct);

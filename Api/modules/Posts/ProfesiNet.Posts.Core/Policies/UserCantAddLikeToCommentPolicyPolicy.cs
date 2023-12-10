@@ -1,5 +1,4 @@
-﻿using ProfesiNet.Posts.Core.Entities;
-using ProfesiNet.Posts.Core.Interfaces;
+﻿using ProfesiNet.Posts.Core.Interfaces;
 
 namespace ProfesiNet.Posts.Core.Policies;
 

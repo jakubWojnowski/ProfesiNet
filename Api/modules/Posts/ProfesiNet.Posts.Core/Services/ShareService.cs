@@ -5,7 +5,6 @@ using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
 using ProfesiNet.Posts.Core.Policies;
-using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -14,21 +13,19 @@ internal class ShareService : IShareService
     private readonly IShareRepository _shareRepository;
     private readonly IUserCantSharePolicy _userCantSharePolicy;
     private readonly IPostRepository _postRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly PostShareMapper Mapper = new();
 
     public ShareService(IShareRepository shareRepository, IUserCantSharePolicy userCantSharePolicy,
-        IPostRepository postRepository, ICurrentUserContextService currentUserContextService)
+        IPostRepository postRepository)
     {
         _shareRepository = shareRepository;
         _userCantSharePolicy = userCantSharePolicy;
         _postRepository = postRepository;
-        _currentUserContextService = currentUserContextService;
     }
 
-    public async Task<Guid> AddAsync(CreatePostShareCommand command, CancellationToken ct = default)
+    public async Task<Guid> AddAsync(CreatePostShareCommand command, Guid id, CancellationToken ct = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var share = Mapper.MapCreatePostShareCommandToShare(command with
         {
             Id = Guid.NewGuid()
@@ -48,9 +45,9 @@ internal class ShareService : IShareService
         return await _shareRepository.AddAsync(share, ct);
     }
 
-    public async Task DeleteAsync(DeletePostShareCommand command, CancellationToken ct = default)
+    public async Task DeleteAsync(DeletePostShareCommand command, Guid id, CancellationToken ct = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var share = await _shareRepository.GetRecordByFilterAsync(s => s.Id == command.Id && s.CreatorId == creatorId,
             ct);
         if (share == null)

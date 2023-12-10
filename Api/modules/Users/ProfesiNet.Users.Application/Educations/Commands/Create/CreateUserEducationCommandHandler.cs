@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Educations.Dtos;
 using ProfesiNet.Users.Application.Educations.Mappings;
 using ProfesiNet.Users.Application.Policy;
@@ -12,26 +10,23 @@ namespace ProfesiNet.Users.Application.Educations.Commands.Create;
 internal class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEducationCommand, Guid>
 {
     private readonly IEducationRepository _educationRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IUserRepository _userRepository;
     private readonly ICannotSetDatePolicy _cannotSetDatePolicy;
     private static readonly EducationMapper Mapper = new();
 
-    public CreateUserEducationCommandHandler(IEducationRepository educationRepository, ICurrentUserContextService currentUserContextService, IUserRepository userRepository,
+    public CreateUserEducationCommandHandler(IEducationRepository educationRepository, IUserRepository userRepository,
         ICannotSetDatePolicy cannotSetDatePolicy)
     {
         _educationRepository = educationRepository;
-        _currentUserContextService = currentUserContextService;
         _userRepository = userRepository;
         _cannotSetDatePolicy = cannotSetDatePolicy;
     }
     public async Task<Guid> Handle(CreateUserEducationCommand request, CancellationToken cancellationToken)
     {
-       var token = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-       var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == token, cancellationToken);
+       var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
          if (user is null)
          {
-              throw new UserNotFoundException(token);
+              throw new UserNotFoundException(request.UserId);
          }
        var educationDto = new EducationDto
        {

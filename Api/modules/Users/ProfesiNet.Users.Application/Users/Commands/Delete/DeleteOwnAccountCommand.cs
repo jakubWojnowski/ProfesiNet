@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Users.Commands.Delete;
 
-internal record DeleteOwnAccountCommand() : IRequest;
+internal record DeleteOwnAccountCommand(Guid Id) : IRequest;

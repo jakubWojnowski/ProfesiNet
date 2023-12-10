@@ -44,7 +44,7 @@ const Mid: FC = () =>  {
         
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            axios.get<Post[]>('https://localhost:5000/posts-module/post/getall')
+            axios.get<Post[]>('https://localhost:5000/posts-module/Post/GetAll')
                 .then(r => {
                     setPosts(r.data);
                 });

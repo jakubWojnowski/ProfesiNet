@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ProfesiNet.Shared.Exceptions;
-using ProfesiNet.Shared.UserContext;
 using ProfesiNet.Users.Application.Certificates.Dtos;
 using ProfesiNet.Users.Application.Certificates.Mappings;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -10,24 +8,22 @@ namespace ProfesiNet.Users.Application.Certificates.Commands.Update;
 
 internal class UpdateUserCertificateCommandHandler : IRequestHandler<UpdateUserCertificateCommand>
 {
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly ICertificateRepository _certificateRepository;
     private readonly IUserRepository _userRepository;
     private static readonly CertificateMapper Mapper = new();
 
-    public UpdateUserCertificateCommandHandler(ICurrentUserContextService currentUserContextService, ICertificateRepository certificateRepository, IUserRepository userRepository)
+    public UpdateUserCertificateCommandHandler( ICertificateRepository certificateRepository, IUserRepository userRepository)
     {
-        _currentUserContextService = currentUserContextService;
         _certificateRepository = certificateRepository;
         _userRepository = userRepository;
     }
     public async Task Handle(UpdateUserCertificateCommand request, CancellationToken cancellationToken)
     {
-        var tokenId = Guid.TryParse(_currentUserContextService.GetCurrentUser()?.Id, out var id) ? id : Guid.Empty;
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == tokenId, cancellationToken);
+
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
         {
-            throw new UserNotFoundException(tokenId);
+            throw new UserNotFoundException(request.UserId);
         }
         var certificate = await _certificateRepository.GetRecordByFilterAsync(c=> c.Id == request.Id && c.UserId == user.Id, cancellationToken);
         

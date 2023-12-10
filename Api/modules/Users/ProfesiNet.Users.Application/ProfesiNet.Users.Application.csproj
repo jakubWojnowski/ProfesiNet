@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Certificates\Policy\" />
-      <Folder Include="Certificates\Services\" />
-      <Folder Include="Educations\Policy\" />
-      <Folder Include="Educations\Services\" />
       <Folder Include="Experiences\Services\" />
       <Folder Include="Networks\Conncections\Commands\" />
       <Folder Include="Networks\Conncections\Dtos\" />

@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Educations.Commands.Delete;
 
-internal record DeleteUserEducationCommand(Guid Id): IRequest;
+internal record DeleteUserEducationCommand(Guid Id, Guid UserId): IRequest;

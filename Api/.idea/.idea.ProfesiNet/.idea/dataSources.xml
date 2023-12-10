@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="profesiNet-db@localhost" uuid="0d1eb88e-0917-4ea5-92dd-cbcc7abe0df4">
+    <data-source source="LOCAL" name="profesiNet-db@localhost" uuid="7fc101b4-4687-44f4-99f4-cc10f6f3fe3e">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>

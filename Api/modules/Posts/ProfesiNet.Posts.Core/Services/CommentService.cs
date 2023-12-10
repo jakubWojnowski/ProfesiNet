@@ -6,7 +6,6 @@ using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
-using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -15,18 +14,16 @@ internal class CommentService : ICommentService
     private readonly ICommentRepository _commentRepository;
     private readonly IPostRepository _postRepository;
     private readonly IClock _clock;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private static readonly CommentMapper Mapper = new();
 
-    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository, IClock clock, ICurrentUserContextService currentUserContextService)
+    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository, IClock clock)
     {
         _commentRepository = commentRepository;
         _postRepository = postRepository;
         _clock = clock;
-        _currentUserContextService = currentUserContextService;
     }
 
-    public async Task<Guid> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(CreateCommentCommand command, Guid id, CancellationToken cancellationToken = default)
     {
         var post = await _postRepository.GetByIdAsync(command.PostId, cancellationToken);
         if (post is null)
@@ -39,14 +36,14 @@ internal class CommentService : ICommentService
             Id = Guid.NewGuid()
         });
         comment.PublishedAt = _clock.CurrentDate();
-        comment.CreatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        comment.CreatorId = id;
 
        return await _commentRepository.AddAsync(comment, cancellationToken);
     }
 
     public async Task<CommentDetailsDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var comment = await _commentRepository.GetByIdAsync(id, cancellationToken);
+        var comment = await _commentRepository.GetCommentWithCreator(id, cancellationToken);
         if (comment is null)
         {
             throw new CommentNotFoundException(id);
@@ -58,13 +55,13 @@ internal class CommentService : ICommentService
 
     public async Task<IReadOnlyList<CommentDto>> BrowseAsync(Guid postId,CancellationToken cancellationToken = default)
     {
-        var comments = await _commentRepository.GetAllForConditionAsync(c => c.PostId == postId, cancellationToken);
+        var comments = await _commentRepository.GetCommentsWithCreatorsPerPost(postId, cancellationToken);
         return Mapper.MapCommentToCommentDto(comments);
     }
 
-    public async Task UpdateAsync(UpdateCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(UpdateCommentCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var comment = await _commentRepository.GetRecordByFilterAsync(c => c.Id == command.Id && c.CreatorId == creatorId, cancellationToken);
         if (comment is null)
         {
@@ -75,9 +72,9 @@ internal class CommentService : ICommentService
         await _commentRepository.UpdateAsync(commentUpdated, cancellationToken);
     }
 
-    public async Task DeleteAsync(DeleteCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(DeleteCommentCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creatorId = id;
         var comment = await _commentRepository.GetRecordByFilterAsync(c => c.Id == command.Id && c.CreatorId == creatorId, cancellationToken);
         if (comment is null)
         {

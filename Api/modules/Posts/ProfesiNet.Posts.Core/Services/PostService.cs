@@ -6,33 +6,34 @@ using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
-using ProfesiNet.Shared.UserContext;
 
 namespace ProfesiNet.Posts.Core.Services;
 
 internal class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
-    private readonly ICurrentUserContextService _currentUserContextService;
     private readonly IClock _clock;
+    private readonly ICreatorRepository _creatorRepository;
     private static readonly PostMapper Mapper = new();
 
-    public PostService(IPostRepository postRepository, ICurrentUserContextService currentUserContextService,
-        IClock clock)
+    public PostService(IPostRepository postRepository,  
+        IClock clock, ICreatorRepository creatorRepository)
     {
         _postRepository = postRepository;
-        _currentUserContextService = currentUserContextService;
         _clock = clock;
+        _creatorRepository = creatorRepository;
     }
 
-    public async Task<Guid> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(CreatePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var post = Mapper.MapCreatePostCommandToPost(command with
-        {
-            Id = Guid.NewGuid(),
-        });
+        var post = Mapper.MapCreatePostCommandToPost(command);
         post.PublishedAt = _clock.CurrentDate();
-        post.CreatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        post.CreatorId = creator.Id;
 
         return await _postRepository.AddAsync(post, cancellationToken);
     }
@@ -52,27 +53,44 @@ internal class PostService : IPostService
     public async Task<IReadOnlyList<PostDto>> BrowseAsync(CancellationToken cancellationToken = default)
     {
         var posts = await _postRepository.GetAllAsync(cancellationToken);
-        return Mapper.MapPostsToPostDtos(posts);
+        var mappedPosts = Mapper.MapPostsToPostDtos(posts).OrderByDescending(p => p.PublishedAt).ToList();
+        return mappedPosts;
     }
-    public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,CancellationToken cancellationToken = default)
-    {
-        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
-        return Mapper.MapPostsToPostDtos(posts);
-    }
-    public async Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(CancellationToken cancellationToken = default)
-    {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
-        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
-        return Mapper.MapPostsToPostDtos(posts);
-    }
-    
-    
 
-    public async Task UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,
+        CancellationToken cancellationToken = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.Id,
+        var creator = await _creatorRepository.GetByIdAsync(creatorId, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(creatorId);
+        }
+        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creator.Id, cancellationToken);
+        return Mapper.MapPostsToPostDtos(posts);
+    }
+
+    public async Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(Guid id,CancellationToken cancellationToken = default)
+    {
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creator.Id, cancellationToken);
+        return Mapper.MapPostsToPostDtos(posts);
+    }
+
+
+    public async Task UpdateAsync(UpdatePostCommand command, Guid id, CancellationToken cancellationToken = default)
+    {
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.Id,
             cancellationToken);
+        
         if (post is null)
         {
             throw new PostNotFoundException(command.Id);
@@ -82,11 +100,16 @@ internal class PostService : IPostService
         await _postRepository.UpdateAsync(updatedPost, cancellationToken);
     }
 
-    public async Task DeleteAsync(DeletePostCommand command, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(DeletePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creatorId = Guid.Parse(_currentUserContextService.GetCurrentUser()!.Id!);
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.PostId,
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.PostId,
             cancellationToken);
+        
         if (post is null)
         {
             throw new PostNotFoundException(command.PostId);

@@ -1,14 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Users.Application.Users.Commands.Login;
-using ProfesiNet.Users.Application.Users.Commands.Logout;
 using ProfesiNet.Users.Application.Users.Commands.Register;
 
-namespace ProfesiNet.USers.Api.Controllers;
+namespace ProfesiNet.Users.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-internal class UserAuthenticationController : ControllerBase
+internal class UserAuthenticationController : BaseController
 {
     private readonly IMediator _mediator;
 
@@ -18,21 +15,13 @@ internal class UserAuthenticationController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+    public async Task<IActionResult> Login( LoginUserCommand command)
     {
             var token = await _mediator.Send(command);
             return Ok(token);
     }
-    
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutUserCommand command)
-    {
-            await _mediator.Send(command);
-            return Redirect("/");
-    }
-    
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+    public async Task<IActionResult> Register(RegisterUserCommand command)
     {
             await _mediator.Send(command);
             return Created("/api/user", null);

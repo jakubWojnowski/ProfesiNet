@@ -1,8 +1,8 @@
 ﻿using ProfesiNet.Posts.Core.Commands;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Update;
+using ProfesiNet.Posts.Core.DAL.Entities;
 using ProfesiNet.Posts.Core.Dto;
-using ProfesiNet.Posts.Core.Entities;
 
 namespace ProfesiNet.Posts.Core.Mappings;
 

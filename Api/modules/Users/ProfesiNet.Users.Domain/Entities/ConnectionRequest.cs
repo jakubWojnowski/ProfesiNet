@@ -2,7 +2,7 @@
 
 public class ConnectionRequest
 {
-    public Guid ReceiverId { get; init; }
+    public Guid ReceiverId { get; set; }
     public Guid SenderId { get; set; }
     public virtual User Receiver { get; set; }
     public virtual User Sender { get; set; }

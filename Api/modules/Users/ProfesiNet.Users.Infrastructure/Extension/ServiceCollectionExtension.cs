@@ -2,11 +2,10 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using ProfesiNet.Shared.MsSql;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Authentication;
 using ProfesiNet.Users.Infrastructure.Persistence;
@@ -49,16 +48,18 @@ public static class ServiceCollectionExtension
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
                 };
             });
-        services.AddDbContext<ProfesiNetUserDbContext>(options =>
-        {
-            options
-                .UseLazyLoadingProxies()
-                .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
-        });
+        // services.AddDbContext<ProfesiNetUserDbContext>(options =>
+        // {
+        //     options
+        //         .UseLazyLoadingProxies()
+        //         .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
+        // });
+        services.AddMsSql<ProfesiNetUserDbContext>();
         services.AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IExperienceRepository, ExperienceRepository>()
             .AddScoped<IEducationRepository, EducationRepository>()
             .AddScoped<ICertificateRepository, CertificateRepository>()
+            .AddScoped<ISkillRepository, SkillRepository>()
             .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }

@@ -6,8 +6,8 @@ namespace ProfesiNet.Posts.Core.Interfaces;
 
 internal interface IShareService
 {
-    Task<Guid> AddAsync(CreatePostShareCommand command, CancellationToken ct = default);
-    Task DeleteAsync(DeletePostShareCommand command, CancellationToken ct = default);
+    Task<Guid> AddAsync(CreatePostShareCommand command, Guid id, CancellationToken ct = default);
+    Task DeleteAsync(DeletePostShareCommand command, Guid id, CancellationToken ct = default);
     Task<ShareDetailsDto> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<ShareDto>> BrowseSharesPerPostAsync(Guid postId, CancellationToken ct = default);
     Task<IReadOnlyList<ShareDetailsDto>> BrowseSharesPerUserAsync(Guid creatorId, CancellationToken ct = default);

@@ -20,3 +20,21 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ProfesiNetApi.dll"]
+
+
+## Build stage
+#FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+#WORKDIR /Api
+## Copy the entire solution (assuming the Docker context is set to the solution root)
+#COPY . ./
+## Restore as distinct layers
+#RUN dotnet restore 
+## Publish
+#RUN dotnet publish -c Release -o /app
+#
+## Runtime stage
+#FROM mcr.microsoft.com/dotnet/aspnet:8.0
+#WORKDIR /app
+#COPY --from=build /app ./
+#EXPOSE 80
+#ENTRYPOINT ["dotnet", "ProfesiNetApi.dll"]

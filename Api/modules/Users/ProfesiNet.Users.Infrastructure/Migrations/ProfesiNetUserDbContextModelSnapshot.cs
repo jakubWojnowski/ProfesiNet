@@ -180,12 +180,12 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Skills");
                 });
@@ -282,7 +282,7 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
                         .WithMany("Educations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -320,9 +320,13 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
-                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", null)
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
                         .WithMany("Skills")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.User", b =>

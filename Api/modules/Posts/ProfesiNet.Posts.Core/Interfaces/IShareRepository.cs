@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using ProfesiNet.Posts.Core.Entities;
+using ProfesiNet.Posts.Core.DAL.Entities;
 
 namespace ProfesiNet.Posts.Core.Interfaces;
 

@@ -1,6 +1,4 @@
-﻿using ProfesiNet.Posts.Core.Entities;
-
-namespace ProfesiNet.Posts.Core.Policies;
+﻿namespace ProfesiNet.Posts.Core.Policies;
 
 internal interface IUserCantAddLikeToCommentPolicy
 {

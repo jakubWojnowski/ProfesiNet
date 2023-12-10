@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Posts.Api.Extension;
 
 namespace ProfesiNet.Posts.Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route(BasePath + "/[controller]")]
+[Route(PostsModule.BasePath + "/[controller]")]
 internal class BaseController : ControllerBase
 {
-    protected const string BasePath = "posts-module";
 
     protected ActionResult<T> OkOrNotFound<T>(T model)
     {

@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProfesiNet.Shared.Messaging;
+using ProfesiNet.Users.Application.Events;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
@@ -14,13 +16,15 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IValidator<RegisterUserDto> _validator;
+    private readonly IMessageBroker _messageBroker;
     private static readonly UserMapper Mapper = new();
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IValidator<RegisterUserDto> validator )
+    public RegisterUserCommandHandler(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IValidator<RegisterUserDto> validator, IMessageBroker messageBroker )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _validator = validator;
+        _messageBroker = messageBroker;
     }
    
     public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -46,5 +50,6 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         user.EncodedPassword = encoded;
         
         await _userRepository.AddAsync(user, cancellationToken);
+        await _messageBroker.PublishAsync(new UserCreated(user.Id, user.Name, user.Surname));
     }
 }

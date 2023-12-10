@@ -1,0 +1,8 @@
+{
+  "livechats": {
+    "module": {
+      "name": "LiveChats",
+      "enabled": true
+    }
+  }
+}
