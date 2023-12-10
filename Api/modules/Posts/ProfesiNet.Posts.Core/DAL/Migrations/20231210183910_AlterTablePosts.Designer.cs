@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Posts.Core.DAL.Persistence;
 
@@ -11,9 +12,11 @@ using ProfesiNet.Posts.Core.DAL.Persistence;
 namespace ProfesiNet.Posts.Core.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetPostDbContext))]
-    partial class ProfesiNetPostDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231210183910_AlterTablePosts")]
+    partial class AlterTablePosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

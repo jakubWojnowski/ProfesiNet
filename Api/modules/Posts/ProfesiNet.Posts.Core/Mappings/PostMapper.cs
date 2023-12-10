@@ -11,7 +11,7 @@ using Riok.Mapperly.Abstractions;
 [Mapper]
 internal partial class PostMapper
 {
-   
+    
     public partial PostDto MapPostToPostDto(Post post);
     
     public partial Post MapCreatePostCommandToPost(CreatePostCommand createPostCommand);

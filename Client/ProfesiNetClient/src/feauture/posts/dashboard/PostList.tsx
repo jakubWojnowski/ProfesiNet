@@ -12,7 +12,7 @@ const PostList: FC<Props> = ({posts}: Props) => {
             {posts.map((post) => (
                 <Segment key={post.id} className="post-segment"> {/* Move key to here */}
                     <Item.Content>
-                        <Item.Header >{post.creatorName}</Item.Header>
+                        <Item.Header >{post.creatorName}{" "}{post.creatorSurname}</Item.Header>
                         <Item.Description as='a' className="post-content">{post.description}</Item.Description>
                         {/*<ItemImage src="/drwal.jpg" className="post-image"  />*/}
                         {post.media && <img src="/drwal.jpg" alt='Post media' className="post-image"/>}
