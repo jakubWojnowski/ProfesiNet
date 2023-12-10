@@ -53,28 +53,42 @@ internal class PostService : IPostService
     public async Task<IReadOnlyList<PostDto>> BrowseAsync(CancellationToken cancellationToken = default)
     {
         var posts = await _postRepository.GetAllAsync(cancellationToken);
-        return Mapper.MapPostsToPostDtos(posts);
+        var mappedPosts = Mapper.MapPostsToPostDtos(posts).OrderByDescending(p => p.PublishedAt).ToList();
+        return mappedPosts;
     }
 
     public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,
         CancellationToken cancellationToken = default)
     {
-        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
+        var creator = await _creatorRepository.GetByIdAsync(creatorId, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(creatorId);
+        }
+        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creator.Id, cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
 
     public async Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(Guid id,CancellationToken cancellationToken = default)
     {
-        var creatorId = id;
-        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creatorId, cancellationToken);
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var posts = await _postRepository.GetAllForConditionAsync(p => p.CreatorId == creator.Id, cancellationToken);
         return Mapper.MapPostsToPostDtos(posts);
     }
 
 
     public async Task UpdateAsync(UpdatePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creatorId = id;
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.Id,
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.Id,
             cancellationToken);
         
         if (post is null)
@@ -88,8 +102,12 @@ internal class PostService : IPostService
 
     public async Task DeleteAsync(DeletePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creatorId = id;
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creatorId && p.Id == command.PostId,
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
+        if (creator is null)
+        {
+            throw new CreatorNotFoundException(id);
+        }
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.PostId,
             cancellationToken);
         
         if (post is null)
