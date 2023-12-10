@@ -43,7 +43,7 @@ internal class CommentService : ICommentService
 
     public async Task<CommentDetailsDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var comment = await _commentRepository.GetByIdAsync(id, cancellationToken);
+        var comment = await _commentRepository.GetCommentWithCreator(id, cancellationToken);
         if (comment is null)
         {
             throw new CommentNotFoundException(id);
@@ -55,7 +55,7 @@ internal class CommentService : ICommentService
 
     public async Task<IReadOnlyList<CommentDto>> BrowseAsync(Guid postId,CancellationToken cancellationToken = default)
     {
-        var comments = await _commentRepository.GetAllForConditionAsync(c => c.PostId == postId, cancellationToken);
+        var comments = await _commentRepository.GetCommentsWithCreatorsPerPost(postId, cancellationToken);
         return Mapper.MapCommentToCommentDto(comments);
     }
 

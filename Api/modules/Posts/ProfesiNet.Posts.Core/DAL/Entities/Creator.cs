@@ -2,8 +2,9 @@
 
 public class Creator
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Surname { get; set; }
     public string? Org { get; set; }
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 }

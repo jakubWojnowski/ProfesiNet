@@ -10,7 +10,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.CreatorId).IsRequired();
         builder.Property(x => x.Description).IsRequired();
         builder.Property(x => x.PublishedAt).IsRequired();
         
@@ -23,5 +22,14 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .WithOne(x => x.Post)
             .HasForeignKey(x => x.PostId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Likes)
+            .WithOne(x => x.Post)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.Creator)
+            .WithMany(x => x.Posts)
+            .HasForeignKey(x => x.CreatorId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

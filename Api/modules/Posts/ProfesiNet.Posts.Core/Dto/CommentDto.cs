@@ -4,9 +4,10 @@ internal class CommentDto
 {
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }
+    public string? CreatorName { get; set; }
+    public string? CreatorSurname { get; set; }
     public Guid PostId { get; set; }
     public string? Content { get; set; }
     public DateTime? PublishedAt { get; set; }
-    public int LikesCount { get; set; }
     
 }

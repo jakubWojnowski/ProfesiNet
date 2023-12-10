@@ -17,6 +17,6 @@ internal class EducationConfiguration : IEntityTypeConfiguration<Education>
         builder.HasOne(x => x.User)
             .WithMany(x => x.Educations)
             .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

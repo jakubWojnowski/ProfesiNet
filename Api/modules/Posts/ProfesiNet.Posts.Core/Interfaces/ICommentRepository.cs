@@ -1,9 +1,10 @@
 ﻿using System.Linq.Expressions;
+using ProfesiNet.Posts.Core.DAL.Dao;
 using ProfesiNet.Posts.Core.DAL.Entities;
 
 namespace ProfesiNet.Posts.Core.Interfaces;
 
-public interface ICommentRepository
+internal interface ICommentRepository
 {
     Task<Comment?> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task<IQueryable<Comment>> GetAllAsync(CancellationToken ct = default);
@@ -18,4 +19,6 @@ public interface ICommentRepository
         CancellationToken ct = default);
 
     Task<bool> AnyAsync(Expression<Func<Comment, bool>> predicate, CancellationToken ct = default);
+    Task<IQueryable<CommentDao>?> GetCommentsWithCreatorsPerPost( Guid postId,CancellationToken ct = default);
+    Task<CommentDao> GetCommentWithCreator(Guid commentId, CancellationToken ct = default);
 }
