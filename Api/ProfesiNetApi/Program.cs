@@ -35,7 +35,7 @@ foreach (var module in modules)
 app.MapControllers();
 app.MapGet("/", () => "ProfesiNet API!");
 
-// app.UseRouting(); tu jest jakis problem wywala apke
+// app.UseRouting();// tu jest jakis problem wywala apke
 modules.Clear();
 assemblies.Clear();
 await app.RunAsync();
