@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureModules();
 var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
-builder.Logging.ClearProviders();
-builder.WebHost.UseNLog();
+// builder.Logging.ClearProviders();
+// builder.WebHost.UseNLog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(assemblies, modules);
 
