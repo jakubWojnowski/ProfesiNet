@@ -15,14 +15,16 @@ interface Props {
     openForm: (id: string) => void;
     closeForm: () => void;
     handlePostUpdate: (updatePost: UpdatePost) => void;
+    handlePostDelete: (id: string) => void;
 }
 
-const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelectPost, closeForm,  handlePostUpdate}: Props) =>  {
+const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelectPost, closeForm,  handlePostUpdate, handlePostDelete}: Props) =>  {
     return (
         <Grid centered={true}>
         <Grid.Column width={10}>
             <PostList posts={posts}
-            selectPost={selectPost}
+            selectPost={selectPost} 
+            handlePostDelete={handlePostDelete}
             />
             </Grid.Column>
             {selectedPost && (

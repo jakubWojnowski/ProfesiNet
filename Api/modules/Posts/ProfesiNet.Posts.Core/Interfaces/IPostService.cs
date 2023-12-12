@@ -14,5 +14,5 @@ internal interface IPostService
         CancellationToken cancellationToken = default);
     Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(Guid id, CancellationToken cancellationToken = default);
     Task UpdateAsync(UpdatePostCommand command, Guid id, CancellationToken cancellationToken = default);
-    Task DeleteAsync(DeletePostCommand command , Guid id, CancellationToken cancellationToken = default);
+    Task DeleteAsync(Guid postId, Guid userId, CancellationToken cancellationToken = default);
 }

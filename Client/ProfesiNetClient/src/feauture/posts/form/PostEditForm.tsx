@@ -1,5 +1,5 @@
-import React, {ChangeEvent, FC, useState} from "react";
-import {Button, Confirm, Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
+import {ChangeEvent, FC, useState} from "react";
+import {Button,  Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
 interface Props{
@@ -7,23 +7,20 @@ interface Props{
     cancelSelectPost: () => void;
     post: Post | undefined;
     handlePostUpdate: (UpdatePost: UpdatePost) => void;
-    
 }
-
 const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost, handlePostUpdate}:Props) => {
-    const [postContent, setPostContent] = useState('');
     const initialFormState = selectedPost ?? {
         id: '',
         description: '',
         media: '',
     };
     const [post, setPost] = useState(initialFormState);
-
     
     const handleSubmit = () => {
         console.log(JSON.stringify(post));
         handlePostUpdate(post);
         closeForm();
+        cancelSelectPost();
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

@@ -4,27 +4,23 @@ import {Button, Icon, Item,  Label, Segment, Dropdown} from "semantic-ui-react";
 interface Props {
     posts: Post[];
     selectPost: (id: string) => void;
+    handlePostDelete: (id: string) => void;
 }
 
-const PostList: FC<Props> = ({posts, selectPost}: Props) => {
+const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
+    
     return (
         <Item.Group divided >
             {posts.map((post) => (
                 <Segment key={post.id} className="post-segment"> {/* Move key to here */}
-               
-               
-                    {/*<Button icon className="options-button" onClick={() => selectPost(post.id)}>*/}
-                    {/*    <Icon name='ellipsis horizontal' />*/}
-                    {/*</Button>*/}
-                    
                     <Item.Content>
                       <div className="dropdown">
-                          <Dropdown icon='ellipsis horizontal' className="options-button"  closeOnEscape >
+                          <Dropdown icon='ellipsis horizontal' className="options-button"  closeOnEscape   >
                               <Dropdown.Menu >
                                   <Dropdown.Item
                                       text='Delete'
                                       icon='delete'
-                                      onClick={() =>{}} // Call deletePost function when clicked
+                                      onClick={()=>handlePostDelete(post.id)} // Call deletePost function when clicked
                                   />
                                   <Dropdown.Item
                                       text='Update'

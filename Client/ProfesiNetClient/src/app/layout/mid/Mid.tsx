@@ -34,6 +34,7 @@ const Mid: FC = () =>  {
                 });
         }
     };
+
     
     const handlePostUpdate = (updatePost: UpdatePost): void => {
         const token: string | null = localStorage.getItem('token');
@@ -81,12 +82,29 @@ const Mid: FC = () =>  {
     const handleCancelSelect = (): void => {
     setSelectedPost(undefined);
     }
-        
 
+
+    const handlePostDelete = (id: string) => {
+        setPosts([...posts.filter(x => x.id !== id)]);
+        const token: string | null = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+        axios.delete(`https://localhost:5000/posts-module/Post/${id}`)
+            .then(() => {
+                
+                setSelectedPost(undefined);
+                console.log(JSON.stringify(selectedPost));
+            })
+            .catch(error => {
+                console.error('There was an error deleting the post:' , error);
+            });
+    };
     return (
         <Container fluid={true}  >
             <PostForm onPostSubmit={handlePostCreate}  />
             <PostDashboard posts={posts}
+             handlePostDelete={handlePostDelete}              
             selectedPost={selectedPost}
             selectPost={handlePostSelect}
             cancelSelectPost={handleCancelSelect}
