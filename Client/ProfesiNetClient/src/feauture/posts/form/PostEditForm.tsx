@@ -1,12 +1,12 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {Button, Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
+import {Button, Confirm, Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
-import {CreatePost} from "../../../app/modules/interfaces/CreatePost.ts";
+import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
 interface Props{
     closeForm: () => void;
     cancelSelectPost: () => void;
     post: Post | undefined;
-    handlePostUpdate: (CreatePost: CreatePost) => void;
+    handlePostUpdate: (UpdatePost: UpdatePost) => void;
     
 }
 
@@ -18,13 +18,11 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
         media: '',
     };
     const [post, setPost] = useState(initialFormState);
-    const c: CreatePost = {
-        description: post.description,
-        media: post.media,
-    };
+
     
     const handleSubmit = () => {
-        handlePostUpdate(c);
+        console.log(JSON.stringify(post));
+        handlePostUpdate(post);
         closeForm();
     };
 

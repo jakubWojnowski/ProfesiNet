@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
-import {Button, Icon, Item, ItemImage, Label, Segment, Dropdown, Menu, Divider} from "semantic-ui-react";
+import {Button, Icon, Item,  Label, Segment, Dropdown} from "semantic-ui-react";
 interface Props {
     posts: Post[];
     selectPost: (id: string) => void;

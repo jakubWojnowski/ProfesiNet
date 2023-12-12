@@ -6,6 +6,7 @@ import axios from "axios";
 import './Mid.css';
 import PostForm from "../../../feauture/posts/form/PostForm.tsx";
 import {CreatePost} from "../../modules/interfaces/CreatePost.ts";
+import {UpdatePost} from "../../modules/interfaces/UpdatePost.ts";
 
 
 const Mid: FC = () =>  {
@@ -21,6 +22,7 @@ const Mid: FC = () =>  {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const postData: CreatePost = {
                 description: content,
+                media: '',
             };
             axios.post<CreatePost>('https://localhost:5000/posts-module/Post', postData)
                 .then(response => {
@@ -33,12 +35,13 @@ const Mid: FC = () =>  {
         }
     };
     
-    const handlePostUpdate = (post: Post): void => {
+    const handlePostUpdate = (updatePost: UpdatePost): void => {
         const token: string | null = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            axios.defaults.headers.common['Content-Type'] = 'application/json';
         }
-        axios.put<CreatePost>('https://localhost:5000/posts-module/Post', post)
+        axios.put<UpdatePost>('https://localhost:5000/posts-module/Post', updatePost)
             .then(response => {
                 setCreatePost(response.data);
             })
@@ -47,6 +50,9 @@ const Mid: FC = () =>  {
                 console.error('There was an error updating the post:', error);
             });
     }
+    
+    
+    
     useEffect(() => {
         
         if (token) {

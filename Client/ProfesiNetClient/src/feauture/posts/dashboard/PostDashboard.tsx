@@ -4,7 +4,7 @@ import {Post} from "../../../app/modules/interfaces/Post.ts";
 import './PostDashboard.css';
 import PostList from "./PostList.tsx";
 import PostEditForm from "../form/PostEditForm.tsx";
-import {CreatePost} from "../../../app/modules/interfaces/CreatePost.ts";
+import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
 
 interface Props {
     posts: Post[];
@@ -14,10 +14,10 @@ interface Props {
     editMode: boolean;
     openForm: (id: string) => void;
     closeForm: () => void;
-    handlePostUpdate: (post: CreatePost) => void;
+    handlePostUpdate: (updatePost: UpdatePost) => void;
 }
 
-const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelectPost, openForm, closeForm, editMode, handlePostUpdate}: Props) =>  {
+const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelectPost, closeForm,  handlePostUpdate}: Props) =>  {
     return (
         <Grid centered={true}>
         <Grid.Column width={10}>
