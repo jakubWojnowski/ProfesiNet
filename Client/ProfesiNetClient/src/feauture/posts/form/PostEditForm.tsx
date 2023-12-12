@@ -1,25 +1,30 @@
 import React, {ChangeEvent, FC, useState} from "react";
 import {Button, Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
+import {CreatePost} from "../../../app/modules/interfaces/CreatePost.ts";
 interface Props{
     closeForm: () => void;
+    cancelSelectPost: () => void;
     post: Post | undefined;
+    handlePostUpdate: (CreatePost: CreatePost) => void;
     
 }
 
-const PostEditForm: FC<Props> = ({post:selectedPost,closeForm}:Props) => {
+const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost, handlePostUpdate}:Props) => {
     const [postContent, setPostContent] = useState('');
     const initialFormState = selectedPost ?? {
         id: '',
         description: '',
-        media: ''
+        media: '',
     };
     const [post, setPost] = useState(initialFormState);
+    const c: CreatePost = {
+        description: post.description,
+        media: post.media,
+    };
     
     const handleSubmit = () => {
-        console.log(postContent);
-        setPostContent('');
-        
+        handlePostUpdate(c);
         closeForm();
     };
 
@@ -60,8 +65,13 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm}:Props) => {
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <Button color='green' >
+                <Button color='green' onClick={handleSubmit} >
                     Publish
+                    
+                </Button>
+                
+                <Button color='red' onClick={() => cancelSelectPost()}>
+                    Cancel
                 </Button>
             </Modal.Actions>
         </Modal>

@@ -16,7 +16,7 @@ const PostForm: FC<PostFormProps> = ({ onPostSubmit }) => {
     };
 
     return (
-        <Grid  >
+        <Grid  centered={true}>
 
             <Button size={"large"} onClick={() => setOpen(true)} icon labelPosition='left'>
                 <Icon name='edit' />

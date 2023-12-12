@@ -94,13 +94,27 @@ body {
 .ui.button .icon {
     margin: 0; /* Remove default margin */
 }
-.post-segment .options-button {
-    position: absolute;
-    top: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
-    background: none;
-    border: none;
-    padding: 0;
-    align-content: center;
+.post-segment {
+    position: relative;
+    padding-right: 30px; /* Adjust this value based on your design */
 }
 
+/*.options-button {*/
+/*    display: revert;*/
+/*    right: 0;*/
+/*    top: 0; !* Adjust this if you want to change the vertical position *!*/
+/*    z-index: 10; !* Ensures the dropdown is above other content *!*/
+/*}*/
+
+/* Additional styles for the dropdown menu to ensure it aligns correctly */
+.ui.dropdown .menu {
+    right: 0; /* Align the right edge of the menu with the right edge of the dropdown button */
+    left: auto; /* Override default positioning */
+}
+.dropdown {
+    margin-top: 2px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: flex-end;
+  
+}

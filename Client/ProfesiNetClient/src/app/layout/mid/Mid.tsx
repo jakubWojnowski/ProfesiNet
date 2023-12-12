@@ -21,7 +21,6 @@ const Mid: FC = () =>  {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const postData: CreatePost = {
                 description: content,
-                media: 'ssssssss',
             };
             axios.post<CreatePost>('https://localhost:5000/posts-module/Post', postData)
                 .then(response => {
@@ -33,6 +32,21 @@ const Mid: FC = () =>  {
                 });
         }
     };
+    
+    const handlePostUpdate = (post: Post): void => {
+        const token: string | null = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+        axios.put<CreatePost>('https://localhost:5000/posts-module/Post', post)
+            .then(response => {
+                setCreatePost(response.data);
+            })
+            .catch(error => {
+                // Handle error here
+                console.error('There was an error updating the post:', error);
+            });
+    }
     useEffect(() => {
         
         if (token) {
@@ -43,6 +57,7 @@ const Mid: FC = () =>  {
                 });
         }
     }, []);
+    
     
     const handlFormOpen = (id?: string): void => {
         id ? handlePostSelect(id) : handleCancelSelect();
@@ -63,7 +78,7 @@ const Mid: FC = () =>  {
         
 
     return (
-        <Container fluid={true} >
+        <Container fluid={true}  >
             <PostForm onPostSubmit={handlePostCreate}  />
             <PostDashboard posts={posts}
             selectedPost={selectedPost}
@@ -71,7 +86,8 @@ const Mid: FC = () =>  {
             cancelSelectPost={handleCancelSelect}
             editMode={editMode}
             openForm={handlFormOpen}
-            closeForm={handleFormClose}
+            closeForm={handleFormClose} 
+            handlePostUpdate={handlePostUpdate}
             />
         </Container>
     );
