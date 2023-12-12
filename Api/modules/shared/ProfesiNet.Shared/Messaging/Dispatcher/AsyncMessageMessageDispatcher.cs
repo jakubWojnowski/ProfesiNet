@@ -12,5 +12,5 @@ internal sealed class AsyncMessageMessageDispatcher : IAsyncMessageDispatcher
     }
 
     public async Task PublishAsync<TMessage>(TMessage message) where TMessage : class, IMessage
-    => await _channel.Writer.WriteAsync(message);
+        => await _channel.Writer.WriteAsync(message);
 }

@@ -15,15 +15,15 @@ internal static class Extensions
         services.AddSingleton<IMessageBroker, InMemoryMessageBroker>();
         services.AddSingleton<IMessageChannel, MessageChannel>();
         services.AddSingleton<IAsyncMessageDispatcher, AsyncMessageMessageDispatcher>();
-        
+
 
         var messagingOptions = services.GetOptions<MessagingOptions>(SectionName);
         services.AddSingleton(messagingOptions);
         if (messagingOptions.UseBackgroundDispatcher)
         {
             services.AddHostedService<BackGroundDispatcher>();
-            
         }
+
         return services;
     }
 }

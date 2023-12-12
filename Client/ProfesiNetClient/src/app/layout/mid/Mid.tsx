@@ -4,33 +4,27 @@ import {Container} from "semantic-ui-react";
 import {Post} from "../../modules/interfaces/Post.ts";
 import axios from "axios";
 import './Mid.css';
-import PostCreator from "../../../feauture/posts/dashboard/PostCreator.tsx";
+import PostForm from "../../../feauture/posts/form/PostForm.tsx";
 import {CreatePost} from "../../modules/interfaces/CreatePost.ts";
 
 
 const Mid: FC = () =>  {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [createPost, setCreatePost] = useState<CreatePost>();
+    const [, setCreatePost] = useState<CreatePost>();
+    const [selectedPost, setSelectedPost] = useState<Post | undefined>(undefined);
+    const [editMode, setEditMode] = useState<boolean>(false);
     const token = localStorage.getItem('token');
-    const handlePostSubmit = (content: string): void => {
+    const handlePostCreate = (content: string): void => {
         const token: string | null = localStorage.getItem('token');
 
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-            // Construct the post data according to the CreatePost interface.
             const postData: CreatePost = {
                 description: content,
                 media: 'ssssssss',
             };
-
             axios.post<CreatePost>('https://localhost:5000/posts-module/Post', postData)
                 .then(response => {
-                    // Assuming you want to do something with the response here, like adding the new post to your state.
-                    // If your state expects an array, you might need to do something like this:
-                    // setPosts([...posts, response.data]);
-
-                    // If you're updating a single post state:
                     setCreatePost(response.data);
                 })
                 .catch(error => {
@@ -39,7 +33,6 @@ const Mid: FC = () =>  {
                 });
         }
     };
-
     useEffect(() => {
         
         if (token) {
@@ -50,11 +43,36 @@ const Mid: FC = () =>  {
                 });
         }
     }, []);
+    
+    const handlFormOpen = (id?: string): void => {
+        id ? handlePostSelect(id) : handleCancelSelect();
+        setEditMode(true);
+    }
+    
+    const handleFormClose = (): void => {
+        setEditMode(false);
+    }
+    
+    const handlePostSelect = (id: string): void => {
+        setSelectedPost(posts.find(x => x.id === id));
+    }
+    
+    const handleCancelSelect = (): void => {
+    setSelectedPost(undefined);
+    }
+        
 
     return (
-        <Container className="centered-content" fluid={true}>
-            <PostCreator onPostSubmit={handlePostSubmit}  />
-            <PostDashboard posts={posts} />
+        <Container fluid={true} >
+            <PostForm onPostSubmit={handlePostCreate}  />
+            <PostDashboard posts={posts}
+            selectedPost={selectedPost}
+            selectPost={handlePostSelect}
+            cancelSelectPost={handleCancelSelect}
+            editMode={editMode}
+            openForm={handlFormOpen}
+            closeForm={handleFormClose}
+            />
         </Container>
     );
 }

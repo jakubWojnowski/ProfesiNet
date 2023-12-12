@@ -7,11 +7,6 @@
         <RootNamespace>ProfesiNet.USers.Api</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\ProfesiNet.Users.Application\ProfesiNet.Users.Application.csproj" />
-      <ProjectReference Include="..\ProfesiNet.Users.Domain\ProfesiNet.Users.Domain.csproj" />
-      <ProjectReference Include="..\ProfesiNet.Users.Infrastructure\ProfesiNet.Users.Infrastructure.csproj" />
-    </ItemGroup>
 
     <ItemGroup>
       <None Remove="module.users.json" />
@@ -22,6 +17,11 @@
       <Content Include="module.users.development.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProfesiNet.Users.Infrastructure\ProfesiNet.Users.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

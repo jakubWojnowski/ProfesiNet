@@ -26,11 +26,18 @@ body {
 
 /* Style for the post content */
 .post-content {
+    
     color: #333; /* Dark grey color for text */
     font-size: 1rem; /* Default font size for the content */
     line-height: 1.5; /* Line height for better readability */
-    margin-top: 0.5rem; /* Space above the content */
+    margin-top: 2rem; /* Space above the content */
     display: flex;
+    overflow: hidden;  /* Hide overflow */
+    /* Or use 'auto' if you want a scrollbar */
+    /* overflow: auto; */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 /* Style for the post date */
@@ -87,3 +94,13 @@ body {
 .ui.button .icon {
     margin: 0; /* Remove default margin */
 }
+.post-segment .options-button {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background: none;
+    border: none;
+    padding: 0;
+    align-content: center;
+}
+

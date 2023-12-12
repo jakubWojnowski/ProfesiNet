@@ -1,9 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import './styles.css'; // Make sure this is included
-import { Button, Container, Icon, Label, List, Segment } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import NavBar from "./navBar/NavBar.tsx";
 import Mid from "./mid/Mid.tsx";
-import PostCreator from "../../feauture/posts/dashboard/CreatePost.tsx";
 
 function App() {
   
