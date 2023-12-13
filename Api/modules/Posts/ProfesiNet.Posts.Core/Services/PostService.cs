@@ -100,19 +100,19 @@ internal class PostService : IPostService
         await _postRepository.UpdateAsync(updatedPost, cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid postId, Guid userId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(DeletePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
-        var creator = await _creatorRepository.GetByIdAsync(userId, cancellationToken);
+        var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
         if (creator is null)
         {
-            throw new CreatorNotFoundException(userId);
+            throw new CreatorNotFoundException(id);
         }
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == postId,
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.PostId,
             cancellationToken);
         
         if (post is null)
         {
-            throw new PostNotFoundException(postId);
+            throw new PostNotFoundException(command.PostId);
         }
 
         await _postRepository.DeleteAsync(post, cancellationToken);

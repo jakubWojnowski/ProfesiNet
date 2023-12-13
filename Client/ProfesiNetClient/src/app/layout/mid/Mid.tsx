@@ -9,7 +9,7 @@ import {CreatePost} from "../../modules/interfaces/CreatePost.ts";
 import {UpdatePost} from "../../modules/interfaces/UpdatePost.ts";
 
 
-const Mid: FC = () =>  {
+const Mid: FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [, setCreatePost] = useState<CreatePost>();
     const [selectedPost, setSelectedPost] = useState<Post | undefined>(undefined);
@@ -35,7 +35,7 @@ const Mid: FC = () =>  {
         }
     };
 
-    
+
     const handlePostUpdate = (updatePost: UpdatePost): void => {
         const token: string | null = localStorage.getItem('token');
         if (token) {
@@ -51,11 +51,10 @@ const Mid: FC = () =>  {
                 console.error('There was an error updating the post:', error);
             });
     }
-    
-    
-    
+
+
     useEffect(() => {
-        
+
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             axios.get<Post[]>('https://localhost:5000/posts-module/Post/GetAll')
@@ -64,23 +63,23 @@ const Mid: FC = () =>  {
                 });
         }
     }, []);
-    
-    
+
+
     const handlFormOpen = (id?: string): void => {
         id ? handlePostSelect(id) : handleCancelSelect();
         setEditMode(true);
     }
-    
+
     const handleFormClose = (): void => {
         setEditMode(false);
     }
-    
+
     const handlePostSelect = (id: string): void => {
         setSelectedPost(posts.find(x => x.id === id));
     }
-    
+
     const handleCancelSelect = (): void => {
-    setSelectedPost(undefined);
+        setSelectedPost(undefined);
     }
 
 
@@ -88,30 +87,38 @@ const Mid: FC = () =>  {
         setPosts([...posts.filter(x => x.id !== id)]);
         const token: string | null = localStorage.getItem('token');
         if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
-        axios.delete(`https://localhost:5000/posts-module/Post/${id}`)
-            .then(() => {
-                
-                setSelectedPost(undefined);
-                console.log(JSON.stringify(selectedPost));
+            axios.delete('https://localhost:5000/posts-module/Post', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                data: {
+                    postId: id // Ensure the property name matches what the API expects
+                }
             })
-            .catch(error => {
-                console.error('There was an error deleting the post:' , error);
-            });
+                .then(() => {
+                    // Handle the success scenario, such as updating state to remove the post from the list
+                })
+                .catch((error) => {
+                    console.error('There was an error deleting the post:', error);
+
+                });
+            
+
+        }
     };
     return (
-        <Container fluid={true}  >
-            <PostForm onPostSubmit={handlePostCreate}  />
+        <Container fluid={true}>
+            <PostForm onPostSubmit={handlePostCreate}/>
             <PostDashboard posts={posts}
-             handlePostDelete={handlePostDelete}              
-            selectedPost={selectedPost}
-            selectPost={handlePostSelect}
-            cancelSelectPost={handleCancelSelect}
-            editMode={editMode}
-            openForm={handlFormOpen}
-            closeForm={handleFormClose} 
-            handlePostUpdate={handlePostUpdate}
+                           handlePostDelete={handlePostDelete}
+                           selectedPost={selectedPost}
+                           selectPost={handlePostSelect}
+                           cancelSelectPost={handleCancelSelect}
+                           editMode={editMode}
+                           openForm={handlFormOpen}
+                           closeForm={handleFormClose}
+                           handlePostUpdate={handlePostUpdate}
             />
         </Container>
     );

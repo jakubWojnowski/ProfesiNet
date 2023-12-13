@@ -55,10 +55,10 @@ internal class PostController : BaseController
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    [HttpDelete]
+    public async Task<ActionResult> DeleteAsync(DeletePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.DeleteAsync(id,_context.Id, cancellationToken);
+        await _postService.DeleteAsync(command,_context.Id, cancellationToken);
         return NoContent();
     }
 
