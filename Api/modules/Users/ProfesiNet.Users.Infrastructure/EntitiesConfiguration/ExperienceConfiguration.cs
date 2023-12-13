@@ -18,7 +18,7 @@ internal class ExperienceConfiguration : IEntityTypeConfiguration<Experience>
         builder.HasOne(x => x.User)
             .WithMany(x => x.Experiences)
             .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
         
     }
 }
