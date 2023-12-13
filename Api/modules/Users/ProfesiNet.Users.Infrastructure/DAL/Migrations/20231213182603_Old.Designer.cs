@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ProfesiNet.Users.Infrastructure.Migrations
+namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    partial class ProfesiNetUserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231213182603_Old")]
+    partial class Old
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +53,39 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Certificates");
+                });
+
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Connection", b =>
+                {
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FriendId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProfileId", "FriendId");
+
+                    b.HasIndex("FriendId");
+
+                    b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.ConnectionRequest", b =>
+                {
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ReceiverId", "SenderId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ConnectionRequests");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Education", b =>
@@ -122,6 +158,21 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.ToTable("Experiences");
                 });
 
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Following", b =>
+                {
+                    b.Property<Guid>("ObserverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ObserverId", "TargetId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("Followings");
+                });
+
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.Property<Guid>("Id")
@@ -166,25 +217,9 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Followers")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Followings")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("NetworkConnectionInvitations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NetworkConnections")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .HasMaxLength(50)
@@ -195,7 +230,7 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Certificate", b =>
@@ -206,6 +241,44 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Connection", b =>
+                {
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Friend")
+                        .WithMany("FriendConnections")
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Profile")
+                        .WithMany("ProfileConnections")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Friend");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.ConnectionRequest", b =>
+                {
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Receiver")
+                        .WithMany("ProfileConnectionRequests")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Sender")
+                        .WithMany("SenderConnectionRequests")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Education", b =>
@@ -230,6 +303,25 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Following", b =>
+                {
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Observer")
+                        .WithMany("ObserverFollowings")
+                        .HasForeignKey("ObserverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Target")
+                        .WithMany("TargetFollowings")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Observer");
+
+                    b.Navigation("Target");
+                });
+
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
@@ -249,7 +341,19 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
 
                     b.Navigation("Experiences");
 
+                    b.Navigation("FriendConnections");
+
+                    b.Navigation("ObserverFollowings");
+
+                    b.Navigation("ProfileConnectionRequests");
+
+                    b.Navigation("ProfileConnections");
+
+                    b.Navigation("SenderConnectionRequests");
+
                     b.Navigation("Skills");
+
+                    b.Navigation("TargetFollowings");
                 });
 #pragma warning restore 612, 618
         }

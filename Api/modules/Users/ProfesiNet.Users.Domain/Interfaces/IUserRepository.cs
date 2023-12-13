@@ -10,6 +10,7 @@ public interface IUserRepository
     Task<Guid> AddAsync(User entity, CancellationToken ct = default);
     Task UpdateAsync(User entity, CancellationToken ct = default);
     Task DeleteAsync(User entity, CancellationToken ct = default);
+    Task UpdateFollowingsAsync(Guid  userId, Guid targetUserId, CancellationToken cancellationToken);
 
     Task<User?> GetRecordByFilterAsync(Expression<Func<User, bool>> filter,
         CancellationToken ct = default);
