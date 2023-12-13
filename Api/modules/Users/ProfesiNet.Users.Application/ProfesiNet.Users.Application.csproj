@@ -19,21 +19,11 @@
 
     <ItemGroup>
       <Folder Include="Experiences\Services\" />
-      <Folder Include="Networks\Conncections\Commands\" />
-      <Folder Include="Networks\Conncections\Dtos\" />
-      <Folder Include="Networks\Conncections\Mappings\" />
-      <Folder Include="Networks\Conncections\Queries\" />
-      <Folder Include="Networks\Conncections\Services\" />
-      <Folder Include="Networks\ConnectionRequests\Commands\Create\" />
-      <Folder Include="Networks\ConnectionRequests\Commands\Delete\" />
-      <Folder Include="Networks\ConnectionRequests\Commands\Update\" />
-      <Folder Include="Networks\ConnectionRequests\Mappings\" />
-      <Folder Include="Networks\ConnectionRequests\Queries\" />
-      <Folder Include="Networks\Followings\Commands\" />
-      <Folder Include="Networks\Followings\Dtos\" />
-      <Folder Include="Networks\Followings\Mappings\" />
-      <Folder Include="Networks\Followings\Queries\" />
-      <Folder Include="Networks\Followings\Services\" />
+      <Folder Include="Networks\Connections\Commands\Delete\DeleteConnection\" />
+      <Folder Include="Networks\Connections\Commands\Update\AcceptConnectionRequest\" />
+      <Folder Include="Networks\Connections\Dtos\" />
+      <Folder Include="Networks\Connections\Queries\" />
+      <Folder Include="Networks\Connections\Services\" />
     </ItemGroup>
 
 </Project>

@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ProfesiNet.Users.Infrastructure.Migrations
+namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    partial class ProfesiNetUserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231213020734_networRefactor")]
+    partial class networRefactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +53,36 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Certificates");
+                });
+
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Connection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Education", b =>
@@ -122,36 +155,6 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.ToTable("Experiences");
                 });
 
-            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.NetworkConnection", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("RequestDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("SenderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TargetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SenderId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("NetworkConnections");
-                });
-
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.Property<Guid>("Id")
@@ -222,6 +225,23 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Connection", b =>
+                {
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Sender")
+                        .WithMany("ConnectionsSend")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Target")
+                        .WithMany("ConnectionsReceived")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Sender");
+
+                    b.Navigation("Target");
+                });
+
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Education", b =>
                 {
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
@@ -244,23 +264,6 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.NetworkConnection", b =>
-                {
-                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Sender")
-                        .WithMany("NetworkConnectionsSend")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "Target")
-                        .WithMany("NetworkConnectionsReceived")
-                        .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Sender");
-
-                    b.Navigation("Target");
-                });
-
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
@@ -276,13 +279,13 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 {
                     b.Navigation("Certificates");
 
+                    b.Navigation("ConnectionsReceived");
+
+                    b.Navigation("ConnectionsSend");
+
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");
-
-                    b.Navigation("NetworkConnectionsReceived");
-
-                    b.Navigation("NetworkConnectionsSend");
 
                     b.Navigation("Skills");
                 });
