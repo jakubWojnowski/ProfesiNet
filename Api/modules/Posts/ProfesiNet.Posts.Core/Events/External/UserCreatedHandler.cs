@@ -23,6 +23,7 @@ internal class UserCreatedHandler : IEventHandler<UserCreated>
             Id = @event.Id,
             Name = @event.Name,
             Surname = @event.Surname
+            
         };
         await _creatorRepository.AddAsync(creator);
         _logger.LogInformation($"Added a creator with ID: '{creator.Id}'.");

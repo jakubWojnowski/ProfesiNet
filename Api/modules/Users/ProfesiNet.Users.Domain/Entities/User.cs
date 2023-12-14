@@ -10,6 +10,7 @@ public class User
 
     public string? Address { get; set; }
     public string? Bio { get; set; }
+    public string? ProfilePicture { get; set; }
 
     public IList<Guid> Followings { get; set; } = new List<Guid>();
     public IList<Guid> Followers { get; set; } = new List<Guid>();

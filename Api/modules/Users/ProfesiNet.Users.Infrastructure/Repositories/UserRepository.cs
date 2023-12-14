@@ -248,7 +248,7 @@ internal class UserRepository : GenericRepository<User, Guid>, IUserRepository
                 throw new UserNotFoundException(targetUserId);
             }
 
-            if (!user.Followers.Contains(targetUserId))
+            if (!user.Followings.Contains(targetUserId))
             {
                 throw new UserDosesNotHaveFollowingsException(userId, targetUserId);
             }
