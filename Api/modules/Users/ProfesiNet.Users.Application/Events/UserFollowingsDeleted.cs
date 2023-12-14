@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Application.Events;
 
-public record UserFollowingsDeleted(Guid UserId,Guid TargetId) : IEvent;
+internal record UserFollowingsDeleted(Guid UserId,Guid TargetId) : IEvent;
