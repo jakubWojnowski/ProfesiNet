@@ -23,7 +23,6 @@ using ProfesiNet.Users.Application.Skills.Commands.Update;
 using ProfesiNet.Users.Application.Skills.Queries.GetAll;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Update;
-using ProfesiNet.Users.Application.Users.Commands.Update.Networks.Followings;
 using ProfesiNet.Users.Application.Users.Queries.Get;
 using ProfesiNet.Users.Application.Users.Queries.GetAll;
 
@@ -247,6 +246,84 @@ internal class AccountProfileController : BaseController
          await _mediator.Send(command with { UserId = _context.Id });
         return Ok();
     }
+    
+    [HttpPatch("UpdateUserConnectionInvitations")]
+    public async Task<IActionResult> UpdateUserConnectionInvitations(UpdateConnectionInvitationCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpPatch("UpdateUserConnections")]
+    public async Task<IActionResult> UpdateUserConnections(UpdateConnectionCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpPatch("RemoveUserConnection")]
+    public async Task<IActionResult> RemoveUserConnection(DeleteConnectionCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpPatch("RemoveUserConnectionReceivedInvitation")]
+    public async Task<IActionResult> RemoveUserConnectionInvitation(DeleteConnectionInvitationReceivedCommand receivedCommand)
+    {
+        await _mediator.Send(receivedCommand with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpPatch("RemoveUserConnectionSentInvitation")]
+    public async Task<IActionResult> RemoveUserConnectionSentInvitation(DeleteConnectionInvitationSentCommand sentCommand)
+    {
+        await _mediator.Send(sentCommand with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpPatch("RemoveUserFollowing")]
+    public async Task<IActionResult> RemoveUserFollowing(DeleteFollowingCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Ok();
+    }
+    
+    [HttpGet("GetAllUserFollowings/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserFollowings(Guid userId)
+    {
+        var followings = await _mediator.Send(new GetAllUserFollowingsQuery(userId));
+        return Ok(followings);
+    }
+    
+    [HttpGet("GetAllUserFollowers/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserFollowers(Guid userId)
+    {
+        var followers = await _mediator.Send(new GetAllUserFollowersQuery(userId));
+        return Ok(followers);
+    }
+    
+    [HttpGet("GetAllUserConnections/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserConnections(Guid userId)
+    {
+        var connections = await _mediator.Send(new GetAllUserConnectionsQuery(userId));
+        return Ok(connections);
+    }
+    
+    [HttpGet("GetAllUserConnectionInvitationsReceived/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserConnectionInvitations(Guid userId)
+    {
+        var invitations = await _mediator.Send(new GetAllUserReceivedInvitationsQuery(userId));
+        return Ok(invitations);
+    }
+    
+    [HttpGet("GetAllUserReceivedInvitationsSent/{userId:guid}")]
+    public async Task<IActionResult> GetAllUserReceivedInvitationsSent(Guid userId)
+    {
+        var invitations = await _mediator.Send(new GetAllUserReceivedInvitationsSentQuery(userId));
+        return Ok(invitations);
+    }
+    
 }
 
 //naprawic post certificate i education. daty sa zle

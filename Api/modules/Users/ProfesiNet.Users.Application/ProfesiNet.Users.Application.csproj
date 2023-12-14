@@ -34,7 +34,6 @@
       <Folder Include="Networks\Followings\Mappings\" />
       <Folder Include="Networks\Followings\Queries\" />
       <Folder Include="Networks\Followings\Services\" />
-      <Folder Include="Users\Commands\Update\Networks\Connections\" />
     </ItemGroup>
 
 </Project>

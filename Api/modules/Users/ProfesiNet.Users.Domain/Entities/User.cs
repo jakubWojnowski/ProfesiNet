@@ -14,7 +14,8 @@ public class User
     public IList<Guid> Followings { get; set; } = new List<Guid>();
     public IList<Guid> Followers { get; set; } = new List<Guid>();
     public IList<Guid> NetworkConnections { get; set; } = new List<Guid>();
-    public IList<Guid> NetworkConnectionInvitations { get; set; } = new List<Guid>();
+    public IList<Guid> NetworkConnectionInvitationsReceived { get; set; } = new List<Guid>();
+    public IList<Guid> NetworkConnectionInvitationsSent { get; set; } = new List<Guid>();
     
     public virtual ICollection<Experience> Experiences { get; set; } = new List<Experience>();
     public virtual ICollection<Education> Educations { get; set; } = new List<Education>();

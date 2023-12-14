@@ -1,10 +1,7 @@
-﻿using System.Transactions;
-using MediatR;
-using ProfesiNet.Users.Domain.Entities;
-using ProfesiNet.Users.Domain.Exceptions;
+﻿using MediatR;
 using ProfesiNet.Users.Domain.Interfaces;
 
-namespace ProfesiNet.Users.Application.Users.Commands.Update.Networks.Followings;
+namespace ProfesiNet.Users.Application.Users.Commands.Update;
 
 internal class UpdateUserFollowingsCommandHandler : IRequestHandler<UpdateUserFollowingsCommand>
 {

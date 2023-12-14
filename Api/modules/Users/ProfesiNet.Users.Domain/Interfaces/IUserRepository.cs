@@ -11,6 +11,16 @@ public interface IUserRepository
     Task UpdateAsync(User entity, CancellationToken ct = default);
     Task DeleteAsync(User entity, CancellationToken ct = default);
     Task UpdateFollowingsAsync(Guid  userId, Guid targetUserId, CancellationToken cancellationToken);
+    Task UpdateConnectionInvitationsAsync(Guid userId, Guid targetUserId, CancellationToken cancellationToken);
+    Task UpdateConnectionAsync(Guid userId, Guid targetUserId, CancellationToken cancellationToken);
+    Task DeleteConnectionAsync(Guid userId, Guid targetUserId, CancellationToken cancellationToken);
+    Task DeleteConnectionInvitationReceivedAsync(Guid userId, Guid targetUserId, CancellationToken cancellationToken);
+    Task DeleteFollowingAsync(Guid userId, Guid targetUserId, CancellationToken cancellationToken);
+
+    Task DeleteConnectionInvitationSentAsync(Guid userId, Guid targetUserId,
+        CancellationToken cancellationToken);
+    
+    
 
     Task<User?> GetRecordByFilterAsync(Expression<Func<User, bool>> filter,
         CancellationToken ct = default);
