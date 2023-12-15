@@ -13,7 +13,7 @@ var modules = ModuleLoader.LoadModules(assemblies);
 // builder.Logging.ClearProviders();
 // builder.WebHost.UseNLog();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddInfrastructure(assemblies, modules);
+builder.Services.AddInfrastructure(assemblies, modules, builder.Configuration);
 
 foreach (var module in modules)
 {

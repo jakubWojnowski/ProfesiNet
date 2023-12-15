@@ -21,6 +21,7 @@ using ProfesiNet.Users.Application.Skills.Commands.Create;
 using ProfesiNet.Users.Application.Skills.Commands.Delete;
 using ProfesiNet.Users.Application.Skills.Commands.Update;
 using ProfesiNet.Users.Application.Skills.Queries.GetAll;
+using ProfesiNet.Users.Application.Users.Commands.Create;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Update;
 using ProfesiNet.Users.Application.Users.Queries.Get;
@@ -322,6 +323,13 @@ internal class AccountProfileController : BaseController
     {
         var invitations = await _mediator.Send(new GetAllUserReceivedInvitationsSentQuery(userId));
         return Ok(invitations);
+    }
+    
+    [HttpPatch("AddUserProfilePicture")]
+    public async Task<IActionResult> AddUserProfilePicture([FromForm]AddUserProfilePictureCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Ok();
     }
     
 }
