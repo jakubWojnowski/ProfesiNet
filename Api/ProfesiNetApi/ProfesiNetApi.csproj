@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>true</InvariantGlobalization>
+        <InvariantGlobalization>false</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -35,7 +35,4 @@
       <ProjectReference Include="..\modules\Shared\ProfesiNet.Shared\ProfesiNet.Shared.csproj" />
       <ProjectReference Include="..\modules\Users\ProfesiNet.Users.Api\ProfesiNet.Users.Api.csproj" />
     </ItemGroup>
-    <PropertyGroup>
-        <InvariantGlobalization>false</InvariantGlobalization>
-    </PropertyGroup>
 </Project>
