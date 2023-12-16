@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Messaging;
 using ProfesiNet.Shared.Photos;
+using ProfesiNet.Users.Application.Events;
 using ProfesiNet.Users.Application.Photos.Dtos;
 using ProfesiNet.Users.Application.Photos.Mappings;
 using ProfesiNet.Users.Domain.Entities;
@@ -14,14 +16,16 @@ internal class AddUserProfilePictureCommandHandler : IRequestHandler<AddUserProf
     private readonly IUserRepository _userRepository;
     private readonly IPhotoRepository _photoRepository;
     private readonly IPhotoAccessor _photoAccessor;
+    private readonly IMessageBroker _messageBroker;
     private static readonly PhotoMapper Mapper = new();
 
     public AddUserProfilePictureCommandHandler(IUserRepository userRepository, IPhotoRepository photoRepository,
-        IPhotoAccessor photoAccessor)
+        IPhotoAccessor photoAccessor, IMessageBroker messageBroker)
     {
         _userRepository = userRepository;
         _photoRepository = photoRepository;
         _photoAccessor = photoAccessor;
+        _messageBroker = messageBroker;
     }
 
     public async Task<string> Handle(AddUserProfilePictureCommand request, CancellationToken cancellationToken)
@@ -48,6 +52,7 @@ internal class AddUserProfilePictureCommandHandler : IRequestHandler<AddUserProf
         };
         var photo = Mapper.MapPhotoDtoToPhoto(photoDto);
         await _photoRepository.AddAsync(photo, cancellationToken);
+        await _messageBroker.PublishAsync(new UserProfilePictureAdded(user.Id, photoDto.Url));
 
 
         return photoDto.Url;

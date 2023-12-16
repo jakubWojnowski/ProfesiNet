@@ -23,7 +23,9 @@ internal class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserD
         {
             throw new UserNotFoundException(request.Id);
         }
-        return Mapper.MapUserToUserDto(user);
+        var dto = Mapper.MapUserToUserDto(user);
+        dto.ProfilePhoto = user.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+        return dto;
       
     }
 }

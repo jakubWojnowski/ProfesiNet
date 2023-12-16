@@ -27,7 +27,7 @@ internal class GetAllUserConnectionsQueryHandler : IRequestHandler<GetAllUserCon
         foreach (var id in connectionsGuids)
         {
             var connection = await _userRepository.GetByIdAsync(id, cancellationToken);
-            if (connection != null)
+            if (connection is not null)
             {
                 connections.Add(new UserDto
                 {

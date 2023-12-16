@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Messaging;
 using ProfesiNet.Shared.Photos;
+using ProfesiNet.Users.Application.Events;
 using ProfesiNet.Users.Domain.Enums;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
@@ -10,11 +12,13 @@ internal class DeleteUserProfilePictureCommandHandler : IRequestHandler<DeleteUs
 {
     private readonly IPhotoRepository _photoRepository;
     private readonly IPhotoAccessor _photoAccessor;
+    private readonly IMessageBroker _messageBroker;
 
-    public DeleteUserProfilePictureCommandHandler( IPhotoRepository photoRepository, IPhotoAccessor photoAccessor)
+    public DeleteUserProfilePictureCommandHandler( IPhotoRepository photoRepository, IPhotoAccessor photoAccessor, IMessageBroker messageBroker)
     {
         _photoRepository = photoRepository;
         _photoAccessor = photoAccessor;
+        _messageBroker = messageBroker;
     }
     public async Task Handle(DeleteUserProfilePictureCommand request, CancellationToken cancellationToken)
     {
@@ -34,5 +38,6 @@ internal class DeleteUserProfilePictureCommandHandler : IRequestHandler<DeleteUs
         }
 
         await _photoRepository.DeleteAsync(photo, cancellationToken);
+        await _messageBroker.PublishAsync(new UserProfilePictureDeleted(request.UserId));
     }
 }
