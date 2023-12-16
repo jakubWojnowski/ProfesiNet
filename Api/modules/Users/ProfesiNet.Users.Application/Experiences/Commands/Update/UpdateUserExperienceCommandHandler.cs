@@ -14,26 +14,32 @@ internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserEx
     private readonly ICannotSetDatePolicy _cannotSetDatePolicy;
     private static readonly ExperienceMapper Mapper = new();
 
-    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository, IUserRepository userRepository,
+    public UpdateUserExperienceCommandHandler(IExperienceRepository experienceRepository,
+        IUserRepository userRepository,
         ICannotSetDatePolicy cannotSetDatePolicy)
     {
         _experienceRepository = experienceRepository;
         _userRepository = userRepository;
         _cannotSetDatePolicy = cannotSetDatePolicy;
     }
+
     public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.Id, cancellationToken);
+        var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
         {
-            throw new UserNotFoundException(request.Id);
+            throw new UserNotFoundException(request.UserId);
         }
-        var experience = await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == user.Id, cancellationToken);
+
+        var experience =
+            await _experienceRepository.GetRecordByFilterAsync(e => e.Id == request.Id && e.UserId == user.Id,
+                cancellationToken);
 
         if (experience is null)
         {
             throw new ExperienceNotFoundException(request.Id);
         }
+
         var experienceToUpdateDto = new ExperienceDto()
         {
             Company = request.Company ?? experience.Company,
@@ -46,9 +52,9 @@ internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserEx
         {
             throw new CannotSetDateException(experienceToUpdateDto.StartDate, experienceToUpdateDto.EndDate);
         }
-        
+
         var updatedExperience = Mapper.MapUpdateExperienceDtoToExperience(experience, experienceToUpdateDto);
-        
+
         await _experienceRepository.UpdateAsync(updatedExperience, cancellationToken);
     }
 }

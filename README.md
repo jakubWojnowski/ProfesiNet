@@ -1,6 +1,6 @@
 # ProfesiNet (in progress)
 
-# Modular Monolith application with RabbitMQ ona a Back End.
+# Modular Monolith application.
 
 # React + TS on a Front End Side 
 

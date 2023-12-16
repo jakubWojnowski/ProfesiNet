@@ -48,18 +48,13 @@ public static class ServiceCollectionExtension
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
                 };
             });
-        // services.AddDbContext<ProfesiNetUserDbContext>(options =>
-        // {
-        //     options
-        //         .UseLazyLoadingProxies()
-        //         .UseSqlServer(configuration.GetConnectionString("ProfesiNet"));
-        // });
         services.AddMsSql<ProfesiNetUserDbContext>();
         services.AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IExperienceRepository, ExperienceRepository>()
             .AddScoped<IEducationRepository, EducationRepository>()
             .AddScoped<ICertificateRepository, CertificateRepository>()
             .AddScoped<ISkillRepository, SkillRepository>()
+            .AddScoped<IPhotoRepository, PhotoRepository>()
             .AddScoped<IJwtProvider, JwtProvider>();
         return services;
     }

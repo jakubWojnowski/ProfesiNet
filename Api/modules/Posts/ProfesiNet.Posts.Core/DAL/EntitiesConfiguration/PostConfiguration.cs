@@ -30,6 +30,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasOne(x => x.Creator)
             .WithMany(x => x.Posts)
             .HasForeignKey(x => x.CreatorId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,20 +1,38 @@
 import {FC} from "react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
-import {Button, Icon, Item, ItemImage, Label, Segment} from "semantic-ui-react";
+import {Button, Icon, Item,  Label, Segment, Dropdown} from "semantic-ui-react";
 interface Props {
     posts: Post[];
+    selectPost: (id: string) => void;
+    handlePostDelete: (id: string) => void;
 }
 
-const PostList: FC<Props> = ({posts}: Props) => {
+const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
+    
     return (
-
-        <Item.Group divided>
+        <Item.Group divided >
             {posts.map((post) => (
                 <Segment key={post.id} className="post-segment"> {/* Move key to here */}
                     <Item.Content>
-                        <Item.Header >{post.creatorName}</Item.Header>
+                      <div className="dropdown">
+                          <Dropdown icon='ellipsis horizontal' className="options-button"  closeOnEscape   >
+                              <Dropdown.Menu >
+                                  <Dropdown.Item
+                                      text='Delete'
+                                      icon='delete'
+                                      onClick={()=>handlePostDelete(post.id)} // Call deletePost function when clicked
+                                  />
+                                  <Dropdown.Item
+                                      text='Update'
+                                      icon='edit'
+                                      onClick={() => {selectPost(post.id)}} // Call updatePost function when clicked
+                                  />
+                              </Dropdown.Menu>
+                          </Dropdown>
+                      </div>
+                        <Item.Header >{post.creatorName}{" "}{post.creatorSurname}
+                        </Item.Header>
                         <Item.Description as='a' className="post-content">{post.description}</Item.Description>
-                        {/*<ItemImage src="/drwal.jpg" className="post-image"  />*/}
                         {post.media && <img src="/drwal.jpg" alt='Post media' className="post-image"/>}
                         <div className="post-date">{new Date(post.publishedAt).toLocaleString()}</div>
                         <Item.Extra className="post-actions">

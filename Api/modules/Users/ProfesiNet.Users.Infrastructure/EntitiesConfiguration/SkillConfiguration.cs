@@ -10,6 +10,7 @@ public class SkillConfiguration : IEntityTypeConfiguration<Skill>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(50);
-        builder.HasOne(x => x.User).WithMany(x => x.Skills).HasForeignKey(x => x.UserID);
+        builder.HasOne(x => x.User).WithMany(x => x.Skills).HasForeignKey(x => x.UserID)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

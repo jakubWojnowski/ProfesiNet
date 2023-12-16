@@ -2,7 +2,4 @@
 
 namespace ProfesiNet.Users.Domain.Exceptions;
 
-public class ExperienceNotFoundException(Guid id) : ProfesiNetException($"Experience with id {id} not found")
-{
-    public Guid Id { get; } = id;
-}
+public class ExperienceNotFoundException(Guid id) : ProfesiNetException($"Experience with id {id} not found");

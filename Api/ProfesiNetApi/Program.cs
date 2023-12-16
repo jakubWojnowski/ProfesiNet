@@ -10,10 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureModules();
 var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
-builder.Logging.ClearProviders();
-builder.WebHost.UseNLog();
+// builder.Logging.ClearProviders();
+// builder.WebHost.UseNLog();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddInfrastructure(assemblies, modules);
+builder.Services.AddInfrastructure(assemblies, modules, builder.Configuration);
 
 foreach (var module in modules)
 {
@@ -35,7 +35,7 @@ foreach (var module in modules)
 app.MapControllers();
 app.MapGet("/", () => "ProfesiNet API!");
 
-// app.UseRouting(); tu jest jakis problem wywala apke
+// app.UseRouting();// tu jest jakis problem wywala apke
 modules.Clear();
 assemblies.Clear();
 await app.RunAsync();

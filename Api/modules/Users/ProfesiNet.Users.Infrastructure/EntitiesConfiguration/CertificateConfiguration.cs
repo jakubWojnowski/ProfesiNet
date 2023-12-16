@@ -13,6 +13,7 @@ internal class CertificateConfiguration : IEntityTypeConfiguration<Certificate>
         builder.Property(x => x.Name).HasMaxLength(100);
         builder.Property(x => x.Description).HasMaxLength(500);
         builder.Property(x => x.Date).IsRequired();
-        builder.HasOne(x => x.User).WithMany(x => x.Certificates).HasForeignKey(x => x.UserId);
+        builder.HasOne(x => x.User).WithMany(x => x.Certificates).HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

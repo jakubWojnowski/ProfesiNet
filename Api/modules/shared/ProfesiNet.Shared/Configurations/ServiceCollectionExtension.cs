@@ -16,6 +16,7 @@ using ProfesiNet.Shared.Messaging;
 using ProfesiNet.Shared.Middlewares;
 using ProfesiNet.Shared.Modules;
 using ProfesiNet.Shared.MsSql;
+using ProfesiNet.Shared.Photos;
 using ProfesiNet.Shared.Services;
 using ProfesiNet.Shared.Time;
 using ProfesiNet.Shared.Validators;
@@ -28,7 +29,7 @@ internal static class ServiceCollectionExtension
 {
     private const string CorsPolicy = "cors";
 
-    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules)
+    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules, IConfiguration config)
     {
         var disabledModules = new List<string>();
         using (var servicesProvider = services.BuildServiceProvider())
@@ -99,6 +100,7 @@ internal static class ServiceCollectionExtension
         services.AddModulesRequests(assemblies);
         services.AddMemoryCache();
         services.AddEvents(assemblies);
+        services.AddPhotos(config);
         services.AddMessaging();
         services.AddScoped<ICurrentUserContextService, CurrentUserContextService>();
         services.AddScoped<IContext, Context>();

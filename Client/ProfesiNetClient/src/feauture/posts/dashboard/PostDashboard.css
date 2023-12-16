@@ -26,11 +26,18 @@ body {
 
 /* Style for the post content */
 .post-content {
+    
     color: #333; /* Dark grey color for text */
     font-size: 1rem; /* Default font size for the content */
     line-height: 1.5; /* Line height for better readability */
-    margin-top: 0.5rem; /* Space above the content */
+    margin-top: 2rem; /* Space above the content */
     display: flex;
+    overflow: hidden;  /* Hide overflow */
+    /* Or use 'auto' if you want a scrollbar */
+    /* overflow: auto; */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 /* Style for the post date */
@@ -86,4 +93,28 @@ body {
 /* Ensure the icons have proper spacing */
 .ui.button .icon {
     margin: 0; /* Remove default margin */
+}
+.post-segment {
+    position: relative;
+    padding-right: 30px; /* Adjust this value based on your design */
+}
+
+/*.options-button {*/
+/*    display: revert;*/
+/*    right: 0;*/
+/*    top: 0; !* Adjust this if you want to change the vertical position *!*/
+/*    z-index: 10; !* Ensures the dropdown is above other content *!*/
+/*}*/
+
+/* Additional styles for the dropdown menu to ensure it aligns correctly */
+.ui.dropdown .menu {
+    right: 0; /* Align the right edge of the menu with the right edge of the dropdown button */
+    left: auto; /* Override default positioning */
+}
+.dropdown {
+    margin-top: 2px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: flex-end;
+  
 }

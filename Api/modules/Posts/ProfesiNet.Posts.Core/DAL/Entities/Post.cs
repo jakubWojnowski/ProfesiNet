@@ -11,7 +11,7 @@ public class Post
     public virtual ICollection<Share>? Shares { get; set; } = new List<Share>();
     public virtual ICollection<Comment>? Comments { get; set; }
     public virtual ICollection<PostLike> Likes { get; set; } = new List<PostLike>();
-    public Guid CreatorId { get; set; }
-    public virtual Creator Creator { get; set; } = null!;
+    public Guid? CreatorId { get; set; }
+    public virtual Creator? Creator { get; set; } = null!;
 
 }

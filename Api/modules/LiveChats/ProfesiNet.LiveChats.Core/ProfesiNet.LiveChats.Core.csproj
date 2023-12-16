@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DAL\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Shared\ProfesiNet.Shared\ProfesiNet.Shared.csproj" />
     </ItemGroup>
 

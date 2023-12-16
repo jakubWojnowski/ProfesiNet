@@ -68,13 +68,12 @@ internal class CommentService : ICommentService
             throw new CommentNotFoundException(command.Id);
         }
 
-        var commentUpdated = Mapper.MapAndUpdateCommentCommandToComment( command);
+        var commentUpdated = Mapper.MapAndUpdateCommentCommandToComment(command, comment);
         await _commentRepository.UpdateAsync(commentUpdated, cancellationToken);
     }
 
-    public async Task DeleteAsync(DeleteCommentCommand command, Guid id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(DeleteCommentCommand command, Guid creatorId, CancellationToken cancellationToken = default)
     {
-        var creatorId = id;
         var comment = await _commentRepository.GetRecordByFilterAsync(c => c.Id == command.Id && c.CreatorId == creatorId, cancellationToken);
         if (comment is null)
         {

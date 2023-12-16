@@ -2,6 +2,7 @@ export interface Post {
     id: string
     creatorId: string
     creatorName: string
+    creatorSurname: string
     media: string
     description: string
     publishedAt: string

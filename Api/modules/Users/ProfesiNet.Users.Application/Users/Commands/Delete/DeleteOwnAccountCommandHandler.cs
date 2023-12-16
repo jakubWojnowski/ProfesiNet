@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using ProfesiNet.Shared.Messaging;
+using ProfesiNet.Users.Application.Events;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 
@@ -8,12 +10,12 @@ internal class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccount
 {
 
     private readonly IUserRepository _userRepository;
+    private readonly IMessageBroker _messageBroker;
 
-    public DeleteOwnAccountCommandHandler(IUserRepository userRepository)
+    public DeleteOwnAccountCommandHandler(IUserRepository userRepository, IMessageBroker messageBroker)
     {
-      
-      
         _userRepository = userRepository;
+        _messageBroker = messageBroker;
     }
 
     public async Task Handle(DeleteOwnAccountCommand request, CancellationToken cancellationToken)
@@ -24,6 +26,8 @@ internal class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccount
             throw new UserNotFoundException(request.Id);
         }
         await _userRepository.DeleteAsync(user, cancellationToken);
+        await _messageBroker.PublishAsync(new UserDeleted(user.Id));
+        
         
     }
 }

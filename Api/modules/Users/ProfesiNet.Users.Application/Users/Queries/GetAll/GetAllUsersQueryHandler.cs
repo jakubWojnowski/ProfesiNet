@@ -17,6 +17,15 @@ internal class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IRead
     public async Task<IReadOnlyCollection<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var users = await _userRepository.GetAllAsync(cancellationToken);
-        return Mapper.UserDtosToUsers(users);
+        var dtos = Mapper.UserDtosToUsers(users);
+        
+        foreach (var dto in dtos)
+        {
+            dto.ProfilePhoto = users.FirstOrDefault(x => x.Id == dto.Id)?.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+        }
+        return dtos;
+
+        
     }
 }
+

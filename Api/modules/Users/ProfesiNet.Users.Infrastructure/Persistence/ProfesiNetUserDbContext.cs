@@ -10,11 +10,10 @@ internal class ProfesiNetUserDbContext : DbContext
     }
     public DbSet<Experience> Experiences { get; set; }
     public DbSet<Education> Educations { get; set; }
-    public DbSet<Connection> Connections { get; set; }
-    public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
-    public DbSet<Following> Followings { get; set; }
     public DbSet<Certificate> Certificates { get; set; }
     public DbSet<Skill> Skills { get; set; }
+    public DbSet<Photo> Photos { get; set; }
+    public DbSet<User> Users { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

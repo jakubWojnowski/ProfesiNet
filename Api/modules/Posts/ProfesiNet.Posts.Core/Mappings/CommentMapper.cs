@@ -18,7 +18,11 @@ internal partial class CommentMapper
 
     public partial CommentDetailsDto MapCommentToCommentDetailsDto(CommentDao commentDao);
 
-    [MapperIgnoreSource(nameof(UpdateCommentCommand.Id))]
-    public partial Comment MapAndUpdateCommentCommandToComment(UpdateCommentCommand command);
+   
+    public  Comment MapAndUpdateCommentCommandToComment(UpdateCommentCommand command , Comment comment)
+    {
+        comment.Content = command.Content;
+        return comment;
+    }
 
 }

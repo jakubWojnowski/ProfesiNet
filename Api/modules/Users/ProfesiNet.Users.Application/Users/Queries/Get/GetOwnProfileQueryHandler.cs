@@ -15,6 +15,7 @@ internal class GetOwnProfileQueryHandler : IRequestHandler<GetOwnProfileQuery, U
     {
         _userRepository = userRepository;
     }
+
     public async Task<UserDto> Handle(GetOwnProfileQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
@@ -22,6 +23,9 @@ internal class GetOwnProfileQueryHandler : IRequestHandler<GetOwnProfileQuery, U
         {
             throw new UserNotFoundException(request.UserId);
         }
-        return Mapper.MapUserToUserDto(user);
+
+        var dto = Mapper.MapUserToUserDto(user);
+        dto.ProfilePhoto = user.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+        return dto;
     }
 }
