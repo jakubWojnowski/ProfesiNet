@@ -18,6 +18,7 @@ using ProfesiNet.Users.Application.Experiences.Commands.Update;
 using ProfesiNet.Users.Application.Experiences.Queries.Get;
 using ProfesiNet.Users.Application.Experiences.Queries.GetAll;
 using ProfesiNet.Users.Application.Photos.Commands.Create;
+using ProfesiNet.Users.Application.Photos.Commands.Delete;
 using ProfesiNet.Users.Application.Skills.Commands.Create;
 using ProfesiNet.Users.Application.Skills.Commands.Delete;
 using ProfesiNet.Users.Application.Skills.Commands.Update;
@@ -330,6 +331,13 @@ internal class AccountProfileController : BaseController
     {
         var url = await _mediator.Send(command with { UserId = _context.Id });
         return Ok(url);
+    }
+    
+    [HttpDelete("DeleteUserProfilePicture")]
+    public async Task<IActionResult> DeleteUserProfilePicture(DeleteUserProfilePictureCommand command)
+    {
+        await _mediator.Send(command with { UserId = _context.Id });
+        return NoContent();
     }
     
 }

@@ -19,10 +19,11 @@ internal class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserD
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (user == null)
+        if (user is null)
         {
             throw new UserNotFoundException(request.Id);
         }
         return Mapper.MapUserToUserDto(user);
+      
     }
 }

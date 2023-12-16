@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using ProfesiNet.Users.Application.Photos.Dtos;
 
 namespace ProfesiNet.Users.Application.Users.Dtos;
 
@@ -10,6 +11,7 @@ public class UserDto
 
     public string? Address { get; set; }
     public string? Bio { get; set; }
+    public string? ProfilePhoto{ get; set; }
 }
 
 public class UserDetailsDto : UserDto

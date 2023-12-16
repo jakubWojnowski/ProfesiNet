@@ -11,6 +11,7 @@ internal partial class UserMapper
 {
     public partial User MapRegistrationDtoToUser(RegisterUserDto registerUserDto);
 
+    
     public partial UserDetailsDto MapUserToUserDto(User user); 
 
     public User MapUpdateUserBioDtoToUser(User user, UserBioDto userBio)
