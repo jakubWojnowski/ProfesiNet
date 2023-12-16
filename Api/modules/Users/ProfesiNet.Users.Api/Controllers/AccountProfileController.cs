@@ -17,11 +17,11 @@ using ProfesiNet.Users.Application.Experiences.Commands.Delete;
 using ProfesiNet.Users.Application.Experiences.Commands.Update;
 using ProfesiNet.Users.Application.Experiences.Queries.Get;
 using ProfesiNet.Users.Application.Experiences.Queries.GetAll;
+using ProfesiNet.Users.Application.Photos.Commands.Create;
 using ProfesiNet.Users.Application.Skills.Commands.Create;
 using ProfesiNet.Users.Application.Skills.Commands.Delete;
 using ProfesiNet.Users.Application.Skills.Commands.Update;
 using ProfesiNet.Users.Application.Skills.Queries.GetAll;
-using ProfesiNet.Users.Application.Users.Commands.Create;
 using ProfesiNet.Users.Application.Users.Commands.Delete;
 using ProfesiNet.Users.Application.Users.Commands.Update;
 using ProfesiNet.Users.Application.Users.Queries.Get;
@@ -325,11 +325,11 @@ internal class AccountProfileController : BaseController
         return Ok(invitations);
     }
     
-    [HttpPatch("AddUserProfilePicture")]
+    [HttpPost("AddUserProfilePicture")]
     public async Task<IActionResult> AddUserProfilePicture([FromForm]AddUserProfilePictureCommand command)
     {
-        await _mediator.Send(command with { UserId = _context.Id });
-        return Ok();
+        var url = await _mediator.Send(command with { UserId = _context.Id });
+        return Ok(url);
     }
     
 }

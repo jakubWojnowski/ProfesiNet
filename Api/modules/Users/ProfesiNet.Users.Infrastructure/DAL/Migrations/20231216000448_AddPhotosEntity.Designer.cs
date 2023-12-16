@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ProfesiNet.Users.Infrastructure.Migrations
+namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    partial class ProfesiNetUserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216000448_AddPhotosEntity")]
+    partial class AddPhotosEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,9 +131,8 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PictureType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PictureType")
+                        .HasColumnType("int");
 
                     b.Property<string>("PublicId")
                         .HasColumnType("nvarchar(max)");
@@ -145,7 +147,7 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Photos", (string)null);
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
