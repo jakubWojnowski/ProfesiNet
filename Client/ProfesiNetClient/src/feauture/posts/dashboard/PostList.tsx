@@ -5,14 +5,14 @@ import {useStore} from "../../../app/stores/Store.ts";
 import {observer} from "mobx-react-lite";
 interface Props {
     posts: Post[];
-    handlePostDelete: (id: string) => void;
+   
     
 }
 
-const PostList: FC<Props> = ({posts, handlePostDelete}: Props) => {
+const PostList: FC<Props> = ({posts}: Props) => {
     
     const {postStore} = useStore();
-    const {openForm,selectPost} = postStore;
+    const {openForm, deletePost} = postStore;
     
     return (
         <Item.Group divided >
@@ -25,7 +25,7 @@ const PostList: FC<Props> = ({posts, handlePostDelete}: Props) => {
                                   <Dropdown.Item
                                       text='Delete'
                                       icon='delete'
-                                      onClick={()=>handlePostDelete(post.id)} // Call deletePost function when clicked
+                                      onClick={()=>{deletePost(post.id).then()}} // Call deletePost function when clicked
                                   />
                                   <Dropdown.Item
                                       text='Update'
@@ -78,4 +78,4 @@ const PostList: FC<Props> = ({posts, handlePostDelete}: Props) => {
     );
 }
 
-export default observer(PostList);
+export default PostList;

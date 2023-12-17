@@ -1,21 +1,13 @@
 import {ChangeEvent, FC, useState} from "react";
 import {Button,  Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
-import {Post} from "../../../app/modules/interfaces/Post.ts";
 import {useStore} from "../../../app/stores/Store.ts";
 import LoadingComponent from "../../../app/layout/components/LoadingComponent.tsx";
+import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
 import {observer} from "mobx-react-lite";
-interface Props{
-   
-    // handlePostUpdate: (UpdatePost: Post | {
-    //     description: string;
-    //     id: string;
-    //     File: { prototype: File; new(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File }
-    // }) => void;
-    submitting: boolean;
-}
-const PostEditForm: FC<Props> = ({submitting}:Props) => {
+
+const PostEditForm: FC = () => {
     const {postStore} = useStore();
-    const {selectedPost, cancelSelectedPost, closeForm} = postStore;
+    const {selectedPost, updatePost, cancelSelectedPost, closeForm, loading} = postStore;
 
     if(!selectedPost) return <LoadingComponent/>;
     
@@ -27,6 +19,12 @@ const PostEditForm: FC<Props> = ({submitting}:Props) => {
     const [post, setPost] = useState(initialFormState);
     
     const handleSubmit = () => {
+        const postToUpdate: UpdatePost = {
+            id: post.id,
+            description: post.description,
+            file: undefined, // Make sure this exists in your post object, or handle accordingly
+        };
+        updatePost(postToUpdate).then(r => console.log(r));
         setTimeout(() => {
         closeForm();
         cancelSelectedPost();
@@ -39,7 +37,6 @@ const PostEditForm: FC<Props> = ({submitting}:Props) => {
         setPost({ ...post, [name]: value });
         console.log(name, value);
     };
-
     return (
         <Modal
             onClose={() => closeForm()}
@@ -71,11 +68,11 @@ const PostEditForm: FC<Props> = ({submitting}:Props) => {
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <Button color='green' onClick={handleSubmit} loading={submitting}>
+                <Button color='green' onClick={handleSubmit} loading={loading}>
                     Publish
                 </Button>
                 
-                <Button color='red' onClick={() => cancelSelectedPost()}>
+                <Button color='red' onClick={() => closeForm()}>
                     Cancel
                 </Button>
             </Modal.Actions>
@@ -83,4 +80,4 @@ const PostEditForm: FC<Props> = ({submitting}:Props) => {
     );
 }
 
-export default observer( PostEditForm);
+export default observer(PostEditForm);

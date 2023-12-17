@@ -12,7 +12,7 @@ const sleep = (delay: number) => {
 axios.defaults.baseURL = 'https://localhost:5000';
 axios.interceptors.response.use(async response => {
     try {
-        await sleep(1000);
+        await sleep(500);
         return response;
     } catch (error) {
         console.log(error);
@@ -52,7 +52,7 @@ const Posts = {
     getAllOwn: () => requests.get('/posts-module/Post/getAllOwn'),
     create: ( CreatePost:CreatePost) => {
         const formData = new FormData();
-        if (File) {
+        if (File && CreatePost.file) {
             formData.append('File', CreatePost.file);
         }
         formData.append('Description', CreatePost.description);

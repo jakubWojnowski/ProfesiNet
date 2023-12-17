@@ -1,4 +1,4 @@
 export interface CreatePost {
-    file: File 
+    file: File | null
     description: string
 }
