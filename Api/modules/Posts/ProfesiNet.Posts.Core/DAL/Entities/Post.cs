@@ -8,7 +8,6 @@ public class Post
     public string? ImageUrl { get; set; }
     public string? ImageId { get; set; }
     public DateTime PublishedAt { get; set; }
-    
     public virtual ICollection<Share>? Shares { get; set; } = new List<Share>();
     public virtual ICollection<Comment>? Comments { get; set; }
     public virtual ICollection<PostLike> Likes { get; set; } = new List<PostLike>();

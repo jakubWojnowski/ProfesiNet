@@ -5,34 +5,30 @@ import './PostDashboard.css';
 import PostList from "./PostList.tsx";
 import PostEditForm from "../form/PostEditForm.tsx";
 import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
+import {useStore} from "../../../app/stores/Store.ts";
+import {observer} from "mobx-react-lite";
 
 interface Props {
     posts: Post[];
-    selectedPost: Post | undefined;
-    selectPost: (id: string) => void;
-    cancelSelectPost: () => void;
-    editMode: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
+ 
     handlePostUpdate: (updatePost: UpdatePost) => void;
     handlePostDelete: (id: string) => void;
     submitting: boolean;
 }
 
-const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelectPost, closeForm,  handlePostUpdate, handlePostDelete, submitting}: Props) =>  {
+const PostDashboard: FC<Props> = ({posts, handlePostUpdate, handlePostDelete, submitting}: Props) =>  {
+    const {postStore} = useStore();
+    const {editMode} = postStore;
     return (
         <Grid centered={true}>
         <Grid.Column width={10}>
             <PostList posts={posts}
-            selectPost={selectPost} 
             handlePostDelete={handlePostDelete}
+                      
             />
             </Grid.Column>
-            {selectedPost && (
-                <PostEditForm 
-                    closeForm={closeForm} 
-                    post={selectedPost} 
-                    cancelSelectPost={cancelSelectPost} 
+            {editMode && (
+                <PostEditForm
                     handlePostUpdate={handlePostUpdate}
                     submitting={submitting}
                 />
@@ -43,4 +39,4 @@ const PostDashboard: FC<Props> = ({posts, selectPost, selectedPost, cancelSelect
     );
 }
 
-export default PostDashboard;
+export default observer(PostDashboard);

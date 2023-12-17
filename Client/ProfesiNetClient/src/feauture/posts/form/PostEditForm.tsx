@@ -1,18 +1,24 @@
 import {ChangeEvent, FC, useState} from "react";
 import {Button,  Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
+import {useStore} from "../../../app/stores/Store.ts";
+import LoadingComponent from "../../../app/layout/components/LoadingComponent.tsx";
+import {observer} from "mobx-react-lite";
 interface Props{
-    closeForm: () => void;
-    cancelSelectPost: () => void;
-    post: Post | undefined;
-    handlePostUpdate: (UpdatePost: Post | {
-        description: string;
-        id: string;
-        File: { prototype: File; new(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File }
-    }) => void;
+   
+    // handlePostUpdate: (UpdatePost: Post | {
+    //     description: string;
+    //     id: string;
+    //     File: { prototype: File; new(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File }
+    // }) => void;
     submitting: boolean;
 }
-const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost, handlePostUpdate,submitting}:Props) => {
+const PostEditForm: FC<Props> = ({submitting}:Props) => {
+    const {postStore} = useStore();
+    const {selectedPost, cancelSelectedPost, closeForm} = postStore;
+
+    if(!selectedPost) return <LoadingComponent/>;
+    
     const initialFormState = selectedPost ?? {
         id: '',
         description: '',
@@ -22,9 +28,8 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
     
     const handleSubmit = () => {
         setTimeout(() => {
-        handlePostUpdate(post);
         closeForm();
-        cancelSelectPost();
+        cancelSelectedPost();
         }
         , 1000);
     };
@@ -43,7 +48,7 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
         >
             <Modal.Header>Create a Post</Modal.Header>
             <Modal.Content>
-                <Form onSubmit={handleSubmit} autocomplete='off'>
+                <Form onSubmit={handleSubmit} autoComplete='off'>
                     <TextArea 
                         rows={3}
                         placeholder="What's on your mind?"
@@ -70,7 +75,7 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
                     Publish
                 </Button>
                 
-                <Button color='red' onClick={() => cancelSelectPost()}>
+                <Button color='red' onClick={() => cancelSelectedPost()}>
                     Cancel
                 </Button>
             </Modal.Actions>
@@ -78,4 +83,4 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
     );
 }
 
-export default PostEditForm;
+export default observer( PostEditForm);

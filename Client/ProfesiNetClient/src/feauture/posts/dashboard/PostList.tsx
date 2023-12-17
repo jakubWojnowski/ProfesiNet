@@ -1,14 +1,18 @@
 import {FC} from "react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 import {Button, Icon, Item,  Label, Segment, Dropdown} from "semantic-ui-react";
+import {useStore} from "../../../app/stores/Store.ts";
+import {observer} from "mobx-react-lite";
 interface Props {
     posts: Post[];
-    selectPost: (id: string) => void;
     handlePostDelete: (id: string) => void;
     
 }
 
-const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
+const PostList: FC<Props> = ({posts, handlePostDelete}: Props) => {
+    
+    const {postStore} = useStore();
+    const {openForm,selectPost} = postStore;
     
     return (
         <Item.Group divided >
@@ -26,7 +30,7 @@ const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
                                   <Dropdown.Item
                                       text='Update'
                                       icon='edit'
-                                      onClick={() => {selectPost(post.id)}} // Call updatePost function when clicked
+                                      onClick={() => {openForm(post.id)}} // Call updatePost function when clicked
                                   />
                               </Dropdown.Menu>
                           </Dropdown>
@@ -74,4 +78,4 @@ const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
     );
 }
 
-export default PostList;
+export default observer(PostList);
