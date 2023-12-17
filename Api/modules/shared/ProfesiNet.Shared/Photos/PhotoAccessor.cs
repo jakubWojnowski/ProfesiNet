@@ -47,6 +47,20 @@ public class PhotoAccessor : IPhotoAccessor
         return null;
     
     }
+    public async Task<IEnumerable<PhotoUploadResult>> AddPhotos(IEnumerable<IFormFile> files)
+    {
+        var photoUploadResults = new List<PhotoUploadResult>();
+     
+        foreach (var file in files)
+        {
+            var photoUploadResult = await AddPhoto(file);
+            if (photoUploadResult != null) photoUploadResults.Add(photoUploadResult);
+        }
+
+        return photoUploadResults;
+    }
+    
+    
 
     public async Task<string?> DeletePhoto(string publicId)
     {

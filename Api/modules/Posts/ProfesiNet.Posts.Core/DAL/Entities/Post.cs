@@ -4,8 +4,9 @@ public class Post
 {
     public Guid Id { get; set; }
     
-    public string? Media { get; set; }
     public string? Description { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? ImageId { get; set; }
     public DateTime PublishedAt { get; set; }
     
     public virtual ICollection<Share>? Shares { get; set; } = new List<Share>();

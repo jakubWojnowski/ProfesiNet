@@ -1,18 +1,24 @@
 import { FC, useState } from 'react';
 import { Button, Modal, Form, TextArea, Icon, Grid, Segment } from 'semantic-ui-react';
+import {CreatePost} from "../../../app/modules/interfaces/CreatePost.ts";
 
 interface PostFormProps {
-    onPostSubmit: (content: string) => void; // Add other props as needed
+    onPostSubmit: (CreatePost:CreatePost) => void; // Add other props as needed
+    submitting: boolean;
 }
 
-const PostForm: FC<PostFormProps> = ({ onPostSubmit }) => {
+const PostForm: FC<PostFormProps> = ({ onPostSubmit, submitting }) => {
     const [open, setOpen] = useState(false);
     const [postContent, setPostContent] = useState('');
 
     const handleSubmit = () => {
-        onPostSubmit(postContent);
+        onPostSubmit({description: postContent,file: null });
         setPostContent('');
-        setOpen(false);
+        setTimeout(() => {
+            setOpen(false);
+        }
+    , 1000);
+        
     };
 
     return (
@@ -34,6 +40,7 @@ const PostForm: FC<PostFormProps> = ({ onPostSubmit }) => {
                         <TextArea
                             rows={3}
                             placeholder="What's on your mind?"
+                            type='text'
                             value={postContent}
                             onChange={(e) => setPostContent(e.target.value)}
                             style={{ minHeight: 100 }} // Adjust the height of the TextArea
@@ -52,7 +59,7 @@ const PostForm: FC<PostFormProps> = ({ onPostSubmit }) => {
                     </Segment>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='green' onClick={handleSubmit}>
+                    <Button color='green' onClick={handleSubmit} loading={submitting}>
                         Publish
                     </Button>
                 </Modal.Actions>

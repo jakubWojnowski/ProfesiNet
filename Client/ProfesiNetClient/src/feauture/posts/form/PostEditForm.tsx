@@ -1,26 +1,32 @@
 import {ChangeEvent, FC, useState} from "react";
 import {Button,  Form, Icon, Modal, Segment, TextArea} from "semantic-ui-react";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
-import {UpdatePost} from "../../../app/modules/interfaces/UpdatePost.ts";
 interface Props{
     closeForm: () => void;
     cancelSelectPost: () => void;
     post: Post | undefined;
-    handlePostUpdate: (UpdatePost: UpdatePost) => void;
+    handlePostUpdate: (UpdatePost: Post | {
+        description: string;
+        id: string;
+        File: { prototype: File; new(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File }
+    }) => void;
+    submitting: boolean;
 }
-const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost, handlePostUpdate}:Props) => {
+const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost, handlePostUpdate,submitting}:Props) => {
     const initialFormState = selectedPost ?? {
         id: '',
         description: '',
-        media: '',
+        File: File,
     };
     const [post, setPost] = useState(initialFormState);
     
     const handleSubmit = () => {
-        console.log(JSON.stringify(post));
+        setTimeout(() => {
         handlePostUpdate(post);
         closeForm();
         cancelSelectPost();
+        }
+        , 1000);
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,9 +66,8 @@ const PostEditForm: FC<Props> = ({post:selectedPost,closeForm, cancelSelectPost,
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <Button color='green' onClick={handleSubmit} >
+                <Button color='green' onClick={handleSubmit} loading={submitting}>
                     Publish
-                    
                 </Button>
                 
                 <Button color='red' onClick={() => cancelSelectPost()}>

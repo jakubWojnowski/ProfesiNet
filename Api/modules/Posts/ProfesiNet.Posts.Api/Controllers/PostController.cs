@@ -41,7 +41,7 @@ internal class PostController : BaseController
     public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAllOwnAsync(CancellationToken cancellationToken = default)
         => Ok(await _postService.BrowseAllOwnAsync(_context.Id,cancellationToken));
     [HttpPost]
-    public async Task<ActionResult> AddAsync(CreatePostCommand command, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> AddAsync([FromForm]CreatePostCommand command, CancellationToken cancellationToken = default)
     {
         var id = await _postService.AddAsync(command,_context.Id, cancellationToken);
         Console.WriteLine(_context.Id);
@@ -49,7 +49,7 @@ internal class PostController : BaseController
     }
 
     [HttpPut]
-    public async Task<ActionResult> UpdateAsync(UpdatePostCommand command, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> UpdateAsync([FromForm]UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
         await _postService.UpdateAsync(command,_context.Id, cancellationToken);
         return NoContent();

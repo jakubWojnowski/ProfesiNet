@@ -5,6 +5,7 @@ interface Props {
     posts: Post[];
     selectPost: (id: string) => void;
     handlePostDelete: (id: string) => void;
+    
 }
 
 const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
@@ -33,7 +34,7 @@ const PostList: FC<Props> = ({posts, selectPost, handlePostDelete}: Props) => {
                         <Item.Header >{post.creatorName}{" "}{post.creatorSurname}
                         </Item.Header>
                         <Item.Description as='a' className="post-content">{post.description}</Item.Description>
-                        {post.media && <img src="/drwal.jpg" alt='Post media' className="post-image"/>}
+                        {post.imageUrl && <img src={post.imageUrl} alt='Post media' className="post-image"/>}
                         <div className="post-date">{new Date(post.publishedAt).toLocaleString()}</div>
                         <Item.Extra className="post-actions">
 
