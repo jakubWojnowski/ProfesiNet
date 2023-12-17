@@ -12,8 +12,6 @@ import LoadingComponent from "../components/LoadingComponent.tsx";
 
 const Mid: FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [, setCreatePost] = useState<CreatePost>();
-    const [,setUpdatePost] = useState<UpdatePost>();
     const [selectedPost, setSelectedPost] = useState<Post | undefined>(undefined);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -22,6 +20,7 @@ const Mid: FC = () => {
         setSubmitting(true);
         agent.Posts.create(CreatePost).then(() => {
                 setLoading(false);
+                setSubmitting(false);
             agent.Posts.list().then(response => {
                 setPosts(response);
                
@@ -37,9 +36,12 @@ const Mid: FC = () => {
         setSubmitting(true);
        
         agent.Posts.update(updatePost).then(() => {
-            setUpdatePost(updatePost);
             setEditMode(false);
             setSubmitting(false);
+            agent.Posts.list().then(response => {
+                setPosts(response);
+            }
+            );
         }
         );
     }

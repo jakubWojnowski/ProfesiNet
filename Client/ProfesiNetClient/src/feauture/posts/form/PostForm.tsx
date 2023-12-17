@@ -12,7 +12,7 @@ const PostForm: FC<PostFormProps> = ({ onPostSubmit, submitting }) => {
     const [postContent, setPostContent] = useState('');
 
     const handleSubmit = () => {
-        onPostSubmit({description: postContent,file: null });
+        onPostSubmit({description: postContent});
         setPostContent('');
         setTimeout(() => {
             setOpen(false);
