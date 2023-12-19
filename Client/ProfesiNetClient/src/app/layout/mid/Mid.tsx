@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react";
 import PostDashboard from "../../../feauture/posts/dashboard/PostDashboard.tsx";
-import { Container} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 
 import './Mid.css';
 import PostForm from "../../../feauture/posts/form/PostForm.tsx";
@@ -15,31 +15,20 @@ const Mid: FC = () => {
     const {postStore} = useStore();
 
 
-
-
-    
-
-
     useEffect(() => {
         postStore.loadPosts().then(() => postStore.setLoadingInitial(false));
-   
+
     }, [postStore]);
 
 
-
-
-
-
-    if (postStore.loadingInitial) return <LoadingComponent content='Loading app...' />;
+    if (postStore.loadingInitial) return <LoadingComponent content='Loading app...'/>;
     return (
         <Container fluid={true}>
-            <PostForm 
+            <PostForm
             />
-            <PostDashboard posts={postStore.posts}
-               
-            />
+            <PostDashboard/>
         </Container>
     );
 }
 
-export default observer(Mid) ;
+export default observer(Mid);

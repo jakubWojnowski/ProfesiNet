@@ -1,22 +1,17 @@
 import {FC} from "react";
-import {Post} from "../../../app/modules/interfaces/Post.ts";
 import {Button, Icon, Item,  Label, Segment, Dropdown} from "semantic-ui-react";
 import {useStore} from "../../../app/stores/Store.ts";
-import {observer} from "mobx-react-lite";
-interface Props {
-    posts: Post[];
-   
-    
-}
 
-const PostList: FC<Props> = ({posts}: Props) => {
+
+const PostList: FC = () => {
     
     const {postStore} = useStore();
+    const {PostsBy} = postStore;
     const {openForm, deletePost} = postStore;
     
     return (
         <Item.Group divided >
-            {posts.map((post) => (
+            {PostsBy.map((post) => (
                 <Segment key={post.id} className="post-segment"> {/* Move key to here */}
                     <Item.Content>
                       <div className="dropdown">

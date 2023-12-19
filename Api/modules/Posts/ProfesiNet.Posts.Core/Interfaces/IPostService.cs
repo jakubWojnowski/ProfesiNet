@@ -9,7 +9,7 @@ internal interface IPostService
 {
     Task<Guid> AddAsync(CreatePostCommand command, Guid id, CancellationToken cancellationToken = default);
     Task<PostDto?> GetAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<PostDto>> BrowseAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PostDto>> BrowseAsync(Guid creatorId,CancellationToken cancellationToken = default);
     Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,
         CancellationToken cancellationToken = default);
     Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(Guid id, CancellationToken cancellationToken = default);

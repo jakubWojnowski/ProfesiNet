@@ -24,13 +24,13 @@ internal class PostController : BaseController
         _context = context;
     }
 
-    [HttpGet("GetById{id:guid}")]
-    public async Task<ActionResult<PostDto?>> Get(Guid id, CancellationToken cancellationToken = default)
+    [HttpGet("GetById/{id:guid}")]
+    public async Task<ActionResult<PostDto?>> GetById(Guid id, CancellationToken cancellationToken = default)
         => OkOrNotFound(await _postService.GetAsync(id, cancellationToken));
 
     [HttpGet("GetAll")]
     public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowseAsync(CancellationToken cancellationToken = default)
-        => Ok(await _postService.BrowseAsync(cancellationToken));
+        => Ok(await _postService.BrowseAsync(_context.Id, cancellationToken));
 
     [HttpGet("GetAllPerCreator/{creatorId:guid}")]
     public async Task<ActionResult<IReadOnlyList<PostDto>>> BrowsePerCreatorAsync(Guid creatorId,
@@ -44,8 +44,7 @@ internal class PostController : BaseController
     public async Task<ActionResult> AddAsync([FromForm]CreatePostCommand command, CancellationToken cancellationToken = default)
     {
         var id = await _postService.AddAsync(command,_context.Id, cancellationToken);
-        Console.WriteLine(_context.Id);
-        return CreatedAtAction(nameof(Get), new { id }, null);
+        return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
     [HttpPut]
@@ -68,7 +67,7 @@ internal class PostController : BaseController
         CancellationToken cancellationToken = default)
     {
         await _postLikeService.AddAsync(command,_context.Id, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
+        return CreatedAtAction(nameof(GetById), new { id = command.Id }, null);
     }
 
     [HttpDelete("PostLike")]
@@ -95,7 +94,7 @@ internal class PostController : BaseController
         CancellationToken cancellationToken = default)
     {
         await _shareService.AddAsync(command,_context.Id, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
+        return CreatedAtAction(nameof(GetById), new { id = command.Id }, null);
     }
 
     [HttpDelete("Share")]

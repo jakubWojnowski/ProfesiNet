@@ -47,17 +47,30 @@ const requests = {
 
 const Posts = {
     list: () => requests.get<Post[]>('/posts-module/Post/getAll'),
-    details: (id: string) => requests.get(`/posts-module/Post/GetById/${id}`),
+    details: (id: string) : Promise<Post>  => requests.get(`/posts-module/Post/GetById/${id}`),
     getAllByCreator: (creatorId: string) => requests.get(`/posts-module/Post/GetAllPerCreator/${creatorId}`),
     getAllOwn: () => requests.get('/posts-module/Post/getAllOwn'),
-    create: ( CreatePost:CreatePost) => {
+    create: (createPost: CreatePost) => {
         const formData = new FormData();
-        if (File && CreatePost.file) {
-            formData.append('File', CreatePost.file);
+        if (File && createPost.file) {
+            formData.append('File', createPost.file);
         }
-        formData.append('Description', CreatePost.description);
+        formData.append('Description', createPost.description);
         return axios.post('/posts-module/Post', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(response => {
+            // Check if the Location header is present
+            if (response.headers && response.headers.location) {
+                // Extract the ID from the Location header
+
+                const locationUrl = response.headers.location;
+                return locationUrl.substring(locationUrl.lastIndexOf('/') + 1); // This is the ID you're after
+            } else {
+                throw new Error('Location header is missing');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            throw error; // Make sure to rethrow the error so you can handle it elsewhere if needed
         });
     },
     update: (UpdatePost:UpdatePost) => {
