@@ -44,6 +44,7 @@ export default class PostStore {
           
             runInAction(() => {
                 this.postRegistry.set(post.id, post);
+                this.selectedPost = post;
                 this.loading = false;
                 // Reload the posts to include the new one.
                 this.loadPosts();
