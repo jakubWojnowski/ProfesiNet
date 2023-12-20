@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Mvc;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Delete;
 using ProfesiNet.Posts.Core.Commands.Update;
@@ -50,8 +51,8 @@ internal class PostController : BaseController
     [HttpPut]
     public async Task<ActionResult> UpdateAsync([FromForm]UpdatePostCommand command, CancellationToken cancellationToken = default)
     {
-        await _postService.UpdateAsync(command,_context.Id, cancellationToken);
-        return NoContent();
+        var id = await _postService.UpdateAsync(command,_context.Id, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
     [HttpDelete]

@@ -4,6 +4,7 @@ import { useStore } from '../../../app/stores/Store.ts';
 import LoadingComponent from '../../../app/layout/components/LoadingComponent.tsx';
 import { UpdatePost } from '../../../app/modules/interfaces/UpdatePost.ts';
 import { observer } from 'mobx-react-lite';
+import {Link} from "react-router-dom";
 
 const PostEditForm: FC = () => {
     const { postStore } = useStore();
@@ -14,6 +15,7 @@ const PostEditForm: FC = () => {
         closeForm,
         loading
     } = postStore;
+    
     const [file, setFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 

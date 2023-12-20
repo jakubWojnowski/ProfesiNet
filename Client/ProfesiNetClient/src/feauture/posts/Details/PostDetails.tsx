@@ -1,9 +1,10 @@
 import {FC, useEffect} from "react";
-import {Button, Dropdown, Icon, Item, ItemImage, Label, Segment} from "semantic-ui-react";
+import {Button, Dropdown, Grid, GridColumn, Icon, Item, ItemImage, Label, Segment} from "semantic-ui-react";
 import {useStore} from "../../../app/stores/Store.ts";
-import { useParams,} from "react-router-dom";
+import {Link, useParams,} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import PostEditForm from "../form/PostEditForm.tsx";
+import LoadingComponent from "../../../app/layout/components/LoadingComponent.tsx";
 
 
 
@@ -13,15 +14,15 @@ const PostDetails: FC = () => {
     const {id} = useParams();
     
     useEffect(  ()  => {
-        if (id)  loadPost(id);
+        if (id)  loadPost(id).then();
     }, [id, loadPost]);
     
-    if (loadingInitial || !post) return <div>Loading...</div>;
+    if (loadingInitial || !post) return <LoadingComponent content='Loading post...'/>;
     
     return (
-       
-        <Item.Group divided>
-                <Segment key={post.id} className="post-segment"> {/* Move key to here */}
+        <Grid centered={true}  >
+            <GridColumn width={15} >
+                <Segment  key={post.id} className="post-segment"> {/* Move key to here */}
                     {editMode && (
                         <PostEditForm
                         />
@@ -35,7 +36,7 @@ const PostDetails: FC = () => {
                             <div className="dropdown">
                                 <Dropdown icon='ellipsis horizontal' className="options-button" closeOnEscape>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item
+                                        <Dropdown.Item as={Link} to='/posts'
                                             text='Delete'
                                             icon='delete'
                                             onClick={() => {
@@ -88,7 +89,9 @@ const PostDetails: FC = () => {
                         </Item.Extra>
                     </Item.Content>
                 </Segment>
-        </Item.Group>
+            </GridColumn>
+            </Grid>
+        
     );
             
 }

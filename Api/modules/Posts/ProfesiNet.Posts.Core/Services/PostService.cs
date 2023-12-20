@@ -121,7 +121,7 @@ internal class PostService : IPostService
     }
 
 
-    public async Task UpdateAsync(UpdatePostCommand command, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Guid> UpdateAsync(UpdatePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {
         var creator = await _creatorRepository.GetByIdAsync(id, cancellationToken);
         if (creator is null)
@@ -136,16 +136,8 @@ internal class PostService : IPostService
         }
 
         var updatedPost = Mapper.MapUpdatePostCommandToPost(command, post);
-
-        // If command.File is explicitly set to null, remove the image.
-        if (command.File is null && post.ImageId is not null )
-        {
-            await _photoAccessor.DeletePhoto(post.ImageId);
-            updatedPost.ImageUrl = null;
-            updatedPost.ImageId = null;
-        }
         
-        else if (command.File is not null)
+         if (command?.File is not null)
         {
             if (!string.IsNullOrEmpty(post.ImageId))
             {
@@ -164,6 +156,7 @@ internal class PostService : IPostService
         
 
         await _postRepository.UpdateAsync(updatedPost, cancellationToken);
+        return post.Id;
     }
 
 

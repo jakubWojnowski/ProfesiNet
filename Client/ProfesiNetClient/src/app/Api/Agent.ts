@@ -46,11 +46,11 @@ const requests = {
 };
 
 const Posts = {
-    list: () => requests.get<Post[]>('/posts-module/Post/getAll'),
-    details: (id: string) : Promise<Post>  => requests.get(`/posts-module/Post/GetById/${id}`),
+    list: async () => requests.get<Post[]>('/posts-module/Post/getAll'),
+    details: async (id: string) : Promise<Post>  => requests.get(`/posts-module/Post/GetById/${id}`),
     getAllByCreator: (creatorId: string) => requests.get(`/posts-module/Post/GetAllPerCreator/${creatorId}`),
     getAllOwn: () => requests.get('/posts-module/Post/getAllOwn'),
-    create: (createPost: CreatePost) => {
+    create: async (createPost: CreatePost) => {
         const formData = new FormData();
         if (File && createPost.file) {
             formData.append('File', createPost.file);
@@ -73,7 +73,7 @@ const Posts = {
             throw error; // Make sure to rethrow the error so you can handle it elsewhere if needed
         });
     },
-    update: (UpdatePost:UpdatePost) => {
+    update: async (UpdatePost:UpdatePost) => {
         const formData = new FormData();
         formData.append('Id', UpdatePost.id);
         if (UpdatePost.file) {
@@ -82,6 +82,19 @@ const Posts = {
         formData.append('Description', UpdatePost.description);
         return axios.put('/posts-module/Post', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(response => {
+            // Check if the Location header is present
+            if (response.headers && response.headers.location) {
+                // Extract the ID from the Location header
+
+                const locationUrl = response.headers.location;
+                return locationUrl.substring(locationUrl.lastIndexOf('/') + 1); // This is the ID you're after
+            } else {
+                throw new Error('Location header is missing');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            throw error; // Make sure to rethrow the error so you can handle it elsewhere if needed
         });
     },
     delete: (id: string) => axios.delete('/posts-module/Post', { data: { postId:id } }),

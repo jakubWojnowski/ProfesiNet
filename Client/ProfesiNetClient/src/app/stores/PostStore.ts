@@ -46,8 +46,8 @@ export default class PostStore {
                 this.postRegistry.set(post.id, post);
                 this.selectedPost = post;
                 this.loading = false;
-                // Reload the posts to include the new one.
-                this.loadPosts();
+              
+                // this.loadPosts();
                 
             });
         } catch (error) {
@@ -60,10 +60,11 @@ export default class PostStore {
     updatePost = async (updatePost: UpdatePost) => {
         this.loading = true;
         try {
-            await agent.Posts.update(updatePost);
+            const postId = await agent.Posts.update(updatePost);
+            const post = await agent.Posts.details(postId);
             runInAction(() => {
                 this.loading = false;
-                this.loadPosts();
+                this.postRegistry.set(post.id, post);
                 this.closeForm();
             });
         } catch (error) {
@@ -93,17 +94,13 @@ export default class PostStore {
     
     loadPost = async (id: string) => {
         let post = this.getPost(id);
-        if (post) {
-            this.selectedPost = post;
-            return post;
-        } else {
+        if (post) this.selectedPost = post;
+        else {
             this.loadingInitial = true;
             try {
                 post = await agent.Posts.details(id);
                 this.setPost(post);
-                runInAction(() => {
-                    this.selectedPost = post;
-                });
+                this.selectedPost = post;
                 this.setLoadingInitial(false);
                 return post;
             } catch (error) {
@@ -141,15 +138,12 @@ export default class PostStore {
      
             console.log(id);
             this.selectedPost = this.postRegistry.get(id);
-            this.editMode = true; 
-     
+            this.editMode = true;
     };
-
     closeForm = (): void => {
  
             this.editMode = false;
             this.selectedPost = undefined;
-
     };
         
     
