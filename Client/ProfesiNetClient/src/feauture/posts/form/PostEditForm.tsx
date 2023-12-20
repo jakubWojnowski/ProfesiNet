@@ -4,9 +4,11 @@ import { useStore } from '../../../app/stores/Store.ts';
 import LoadingComponent from '../../../app/layout/components/LoadingComponent.tsx';
 import { UpdatePost } from '../../../app/modules/interfaces/UpdatePost.ts';
 import { observer } from 'mobx-react-lite';
-import {Link} from "react-router-dom";
+import {Post} from "../../../app/modules/interfaces/Post.ts";
+import {Link, useNavigate} from "react-router-dom";
 
 const PostEditForm: FC = () => {
+    
     const { postStore } = useStore();
     const {
         selectedPost,
@@ -16,24 +18,25 @@ const PostEditForm: FC = () => {
         loading
     } = postStore;
     
-    const [file, setFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-    // If there's no selectedPost, show the loading component.
+    
     if (!selectedPost) return <LoadingComponent />;
-
-    // Set up the initial state for the form based on the selectedPost.
     const initialFormState = selectedPost ?? {
         id: '',
         description: '',
-        file: null, // Assuming this is how you store the file in your selectedPost
+        file: null,
     };
-    const [post, setPost] = useState(initialFormState);
 
-    // This effect sets the preview URL when a post is selected for editing.
+
+    const [file, setFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [post, setPost] = useState<Post>(initialFormState);
+    const navigate = useNavigate();
+
+  
+
     useEffect(() => {
         if (selectedPost?.imageUrl) {
-            // Check if selectedPost.file is a URL or a File object
+
             setPreviewUrl(selectedPost.imageUrl);
         }
     }, [selectedPost]);
@@ -45,13 +48,15 @@ const PostEditForm: FC = () => {
             file: file
         };
 
-        await updatePost(postToUpdate);
-        setTimeout(() => {
+        try {
+            await updatePost(postToUpdate).then(() => navigate(`/posts`));
             closeForm();
             cancelSelectedPost();
-        }, 1000);
+           
+        } catch (error) {
+            console.error('Failed to update post:', error);
+        }
     };
-
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
         setFile(file);
@@ -124,7 +129,7 @@ const PostEditForm: FC = () => {
                 <Button color='green' onClick={handleSubmit} loading={loading}>
                     Publish
                 </Button>
-                <Button color='red' onClick={() => closeForm()}>
+                <Button as={Link} to='/posts' color='red' onClick={() => closeForm()}>
                     Cancel
                 </Button>
             </Modal.Actions>

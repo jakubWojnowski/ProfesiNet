@@ -91,25 +91,41 @@ export default class PostStore {
             });
         }
     };
-    
-    loadPost = async (id: string) => {
-        let post = this.getPost(id);
-        if (post) this.selectedPost = post;
-        else {
+
+    loadPost = async (id: string): Promise<Post> => {
+        console.log(`loadPost started with id: ${id}`);
+
+        let post: Post | undefined = this.getPost(id);
+        console.log(`getPost result for id ${id}:`, post);
+
+        if (post) {
+            this.selectedPost = post;
+            console.log(`Post already in cache:`, post);
+            return post;
+        } else {
             this.loadingInitial = true;
+            console.log(`Post not in cache. Fetching post for id ${id}`);
             try {
                 post = await agent.Posts.details(id);
+                console.log(`Received post data for id ${id}:`, post);
+
                 this.setPost(post);
-                this.selectedPost = post;
-                this.setLoadingInitial(false);
-                return post;
+                runInAction(() => {
+                    this.selectedPost = post;
+                });
+
+                console.log(`Post set successfully for id ${id}`);
             } catch (error) {
-                console.error(error);
+                console.error(`Error loading post for id ${id}:`, error);
+            } finally {
                 this.setLoadingInitial(false);
+                console.log(`Finished loading post for id ${id}. loadingInitial set to false`);
             }
+
+            return post as Post;
         }
+        
     }
-    
     private getPost = (id: string) => {
         return this.postRegistry.get(id);
     }

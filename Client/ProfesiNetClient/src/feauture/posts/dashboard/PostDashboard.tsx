@@ -12,11 +12,12 @@ import LoadingComponent from "../../../app/layout/components/LoadingComponent.ts
 
 const PostDashboard: FC = () =>  {
     const {postStore} = useStore();
+    const {loadPosts, postRegistry} = postStore;
     
     useEffect(() => {
-        postStore.loadPosts().then(() => postStore.setLoadingInitial(false));
+        if(postRegistry.size <= 1) loadPosts().then(() => postStore.setLoadingInitial(false));
 
-    }, [postStore]);
+    }, [loadPosts]);
 
 
     if (postStore.loadingInitial) return <LoadingComponent content='Loading app...'/>;

@@ -12,11 +12,16 @@ const PostDetails: FC = () => {
     const {postStore} = useStore();
     const {selectedPost: post, deletePost, openForm, loadPost, loadingInitial, editMode} = postStore;
     const {id} = useParams();
-    
-    useEffect(  ()  => {
-        if (id)  loadPost(id).then();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (id) {
+                await loadPost(id);
+            }
+        };
+
+        fetchData().then(r => r);
     }, [id, loadPost]);
-    
     if (loadingInitial || !post) return <LoadingComponent content='Loading post...'/>;
     
     return (
