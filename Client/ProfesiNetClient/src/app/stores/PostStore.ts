@@ -90,6 +90,36 @@ export default class PostStore {
             });
         }
     };
+    
+    loadPost = async (id: string) => {
+        let post = this.getPost(id);
+        if (post) {
+            this.selectedPost = post;
+            return post;
+        } else {
+            this.loadingInitial = true;
+            try {
+                post = await agent.Posts.details(id);
+                this.setPost(post);
+                runInAction(() => {
+                    this.selectedPost = post;
+                });
+                this.setLoadingInitial(false);
+                return post;
+            } catch (error) {
+                console.error(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+    
+    private getPost = (id: string) => {
+        return this.postRegistry.get(id);
+    }
+    
+    private setPost = (post: Post) => {
+        this.postRegistry.set(post.id, post);
+    }
         
 
 
@@ -111,7 +141,7 @@ export default class PostStore {
      
             console.log(id);
             this.selectedPost = this.postRegistry.get(id);
-            this.editMode = true; // Set editMode to true to show the form
+            this.editMode = true; 
      
     };
 

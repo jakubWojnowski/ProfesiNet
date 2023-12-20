@@ -129,18 +129,28 @@ internal class PostService : IPostService
             throw new CreatorNotFoundException(id);
         }
 
-        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.Id,
-            cancellationToken);
-
+        var post = await _postRepository.GetRecordByFilterAsync(p => p.CreatorId == creator.Id && p.Id == command.Id, cancellationToken);
         if (post is null)
         {
             throw new PostNotFoundException(command.Id);
         }
 
         var updatedPost = Mapper.MapUpdatePostCommandToPost(command, post);
-        if (command.File is not null)
+
+        // If command.File is explicitly set to null, remove the image.
+        if (command.File is null && post.ImageId is not null )
         {
-            if (post.ImageId != null) await _photoAccessor.DeletePhoto(post.ImageId);
+            await _photoAccessor.DeletePhoto(post.ImageId);
+            updatedPost.ImageUrl = null;
+            updatedPost.ImageId = null;
+        }
+        
+        else if (command.File is not null)
+        {
+            if (!string.IsNullOrEmpty(post.ImageId))
+            {
+                await _photoAccessor.DeletePhoto(post.ImageId);
+            }
 
             var photoUploadResult = await _photoAccessor.AddPhoto(command.File);
             if (photoUploadResult is null)
@@ -151,9 +161,11 @@ internal class PostService : IPostService
             updatedPost.ImageUrl = photoUploadResult.Url;
             updatedPost.ImageId = photoUploadResult.PublicId;
         }
+        
 
         await _postRepository.UpdateAsync(updatedPost, cancellationToken);
     }
+
 
     public async Task DeleteAsync(DeletePostCommand command, Guid id, CancellationToken cancellationToken = default)
     {

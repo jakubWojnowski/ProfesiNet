@@ -1,5 +1,5 @@
 export interface UpdatePost {
-    file: File | null
+    file?: File | null
     description: string
     id: string
 }

@@ -1,6 +1,7 @@
 import {FC} from "react";
-import {Button, Icon, Item, Label, Segment, Dropdown, ItemImage, ItemHeader} from "semantic-ui-react";
+import {Button, Icon, Item, Label, Segment, Dropdown, ItemImage} from "semantic-ui-react";
 import {useStore} from "../../../app/stores/Store.ts";
+import {Link} from "react-router-dom";
 
 
 const PostList: FC = () => {
@@ -39,7 +40,7 @@ const PostList: FC = () => {
                                 </Dropdown>
                             </div>
                         </Item.Header>
-                        <Item.Description as='a' className="post-content">{post.description}</Item.Description>
+                        <Item.Description as={Link} to={`/posts/${post.id}`} className="post-content">{post.description}</Item.Description>
                         {post.imageUrl && <img src={post.imageUrl} alt='Post media' className="post-image"/>}
                         <div className="post-date">{new Date(post.publishedAt).toLocaleString()}</div>
                         <Item.Extra className="post-actions">
