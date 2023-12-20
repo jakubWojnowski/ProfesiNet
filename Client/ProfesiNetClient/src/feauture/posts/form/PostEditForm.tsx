@@ -8,6 +8,7 @@ import {observer} from "mobx-react-lite";
 const PostEditForm: FC = () => {
     const {postStore} = useStore();
     const {selectedPost, updatePost, cancelSelectedPost, closeForm, loading} = postStore;
+    const [file, setFile] = useState<File | null>(null); // State to handle file
 
     if(!selectedPost) return <LoadingComponent/>;
     
@@ -18,13 +19,15 @@ const PostEditForm: FC = () => {
     };
     const [post, setPost] = useState(initialFormState);
     
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const postToUpdate: UpdatePost = {
             id: post.id,
             description: post.description,
-            file: undefined, // Make sure this exists in your post object, or handle accordingly
+            file: file
         };
-        updatePost(postToUpdate).then(r => console.log(r));
+        
+        
+        await updatePost(postToUpdate);
         setTimeout(() => {
         closeForm();
         cancelSelectedPost();
@@ -54,15 +57,20 @@ const PostEditForm: FC = () => {
                         onChange={ handleInputChange}
                         style={{ minHeight: 100 }} // Adjust the height of the TextArea
                     />
+                    <input
+                        type="file"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setFile(e.target.files ? e.target.files[0] : null)
+                        }
+                        hidden
+                        id="fileInput"
+                    />
                 </Form>
                 <Segment secondary>
                     <Button.Group>
-                        <Button icon labelPosition='left'>
+                        <Button icon labelPosition='left' as="label" htmlFor="fileInput">
                             <Icon name='file image outline' />
                             Image
-                        </Button>
-                        <Button icon>
-                            <Icon name='smile outline' />
                         </Button>
                     </Button.Group>
                 </Segment>

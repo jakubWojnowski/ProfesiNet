@@ -4,6 +4,7 @@ internal class PostDto
 {
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }
+    public string? CreatorProfilePicture { get; set; }
     public string? CreatorName { get; set; }
     public string? CreatorSurname { get; set; }
     public string? ImageUrl { get; set; }

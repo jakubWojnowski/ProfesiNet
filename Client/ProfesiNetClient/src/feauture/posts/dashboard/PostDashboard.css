@@ -20,8 +20,10 @@ body {
 .post-image {
     width: 100%; /* Full width of the container */
     height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the whole image fits within the given dimensions */
     border-radius: 0.3rem; /* Slightly rounded corners for images */
     margin-top: 1rem; /* Space above the image */
+    display: block; /* Display block to remove bottom margin/padding of images */
 }
 
 /* Style for the post content */
@@ -117,4 +119,13 @@ body {
     display: flex;
     justify-content: flex-end;
   
+}
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown {
+    margin-left: auto; /* This will push the dropdown to the right */
 }
