@@ -20,8 +20,8 @@ const NavBar: FC = () =>  {
             </Container>
             <Container fluid={true}> {/* This will be pushed to the right */}
                 <Menu.Item position='right'>
-                    <Button positive content='Login' />
-                    <Button positive content='Register' style={{ marginLeft: '10px' }} />
+                    {/*<Button positive content='Login' />*/}
+                    {/*<Button positive content='Register' style={{ marginLeft: '10px' }} />*/}
                 </Menu.Item>
             </Container>
         </Menu>

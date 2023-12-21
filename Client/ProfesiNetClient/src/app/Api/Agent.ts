@@ -2,6 +2,7 @@ import axios, {AxiosResponse} from 'axios';
 import {Post} from "../modules/interfaces/Post.ts";
 import {CreatePost} from "../modules/interfaces/CreatePost.ts";
 import {UpdatePost} from "../modules/interfaces/UpdatePost.ts";
+import {User, UserFormValues} from "../modules/interfaces/User.ts";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -108,9 +109,15 @@ const Posts = {
     getSharesPerPost: (id: string) => requests.get(`/posts-module/Post/SharesPerPost/${id}`),
     getSharesPerUser: (userId: string) => requests.get(`/posts-module/Post/SharesPerUser/${userId}`),
 };
+const Account = {
+    login: (user: UserFormValues) => requests.post<string>('/users-module/UserAuthentication/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/register', user),
+    current: () => requests.get<User>('/users-module/AccountProfile/GetOwnProfile'),
+};
 
 const agent = {
-    Posts
+    Posts,
+    Account
 };
 
 export default agent;

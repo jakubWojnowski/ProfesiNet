@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Button, Modal, Form, TextArea, Icon, Grid, Segment, Image } from 'semantic-ui-react';
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/Store";
-import {Link} from "react-router-dom";
+
 
 const PostForm: FC = () => {
     const [open, setOpen] = useState(false);
