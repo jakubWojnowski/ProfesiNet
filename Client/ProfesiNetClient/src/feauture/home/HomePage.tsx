@@ -1,11 +1,17 @@
 import {Button, Container, Header, Image, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
+import Snowflakes from "./Snowflakes.tsx";
+
 
 export default function HomePage() {
 
 
     return (
+        <>
+           
         <Segment inverted textAlign='center' vertical className='masthead'>
+            <Snowflakes/>
+          
             <Container text>
                 <Header as='h1' inverted>
                     <Image size='massive' src='/assets/ProfesiNet.png' alt='logo' style={{marginBottom: 12}}/>
@@ -18,6 +24,7 @@ export default function HomePage() {
             </Container>
         
         </Segment>
+        </>
     )
 
 }

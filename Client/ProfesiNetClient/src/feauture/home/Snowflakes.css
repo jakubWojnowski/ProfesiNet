@@ -1,0 +1,40 @@
+/* Snowflakes.css */
+
+@keyframes snowflakes-fall {
+    0% {
+        transform: translateY(-10vh); /* Start just above the screen */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh); /* End just below the screen */
+        opacity: 1;
+    }
+}
+
+
+@keyframes snowflakes-side {
+    0%, 100% { transform: translateX(0); } /* Stay at the same horizontal position at start/end */
+    50% { transform: translateX(50px); } /* Move side to side */
+}
+
+.snowflake-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* Behind content */
+    pointer-events: none; /* Allow clicks through */
+}
+
+.snowflake {
+    position: absolute;
+    width: 20px; /* Size of snowflake */
+    height: 20px; /* Size of snowflake */
+    background-color: white; /* Color of snowflake */
+    border-radius: 50%; /* Make snowflakes circular */
+    opacity: 0.8; /* Slightly transparent snowflakes */
+
+    /* Assign animations with a random delay */
+    animation: snowflakes-fall 10s infinite linear; /* Apply only the falling animation */
+}
