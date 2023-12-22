@@ -1,6 +1,6 @@
 import {Button, Container, Header, Image, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
-import Snowflakes from "./Snowflakes.tsx";
+import FallingObjects from "./FallingObjects.tsx";
 
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
         <>
            
         <Segment inverted textAlign='center' vertical className='masthead'>
-            <Snowflakes/>
+         <FallingObjects numberOfObjects={200} imageSrc={"/Coin.webp"} size={30}/>
           
             <Container text>
                 <Header as='h1' inverted>
