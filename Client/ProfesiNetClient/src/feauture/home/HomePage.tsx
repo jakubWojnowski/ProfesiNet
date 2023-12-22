@@ -1,6 +1,8 @@
 import {Button, Container, Header, Image, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
-import FallingObjects from "./FallingObjects.tsx";
+import FallingObjects from "../../app/common/components/FallingObjects.tsx";
+import SmokeEffect from "../../app/common/components/SmokeEffect.tsx";
+
 
 
 export default function HomePage() {
@@ -10,8 +12,9 @@ export default function HomePage() {
         <>
            
         <Segment inverted textAlign='center' vertical className='masthead'>
+           
          <FallingObjects numberOfObjects={200} imageSrc={"/Coin.webp"} size={30}/>
-          
+            <SmokeEffect/>
             <Container text>
                 <Header as='h1' inverted>
                     <Image size='massive' src='/assets/ProfesiNet.png' alt='logo' style={{marginBottom: 12}}/>
