@@ -6,6 +6,7 @@ using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
+using ProfesiNet.Posts.Core.Policies;
 using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Shared.Photos;
 
@@ -18,16 +19,19 @@ internal class PostService : IPostService
     private readonly ICreatorRepository _creatorRepository;
     private readonly IPhotoAccessor _photoAccessor;
     private readonly IContext _context;
+    private readonly IPostCannotBeEmptyPolicy _postCannotBeEmptyPolicy;
+
     private static readonly PostMapper Mapper = new();
 
     public PostService(IPostRepository postRepository,
-        IClock clock, ICreatorRepository creatorRepository, IPhotoAccessor photoAccessor, IContext context)
+        IClock clock, ICreatorRepository creatorRepository, IPhotoAccessor photoAccessor, IContext context, IPostCannotBeEmptyPolicy postCannotBeEmptyPolicy)
     {
         _postRepository = postRepository;
         _clock = clock;
         _creatorRepository = creatorRepository;
         _photoAccessor = photoAccessor;
         _context = context;
+        _postCannotBeEmptyPolicy = postCannotBeEmptyPolicy;
     }
 
     public async Task<Guid> AddAsync(CreatePostCommand command, Guid id, CancellationToken cancellationToken = default)
@@ -53,6 +57,11 @@ internal class PostService : IPostService
         }
 
         post.CreatorId = creator.Id;
+        
+        if(await _postCannotBeEmptyPolicy.CheckPostContentAsync(command, cancellationToken))
+        {
+            throw new PostHasNoContentException();
+        }   
 
         return await _postRepository.AddAsync(post, cancellationToken);
     }

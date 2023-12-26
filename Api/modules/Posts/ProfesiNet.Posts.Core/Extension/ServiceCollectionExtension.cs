@@ -19,6 +19,7 @@ internal static class ServiceCollectionExtension
         //Posts
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
+        services.AddScoped<IPostCannotBeEmptyPolicy, PostCannotBeEmptyPolicy>();
         
         //comments
         services.AddScoped<ICommentRepository, CommentRepository>();
