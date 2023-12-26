@@ -13,7 +13,7 @@ export default function HomePage() {
            
         <Segment inverted textAlign='center' vertical className='masthead'>
            
-         <FallingObjects numberOfObjects={200} imageSrc={"/Coin.webp"} size={30}/>
+         <FallingObjects numberOfObjects={200} />
             <SmokeEffect/>
             <Container text>
                 <Header as='h1' inverted>

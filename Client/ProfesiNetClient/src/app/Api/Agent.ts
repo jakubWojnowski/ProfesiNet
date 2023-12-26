@@ -110,7 +110,7 @@ const Posts = {
     getSharesPerUser: (userId: string) => requests.get(`/posts-module/Post/SharesPerUser/${userId}`),
 };
 const Account = {
-    login: (user: UserFormValues) => requests.post<string>('/users-module/UserAuthentication/login', user),
+    login: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/login', user),
     register: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/register', user),
     current: () => requests.get<User>('/users-module/AccountProfile/GetOwnProfile'),
 };

@@ -51,5 +51,6 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         
         await _userRepository.AddAsync(user, cancellationToken);
         await _messageBroker.PublishAsync(new UserCreated(user.Id, user.Name, user.Surname));
+        
     }
 }

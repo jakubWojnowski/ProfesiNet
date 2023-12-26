@@ -7,7 +7,7 @@ import {UpdatePost} from "../modules/interfaces/UpdatePost.ts";
 export default class PostStore {
     postRegistry = new Map<string, Post>(); 
     selectedPost: Post | undefined = undefined;
-    editMode: boolean = false; // This controls whether the edit form is shown or not.
+    editMode: boolean = false; 
     loading: boolean = false;
     loadingInitial: boolean = false;
 
