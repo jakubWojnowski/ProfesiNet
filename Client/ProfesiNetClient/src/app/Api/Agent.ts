@@ -21,9 +21,12 @@ axios.interceptors.response.use(async response => {
 
 }, (error: AxiosError) => {
 
-    const {data, status} = error.response as AxiosResponse;
+    const {data, status,config} = error.response as AxiosResponse;
     switch (status) {
         case 400:
+            if(config.method === 'get' && Object.prototype.hasOwnProperty.call(data.errors, 'id')) {
+                router.navigate('/not-found').then(r => console.log(r));
+            }
             if (data && data.response && data.response.errors) {
                 const errorMessages = data.response.errors.map((e: { message: string }) => e.message).join(', ');
                 toast.error(`Bad request: ${errorMessages}`);
