@@ -2,4 +2,4 @@
 
 namespace ProfesiNet.Users.Domain.Exceptions;
 
-public class InvalidEmailException(string message) : ProfesiNetException($"{message} invalid");
+public class InvalidEmailException(string email) : ProfesiNetException($"{email} is an invalid email address");

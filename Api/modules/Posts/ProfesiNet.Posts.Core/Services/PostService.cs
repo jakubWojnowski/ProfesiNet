@@ -60,7 +60,7 @@ internal class PostService : IPostService
         
         if(await _postCannotBeEmptyPolicy.CheckPostContentAsync(command, cancellationToken))
         {
-            throw new PostHasNoContentException();
+            throw new PostCannotHaveNoContentException();
         }   
 
         return await _postRepository.AddAsync(post, cancellationToken);
