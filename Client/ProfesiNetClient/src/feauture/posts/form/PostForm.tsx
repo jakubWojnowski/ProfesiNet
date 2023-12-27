@@ -14,22 +14,7 @@ const PostForm: FC = () => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const { postStore } = useStore();
     const { createPost, loading } = postStore;
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files ? event.target.files[0] : null;
-        setFile(file);
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewUrl(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setPreviewUrl(null);
-        }
-    };
-
+    
     const handleCancelImage = () => {
         setFile(null);
         setPreviewUrl(null);
@@ -75,25 +60,34 @@ const PostForm: FC = () => {
             >
                 <Modal.Header>Create a Post</Modal.Header>
                 <Modal.Content>
-                    <Formik enableReinitialize
+                    <Formik
                         initialValues={{
                             description: '',
-                            file: null, 
+                            file: null,
                         }}
                         onSubmit={handleSubmit}
                     >
-                        {({ setFieldValue, isSubmitting }) => (
-                            <FormikForm className='ui form'>
+                        {({ setFieldValue, isSubmitting, handleSubmit }) => (
+                            <FormikForm onSubmit={handleSubmit} className='ui form'>
                                 <Field name="description" as={TextArea} rows={3} placeholder="What's on your mind?" style={{ minHeight: 200 }} />
                                 <input
+                                    id="fileInput"
+                                    name="file"
                                     type="file"
-                                    onChange={(event) => {
-                                        setFieldValue('file', event.currentTarget.files ? event.currentTarget.files[0] : null).then(r => console.log(r));
-                                        handleFileChange(event);
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        const file = event.target.files ? event.target.files[0] : null;
+                                        setFieldValue('file', file).then(r => console.log(r));
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                                setPreviewUrl(reader.result as string);
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
                                     }}
                                     hidden
-                                    id="fileInput"
                                 />
+                           
                                 {previewUrl && (
                                     <Segment>
                                         <Image src={previewUrl} size='big' centered />
@@ -102,10 +96,10 @@ const PostForm: FC = () => {
                                         </Button>
                                     </Segment>
                                 )}
-                                <Button icon labelPosition='left' as="label" htmlFor="fileInput">
+                                <label htmlFor="fileInput" className="ui icon button">
                                     <Icon name='file image outline' />
                                     Image
-                                </Button>
+                                </label>
                                 <Button type='submit' color='green' loading={isSubmitting || loading}>
                                     Publish
                                 </Button>
