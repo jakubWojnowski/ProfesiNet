@@ -1,14 +1,17 @@
 import React, { FC, useState } from 'react';
-import { Button, Modal, Form, TextArea, Icon, Grid, Segment, Image } from 'semantic-ui-react';
+import { Button, Modal,TextArea, Icon, Grid, Segment, Image } from 'semantic-ui-react';
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/Store";
+import { Formik, Form as FormikForm, Field } from "formik";
 
-
+interface FormValues {
+    description: string;
+    file: File | null;
+}
 const PostForm: FC = () => {
     const [open, setOpen] = useState(false);
-    const [postContent, setPostContent] = useState('');
     const [file, setFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null); // State for thumbnail preview URL
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const { postStore } = useStore();
     const { createPost, loading } = postStore;
 
@@ -30,22 +33,24 @@ const PostForm: FC = () => {
     const handleCancelImage = () => {
         setFile(null);
         setPreviewUrl(null);
-        // Reset the file input
         const fileInput = document.getElementById('fileInput') as HTMLInputElement;
         fileInput.value = '';
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (
+        values: FormValues,
+        { resetForm }: { resetForm: () => void }
+    ): Promise<void> => {
         const postData = {
-            description: postContent,
+            description: values.description,
             file: file,
         };
 
         try {
             await createPost(postData);
-            setPostContent('');
+            resetForm();
             setFile(null);
-            setPreviewUrl(null); // Reset the preview URL
+            setPreviewUrl(null);
             setOpen(false);
         } catch (error) {
             console.error('Error creating the post:', error);
@@ -64,50 +69,50 @@ const PostForm: FC = () => {
                 open={open}
                 onClose={() => {
                     setOpen(false);
-                    setPreviewUrl(null); // Clear preview when closing the modal
+                    setPreviewUrl(null);
                 }}
                 size='small'
             >
                 <Modal.Header>Create a Post</Modal.Header>
                 <Modal.Content>
-                    <Form>
-                        <TextArea
-                            rows={3}
-                            placeholder="What's on your mind?"
-                            value={postContent}
-                            onChange={(e) => setPostContent(e.target.value)}
-                            style={{ minHeight: 200 }}
-                        />
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            hidden
-                            id="fileInput"
-                        />
-                        {previewUrl && (
-                            <Segment>
-                                <Image src={previewUrl} size='big' centered />
-                                <Button icon onClick={handleCancelImage}>
-                                    <Icon name='cancel' />
+                    <Formik enableReinitialize
+                        initialValues={{
+                            description: '',
+                            file: null, 
+                        }}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ setFieldValue, isSubmitting }) => (
+                            <FormikForm className='ui form'>
+                                <Field name="description" as={TextArea} rows={3} placeholder="What's on your mind?" style={{ minHeight: 200 }} />
+                                <input
+                                    type="file"
+                                    onChange={(event) => {
+                                        setFieldValue('file', event.currentTarget.files ? event.currentTarget.files[0] : null).then(r => console.log(r));
+                                        handleFileChange(event);
+                                    }}
+                                    hidden
+                                    id="fileInput"
+                                />
+                                {previewUrl && (
+                                    <Segment>
+                                        <Image src={previewUrl} size='big' centered />
+                                        <Button icon onClick={handleCancelImage}>
+                                            <Icon name='cancel' />
+                                        </Button>
+                                    </Segment>
+                                )}
+                                <Button icon labelPosition='left' as="label" htmlFor="fileInput">
+                                    <Icon name='file image outline' />
+                                    Image
                                 </Button>
-                            </Segment>
+                                <Button type='submit' color='green' loading={isSubmitting || loading}>
+                                    Publish
+                                </Button>
+                            </FormikForm>
                         )}
-                    </Form>
-                    <Segment secondary>
-                        <Button icon labelPosition='left' as="label" htmlFor="fileInput">
-                            <Icon name='file image outline' />
-                            Image
-                        </Button>
-                        <Button icon>
-                            <Icon name='smile outline' />
-                        </Button>
-                    </Segment>
+                    </Formik>
                 </Modal.Content>
-                <Modal.Actions>
-                    <Button  color='green' onClick={handleSubmit} loading={loading}>
-                        Publish
-                    </Button>
-                </Modal.Actions>
             </Modal>
         </Grid>
     );
