@@ -41,7 +41,7 @@ const PostEditForm: FC = () => {
             const postToUpdate: UpdatePost = {
                 id: post.id,
                 description: values.description,
-                file: file // Use the state file instead of values.file
+                file: file 
             };
 
             await updatePost(postToUpdate);
