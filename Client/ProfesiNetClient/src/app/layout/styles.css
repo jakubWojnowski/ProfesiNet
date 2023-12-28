@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body{
   background-color: #EAEAEA;
   
@@ -5,3 +10,29 @@ body{
 .ui.inverted.top.fixed.menu{
   background-image: linear-gradient(135deg,rgb(24,24,115) 0%,rgb(33,138,174) 69%, rgb(32,167,172) 89%) !important;
 }
+.centered-content {
+  max-width: 800px; /* or whatever maximum width you prefer */
+  margin: 0 auto; /* auto margins on the side to center the block */
+
+}
+
+.masthead {
+     background-color: #EAEAEA;
+    height: 100vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("https://images.unsplash.com/photo-1517245386807-9b4d0d6f9a9b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3b9b9b2b9b2b9b2b9b2b9b2b9b2b9b2b&auto=format&fit=crop&w=1350&q=80");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    }
+    .masthead .ui.text.container .header {
+    font-size: 4em;
+    font-weight: normal;
+    margin-bottom: 0;
+    }
+
+   

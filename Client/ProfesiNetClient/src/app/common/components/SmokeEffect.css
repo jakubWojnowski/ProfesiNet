@@ -1,0 +1,54 @@
+@keyframes smokeRise {
+    0% {
+        transform: translate(-50%, 100%) scale(0.5);
+        opacity: 0; /* Starting as invisible */
+    }
+    50% {
+        opacity: 0.5; /* Halfway through the animation, the smoke is partially visible */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0; /* Fades out at the end */
+    }
+}
+
+.smoke-effect {
+    position: fixed;
+    bottom: 0; /* Anchors the div to the bottom of the screen */
+    left: 0; /* Anchors the div to the left of the screen */
+    width: 100em; /* Adjust the width as needed */
+    height: 100em; /* Adjust the height as needed */
+    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.6), transparent);
+    border-radius: 20%;
+    animation: smokeRise 20s ease-out infinite;
+    opacity: 0; /* Start fully transparent and animate to visible */
+    transform: scale(0.5); /* Scale down to 50% of the original size */
+    filter: blur(1em);
+    pointer-events: none; /* Ensures clicks can pass through the smoke */
+}
+
+/* Additional layers of smoke with different animation durations and delays for intensity */
+.smoke-effect::before,
+.smoke-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    animation: inherit;
+    filter: inherit;
+    opacity: inherit;
+    transform-origin: inherit;
+}
+
+.smoke-effect::before {
+    animation-duration: 70s; /* Slightly different duration for variation */
+    animation-delay: -20s; /* Starts at a different time for overlapping */
+}
+
+.smoke-effect::after {
+    animation-duration: 80s; /* Even longer duration for more variation */
+    animation-delay: -40s; /* Further staggered start time */
+}

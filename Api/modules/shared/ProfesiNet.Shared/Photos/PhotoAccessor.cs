@@ -28,7 +28,8 @@ public class PhotoAccessor : IPhotoAccessor
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(file.FileName, stream),
-                Transformation = new Transformation().Height(500).Width(500).Crop("fill")
+                Transformation = new Transformation().Height(500).Crop("scale") //best so far
+
             };
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
@@ -47,6 +48,20 @@ public class PhotoAccessor : IPhotoAccessor
         return null;
     
     }
+    public async Task<IEnumerable<PhotoUploadResult>> AddPhotos(IEnumerable<IFormFile> files)
+    {
+        var photoUploadResults = new List<PhotoUploadResult>();
+     
+        foreach (var file in files)
+        {
+            var photoUploadResult = await AddPhoto(file);
+            if (photoUploadResult != null) photoUploadResults.Add(photoUploadResult);
+        }
+
+        return photoUploadResults;
+    }
+    
+    
 
     public async Task<string?> DeletePhoto(string publicId)
     {

@@ -1,4 +1,4 @@
 export interface CreatePost {
-    media: string
+    file: File | null
     description: string
 }

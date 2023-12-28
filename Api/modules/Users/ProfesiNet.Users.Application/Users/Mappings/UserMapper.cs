@@ -13,6 +13,7 @@ internal partial class UserMapper
 
     
     public partial UserDetailsDto MapUserToUserDto(User user); 
+    public partial UserLoggedInDto MapUserToUserLoggedInDto(User user); 
 
     public User MapUpdateUserBioDtoToUser(User user, UserBioDto userBio)
     {

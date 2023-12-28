@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProfesiNet.Shared.Exceptions;
+using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
 using ProfesiNet.Users.Domain.Exceptions;
@@ -8,7 +9,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Login;
 
-internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
+internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, UserLoggedInDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
@@ -23,7 +24,7 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, strin
     }
     private static readonly UserMapper Mapper = new();
 
-    public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserLoggedInDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Email == request.Email,
                        cancellationToken) ??
@@ -31,7 +32,9 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, strin
         var result = _passwordHasher.VerifyHashedPassword(user, user.EncodedPassword, request.Password);
 
         if (result == PasswordVerificationResult.Failed) throw new InvalidPasswordException();
+        var dto = Mapper.MapUserToUserLoggedInDto(user);
+        dto.Token = _jwtProvider.GenerateJwtToken(user);
 
-        return _jwtProvider.GenerateJwtToken(user);
+        return dto;
     }
 }

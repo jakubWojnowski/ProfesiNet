@@ -1,5 +1,5 @@
 export interface UpdatePost {
-    media: string
+    file?: File | null
     description: string
     id: string
 }

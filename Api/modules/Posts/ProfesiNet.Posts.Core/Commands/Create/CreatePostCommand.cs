@@ -1,3 +1,5 @@
-﻿namespace ProfesiNet.Posts.Core.Commands.Create;
+﻿using Microsoft.AspNetCore.Http;
 
-internal record CreatePostCommand(string? Media, string? Description);
+namespace ProfesiNet.Posts.Core.Commands.Create;
+
+internal record CreatePostCommand(IFormFile? File, string? Description);

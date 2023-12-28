@@ -1,4 +1,6 @@
-﻿namespace ProfesiNet.Posts.Core.Commands.Update;
+﻿using Microsoft.AspNetCore.Http;
 
-internal record UpdatePostCommand(Guid Id, string? Media, string? Description);
+namespace ProfesiNet.Posts.Core.Commands.Update;
+
+internal record UpdatePostCommand(Guid Id, IFormFile? File, string? Description);
 

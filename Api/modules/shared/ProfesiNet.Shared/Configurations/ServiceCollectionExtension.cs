@@ -53,7 +53,8 @@ internal static class ServiceCollectionExtension
             {
                 x.WithOrigins("http://localhost:3000")
                     .WithMethods("POST","GET", "PUT", "DELETE", "PATCH")
-                    .WithHeaders("Content-Type", "Authorization");
+                    .WithHeaders("Content-Type", "Authorization")
+                    .WithExposedHeaders("Location");
             });
         });
         services.AddSwaggerGen(swagger =>

@@ -1,64 +1,118 @@
-import { FC, useState } from 'react';
-import { Button, Modal, Form, TextArea, Icon, Grid, Segment } from 'semantic-ui-react';
+import React, { FC, useState } from 'react';
+import { Button, Modal, Icon, Grid, Segment, Image } from 'semantic-ui-react';
+import { observer } from "mobx-react-lite";
+import { useStore } from "../../../app/stores/Store";
+import {Formik, Form, ErrorMessage} from "formik";
+import * as Yup from 'yup';
+import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
 
-interface PostFormProps {
-    onPostSubmit: (content: string) => void; // Add other props as needed
+interface FormValues {
+    description: string;
+    file: File | null;
 }
 
-const PostForm: FC<PostFormProps> = ({ onPostSubmit }) => {
+const PostForm: FC = () => {
     const [open, setOpen] = useState(false);
-    const [postContent, setPostContent] = useState('');
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const { postStore } = useStore();
+    const { createPost, loading } = postStore;
 
-    const handleSubmit = () => {
-        onPostSubmit(postContent);
-        setPostContent('');
-        setOpen(false);
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any) => void) => {
+        const file = event.target.files ? event.target.files[0] : null;
+        setFieldValue('file', file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreviewUrl(null);
+        }
     };
 
-    return (
-        <Grid  centered={true}>
+    const handleCancelImage = (setFieldValue: (field: string, value: any) => void) => {
+        setPreviewUrl(null);
+        setFieldValue('file', null);
+    };
 
-            <Button size={"large"} onClick={() => setOpen(true)} icon labelPosition='left'>
-                <Icon name='edit' />
+    const handleSubmit = async (values: FormValues, { resetForm }: { resetForm: () => void }): Promise<void> => {
+        try {
+            await createPost(values);
+            resetForm();
+            setPreviewUrl(null);
+            setOpen(false);
+        } catch (error) {
+            console.error('Error creating the post:', error);
+            alert('Failed to create the post.');
+        }
+    };
+
+    const validationSchema = Yup.object({
+        description: Yup.string().nullable(),
+        file: Yup.mixed().nullable(),
+    }).test('fileOrDescription', 'Either a description or file is required', value => {
+        return !!(value.description || (value.file instanceof File && value.file.size > 0));
+    });
+    return (
+        <Grid centered={true}>
+            <Button size={"large"} style={{width: "80%"}} onClick={() => setOpen(true)} icon labelPosition='left' primary>
+                <Icon name='edit outline' />
                 Start a post
             </Button>
 
             <Modal
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={() => {
+                    setOpen(false);
+                    setPreviewUrl(null);
+                }}
                 size='small'
             >
                 <Modal.Header>Create a Post</Modal.Header>
                 <Modal.Content>
-                    <Form>
-                        <TextArea
-                            rows={3}
-                            placeholder="What's on your mind?"
-                            value={postContent}
-                            onChange={(e) => setPostContent(e.target.value)}
-                            style={{ minHeight: 100 }} // Adjust the height of the TextArea
-                        />
-                    </Form>
-                    <Segment secondary>
-                        <Button.Group>
-                            <Button icon labelPosition='left'>
-                                <Icon name='file image outline' />
-                                Image
-                            </Button>
-                            <Button icon>
-                                <Icon name='smile outline' />
-                            </Button>
-                        </Button.Group>
-                    </Segment>
+                    <Formik
+                        initialValues={{
+                            description: '',
+                            file: null,
+                        }}
+                        onSubmit={handleSubmit}
+                        validationSchema={validationSchema}
+                    >
+                        {({ setFieldValue, isSubmitting, isValid, dirty }) => (
+                            <Form className='ui form'>
+                                <MyTextArea name='description' placeholder='Start a post' rows={10} />
+                                <input
+                                    id="fileInput"
+                                    name="file"
+                                    type="file"
+                                    onChange={(event) => handleFileChange(event, setFieldValue)}
+                                    hidden
+                                />
+                                {previewUrl && (
+                                    <Segment>
+                                        <Image src={previewUrl} size='big' centered />
+                                        <Button icon onClick={() => handleCancelImage(setFieldValue)}>
+                                            <Icon name='cancel' />
+                                        </Button>
+                                    </Segment>
+                                )}
+                                <label htmlFor="fileInput" className="ui icon button">
+                                    <Icon name='file image outline' />
+                                    Image
+                                </label>
+                                <Button type='submit' color='green' loading={isSubmitting || loading} disabled={isSubmitting || !dirty || !isValid}>
+                                    Publish
+                                </Button>
+                                <ErrorMessage name={'description'} render={(error) => <Segment inverted color='red'>{error}</Segment>} />
+                                <ErrorMessage name={'file'} render={(error) => <Segment inverted color='red'>{error}</Segment>} />
+                            </Form>
+                        )}
+                    </Formik>
                 </Modal.Content>
-                <Modal.Actions>
-                    <Button color='green' onClick={handleSubmit}>
-                        Publish
-                    </Button>
-                </Modal.Actions>
             </Modal>
         </Grid>
     );
 };
 
-export default PostForm;
+export default observer(PostForm);

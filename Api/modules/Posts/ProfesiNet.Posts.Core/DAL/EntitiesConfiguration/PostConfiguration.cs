@@ -10,7 +10,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Description).IsRequired();
+        builder.Property(x => x.Description);
         builder.Property(x => x.PublishedAt).IsRequired();
         
         builder.HasMany(x => x.Comments)

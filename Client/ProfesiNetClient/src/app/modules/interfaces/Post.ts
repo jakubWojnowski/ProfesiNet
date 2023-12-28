@@ -3,7 +3,8 @@ export interface Post {
     creatorId: string
     creatorName: string
     creatorSurname: string
-    media: string
+    creatorProfilePicture: string
+    imageUrl: string
     description: string
     publishedAt: string
     likesCount: number
