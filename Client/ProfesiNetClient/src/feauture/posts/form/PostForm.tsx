@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
-import { Button, Modal, TextArea, Icon, Grid, Segment, Image } from 'semantic-ui-react';
+import { Button, Modal, Icon, Grid, Segment, Image } from 'semantic-ui-react';
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/Store";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
+import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
 
 interface FormValues {
     description: string;
@@ -80,7 +81,7 @@ const PostForm: FC = () => {
                     >
                         {({ setFieldValue, isSubmitting }) => (
                             <Form className='ui form'>
-                                <Field name="description" as={TextArea} rows={3} placeholder="What's on your mind?" style={{ minHeight: 200 }} />
+                                <MyTextArea name='description' placeholder='Start a post' rows={10} />
                                 <input
                                     id="fileInput"
                                     name="file"
