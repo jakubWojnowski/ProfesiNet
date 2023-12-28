@@ -5,7 +5,6 @@ import { useStore } from "../../../app/stores/Store";
 import {Formik, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
 import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
-import MyDatePickerInput from "../../../app/common/form/MyDateInput.tsx";
 
 interface FormValues {
     description: string;
@@ -80,7 +79,7 @@ const PostForm: FC = () => {
                         onSubmit={handleSubmit}
                         validationSchema={validationSchema}
                     >
-                        {({ setFieldValue, isSubmitting }) => (
+                        {({ setFieldValue, isSubmitting, isValid, dirty }) => (
                             <Form className='ui form'>
                                 <MyTextArea name='description' placeholder='Start a post' rows={10} />
                                 <input
@@ -102,7 +101,7 @@ const PostForm: FC = () => {
                                     <Icon name='file image outline' />
                                     Image
                                 </label>
-                                <Button type='submit' color='green' loading={isSubmitting || loading}>
+                                <Button type='submit' color='green' loading={isSubmitting || loading} disabled={isSubmitting || !dirty || !isValid}>
                                     Publish
                                 </Button>
                                 <ErrorMessage name={'description'} render={(error) => <Segment inverted color='red'>{error}</Segment>} />
