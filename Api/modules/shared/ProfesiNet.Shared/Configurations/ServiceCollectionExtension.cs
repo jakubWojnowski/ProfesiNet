@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using ProfesiNet.Shared.Api;
+using ProfesiNet.Shared.Commands;
 using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Shared.Events;
 using ProfesiNet.Shared.Mediator;
@@ -92,6 +93,8 @@ internal static class ServiceCollectionExtension
         });
         services.AddErrorHandling();
         services.AddMsSql();
+        services.AddCommands(assemblies);
+        services.AddTransactionalDecorator();
         services.RegisterValidators();
         services.AddProfesiNetMediator();
         services.AddControllers();
@@ -160,5 +163,18 @@ internal static class ServiceCollectionExtension
         var options = new T();
         configuration.GetSection(sectionName).Bind(options);
         return options;
+    }
+    
+    public static string GetModuleName(this object value) => value?.GetType().GetModuleName() ?? string.Empty;
+    
+    public static string GetModuleName(this Type type)
+    {
+        if (type?.Namespace is null)
+        {
+            return string.Empty;
+        }
+        return type.Namespace.StartsWith("ProfesiNet.Modules.")
+            ? type.Namespace.Split(".")[2].ToLowerInvariant()
+            : string.Empty;
     }
 }

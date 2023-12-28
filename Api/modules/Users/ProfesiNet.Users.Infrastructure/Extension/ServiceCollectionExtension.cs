@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using ProfesiNet.Shared.MsSql;
 using ProfesiNet.Users.Domain.Interfaces;
 using ProfesiNet.Users.Infrastructure.Authentication;
+using ProfesiNet.Users.Infrastructure.DAL;
 using ProfesiNet.Users.Infrastructure.Persistence;
 using ProfesiNet.Users.Infrastructure.Repositories;
 using ProfesiNet.Users.Infrastructure.Settings;
@@ -55,7 +56,8 @@ public static class ServiceCollectionExtension
             .AddScoped<ICertificateRepository, CertificateRepository>()
             .AddScoped<ISkillRepository, SkillRepository>()
             .AddScoped<IPhotoRepository, PhotoRepository>()
-            .AddScoped<IJwtProvider, JwtProvider>();
+            .AddScoped<IJwtProvider, JwtProvider>()
+            .AddUnitOfWork<IUsersUnitOfWork, UsersUnitOfWork>();
         return services;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProfesiNet.Shared.Commands;
 using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Users.Application.Certificates.Commands.Create;
 using ProfesiNet.Users.Application.Certificates.Commands.Delete;
@@ -34,12 +35,14 @@ namespace ProfesiNet.Users.Api.Controllers;
 internal class AccountProfileController : BaseController
 {
     private readonly IMediator _mediator;
+    private readonly ICommandDispatcher _commandDispatcher;
     private readonly IContext _context;
 
 
-    public AccountProfileController(IMediator mediator, IContext context)
+    public AccountProfileController(IMediator mediator, IContext context, ICommandDispatcher commandDispatcher)
     {
         _mediator = mediator;
+        _commandDispatcher = commandDispatcher;
         _context = context;
     }
 
@@ -206,11 +209,18 @@ internal class AccountProfileController : BaseController
         return Ok(certificates);
     }
 
+    // [HttpPost("CreateUserSkill")]
+    // public async Task<IActionResult> AddUserSkill(CreateUserSkillCommand command)
+    // {
+    //     var id = await _mediator.Send(command with { UserId = _context.Id });
+    //     return Created($"api/AccountProfile/CreateUserSkill/{id}", id);
+    // }
+    
     [HttpPost("CreateUserSkill")]
     public async Task<IActionResult> AddUserSkill(CreateUserSkillCommand command)
     {
-        var id = await _mediator.Send(command with { UserId = _context.Id });
-        return Created($"api/AccountProfile/CreateUserSkill/{id}", id);
+        await _commandDispatcher.SendAsync(command with { UserId = _context.Id });
+        return Ok();
     }
 
     [HttpDelete("DeleteUserSkill")]
