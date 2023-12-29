@@ -1,16 +1,18 @@
 export interface User {
+    id: string;
     name: string;
     surname: string;
     token: string;
     address: string;
     bio: string;
-    ProfilePicture: string;
+    profilePicture: string;
 }
 
 export interface UserFormValues {
     email: string;
-    password: string;
-    confirmPassword?: string;
     name?: string;
     surname?: string;
+    password: string;
+    confirmPassword?: string;
+   
 }

@@ -11,7 +11,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Users.Commands.Register;
 
-internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
+internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand,RegisterResultDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
@@ -27,7 +27,7 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         _messageBroker = messageBroker;
     }
    
-    public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterResultDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         
         var dto = new RegisterUserDto
@@ -51,6 +51,12 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         
         await _userRepository.AddAsync(user, cancellationToken);
         await _messageBroker.PublishAsync(new UserCreated(user.Id, user.Name, user.Surname));
-        
+        var result = new RegisterResultDto
+        {
+            Email = dto.Email,
+            password = dto.Password
+        };
+        return result;
+
     }
 }

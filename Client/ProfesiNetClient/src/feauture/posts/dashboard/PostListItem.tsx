@@ -9,7 +9,7 @@ interface Props {
 }
 
 const PostListItem: FC<Props> = ({post}: Props) => {
-    const {postStore} = useStore();
+    const {postStore, userStore} = useStore();
     const {openForm, deletePost} = postStore;
 
     return (
@@ -22,7 +22,9 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                             <ItemImage src={post.creatorProfilePicture} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
                             <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}</ItemMeta>
+                       
                             <ItemMeta className="dropdown">
+                                {userStore.user?.id === post.creatorId && (
                                 <Dropdown icon='ellipsis horizontal' className="options-button" closeOnEscape>
                                     <Dropdown.Menu>
                                         <Dropdown.Item
@@ -41,7 +43,9 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                                         />
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                )}
                             </ItemMeta>
+                         
                             
                         </Item.Header>
 

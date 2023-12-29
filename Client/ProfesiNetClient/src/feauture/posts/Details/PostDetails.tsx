@@ -21,7 +21,7 @@ import LoadingComponent from "../../../app/layout/components/LoadingComponent.ts
 
 
 const PostDetails: FC = () => {
-    const {postStore} = useStore();
+    const {postStore,userStore} = useStore();
     const {selectedPost: post, deletePost, openForm, loadPost, loadingInitial, editMode} = postStore;
     const {id} = useParams();
 
@@ -54,7 +54,9 @@ const PostDetails: FC = () => {
                                            className="post-creator-image" spaced="right"/>
                                 <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}</ItemMeta>
                                 <ItemMeta className="dropdown">
-                                    <Dropdown icon='ellipsis horizontal' className="options-button" closeOnEscape>
+                                    {userStore.user?.id === post.creatorId && (
+
+                                        <Dropdown icon='ellipsis horizontal' className="options-button" closeOnEscape>
                                         <Dropdown.Menu>
                                             <Dropdown.Item
                                                 text='Delete'
@@ -73,6 +75,7 @@ const PostDetails: FC = () => {
                                             />
                                         </Dropdown.Menu>
                                     </Dropdown>
+                                    )}
                                 </ItemMeta>
 
                             </Item.Header>

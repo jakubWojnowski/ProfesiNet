@@ -49,15 +49,12 @@ axios.interceptors.response.use(async response => {
 
 });
 
-// Function to extract the token from local storage
-const getAuthToken = () => localStorage.getItem('token');
 
-// Function to handle the response and return the data
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-// Setting up the requests to include the token in the header
+
 axios.interceptors.request.use((config) => {
-    const token = getAuthToken();
+    const token = store.commonStore.token;
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }

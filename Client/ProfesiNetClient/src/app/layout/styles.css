@@ -35,4 +35,9 @@ body{
     margin-bottom: 0;
     }
 
-   
+.button-width {
+    width: 150px; /* or any other value */
+    height: 50px;
+
+}
+
