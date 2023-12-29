@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using ProfesiNet.Users.Application.Policy;
+using ProfesiNet.Users.Application.Skills.Dtos;
 using ProfesiNet.Users.Application.Skills.Mappings;
+using ProfesiNet.Users.Domain.Entities;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Skills.Commands.Create;
 
-internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillCommand, Guid>
+internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillCommand>
 {
     private readonly ISkillRepository _skillRepository;
     private readonly ICannotAddSkillPolicy _cannotAddSkillPolicy;
@@ -21,7 +23,7 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
         _userRepository = userRepository;
     }
 
-    public async Task<Guid> Handle(CreateUserSkillCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateUserSkillCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
@@ -29,14 +31,20 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
             throw new UserNotFoundException(request.UserId);
         }
 
-        if (!await _cannotAddSkillPolicy.CheckSkillsAsync(request.Name, request.UserId, cancellationToken))
+        foreach (var name in request.Names)
         {
-            throw new UserCannotAddSkillException(request.Name);
+            if (!await _cannotAddSkillPolicy.CheckSkillsAsync(name, request.UserId, cancellationToken))
+            {
+                throw new UserCannotAddSkillException(name);
+            }
+            var skill = Mapper.MapSkillDtoToSkill(new SkillDto
+            {
+                Name = name,
+                Id = Guid.NewGuid()
+            });
+            skill.UserID = user.Id;
+             await _skillRepository.AddAsync(skill, cancellationToken);
         }
-
-        var skill = Mapper.MapSkillDtoToSkill(request);
-        skill.UserID = user.Id;
-
-        return await _skillRepository.AddAsync(skill, cancellationToken);
+        
     }
 }

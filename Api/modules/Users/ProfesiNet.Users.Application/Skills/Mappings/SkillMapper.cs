@@ -9,6 +9,7 @@ namespace ProfesiNet.Users.Application.Skills.Mappings;
 internal partial class SkillMapper
 {
     public partial SkillDto MapSkillToSkillDto(Skill skill);
+    public partial Skill MapSkillDtoToSkill(SkillDto skillDto);
     public partial IReadOnlyCollection<SkillDto> MapSkillToSkillDtos(IEnumerable<Skill?> skills);
     public partial Skill MapSkillDtoToSkill(CreateUserSkillCommand createUserSkillCommand);
     

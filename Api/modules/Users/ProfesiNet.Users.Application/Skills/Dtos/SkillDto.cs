@@ -4,4 +4,5 @@ public class SkillDto
 {
     public Guid Id { get; init; }
     public string? Name { get; set; }
+
 }

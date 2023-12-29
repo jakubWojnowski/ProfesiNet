@@ -209,8 +209,8 @@ internal class AccountProfileController : BaseController
     [HttpPost("CreateUserSkill")]
     public async Task<IActionResult> AddUserSkill(CreateUserSkillCommand command)
     {
-        var id = await _mediator.Send(command with { UserId = _context.Id });
-        return Created($"api/AccountProfile/CreateUserSkill/{id}", id);
+        await _mediator.Send(command with { UserId = _context.Id });
+        return Created();
     }
 
     [HttpDelete("DeleteUserSkill")]
