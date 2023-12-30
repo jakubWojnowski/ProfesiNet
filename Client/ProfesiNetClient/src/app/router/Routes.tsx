@@ -5,6 +5,7 @@ import PostDashboard from "../../feauture/posts/dashboard/PostDashboard.tsx";
 import LoginForm from "../../feauture/users/LoginForm.tsx";
 import NotFound from "../errors/NotFound.tsx";
 import ServerError from "../errors/ServerError.tsx";
+import ProfilePage from "../../feauture/profile/ProfilePage.tsx";
 
 export const routes: RouteObject[] = [
     {
@@ -16,6 +17,14 @@ export const routes: RouteObject[] = [
                 element: (
                     <RequireAuth>
                         <PostDashboard />
+                    </RequireAuth>
+                ),
+            },
+            {
+                path: 'profile/:username',
+                element: (
+                    <RequireAuth>
+                        <ProfilePage />
                     </RequireAuth>
                 ),
             },

@@ -14,7 +14,7 @@ const RegisterForm: FC = () => {
             initialValues={{email: '', password: '', confirmPassword:'', name: '', surname: '', error: null}}
 
             onSubmit={(values,{setErrors}) => userStore.register(values)
-                .catch(_ => setErrors({error: 'Invalid email or password'}))}
+                .catch(_ => setErrors({error: 'Email is taken'}))}
             validationSchema={Yup.object({
                 name: Yup.string().required(),
                 surname: Yup.string().required(),

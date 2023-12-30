@@ -17,7 +17,7 @@ const NavBar: FC = () =>  {
                 </Menu.Item>
                 <Menu.Item name='Friends' />
                 <Menu.Item name='Messages' />
-                <Menu.Item name='Profile' />
+                <Menu.Item as={NavLink} to={`/profile/${user?.name}`} name="Profile" />
                 <Menu.Item as={NavLink} to='/posts' name='Posts' />
             </Container>
             <Container fluid={true}>

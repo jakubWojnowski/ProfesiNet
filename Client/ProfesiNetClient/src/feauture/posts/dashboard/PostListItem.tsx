@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 
@@ -19,9 +19,11 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                     <Item.Content>
                         <Item.Header className="item-header">
 
-                            <ItemImage src={post.creatorProfilePicture} size="mini" circular
+                            <ItemImage as={NavLink} to={`/profile/${post.creatorName}`} src={post.creatorProfilePicture} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
-                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}</ItemMeta>
+                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
+                           
+                            </ItemMeta>
                        
                             <ItemMeta className="dropdown">
                                 {userStore.user?.id === post.creatorId && (
