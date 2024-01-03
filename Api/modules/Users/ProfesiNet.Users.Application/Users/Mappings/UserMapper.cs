@@ -30,6 +30,4 @@ internal partial class UserMapper
     public partial IReadOnlyCollection<UserDto> UserDtosToUsers(IEnumerable<User> users);
     public partial UserAndExperienceDto UserAndExperienceDtosToUsers(User users);
     
-
-    public partial User MapUpdateUserFullNameCommandToUser(UpdateUserFullNameCommand command);
 }

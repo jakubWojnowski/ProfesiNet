@@ -7,6 +7,7 @@ public class User
     public string EncodedPassword { get; set; } = null!;
     public string? Name { get; set; }
     public string? Surname { get; set; }
+    public string? Title { get; set; }
 
     public string? Address { get; set; }
     public string? Bio { get; set; }

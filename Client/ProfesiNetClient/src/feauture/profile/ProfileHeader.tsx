@@ -11,14 +11,17 @@ const ProfileHeader: FC = () => {
                         <Item.Image avatar size='small' src='/assets/user.png'/>
                         <Item.Content verticalAlign='middle'>
                             <Item.Header as='h1'>Display Name</Item.Header>
+                            <Item.Extra> Title</Item.Extra>
+                            <Item.Description as='h2'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, placeat!</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>
             </Grid.Column>
             <Grid.Column width={4}>
-              <Statistic.Group widths={2}>
+              <Statistic.Group widths={3}>
                     <Statistic label='Followers' value='5'/>
                     <Statistic label='Following' value='42'/>
+                    <Statistic label='Friends' value='42'/>
                 </Statistic.Group>
                 <Divider/>
                 <Reveal animated='move'>
@@ -38,7 +41,9 @@ const ProfileHeader: FC = () => {
                         />
                         
                     </Reveal.Content>
+                    
                 </Reveal>
+                
             </Grid.Column>
         </Segment>
      
