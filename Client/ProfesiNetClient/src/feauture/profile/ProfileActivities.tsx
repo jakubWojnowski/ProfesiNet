@@ -20,25 +20,25 @@ const MockActivities = [
         description: 'Exploring the beauty of nature...',
         likes: '15'
     },   {
-        id: '2',
+        id: '3',
         date: '2024-01-02',
         content: 'Jakub Wojnowski shared a photo',
         description: 'Exploring the beauty of nature...',
         likes: '15'
     },   {
-        id: '2',
+        id: '4',
         date: '2024-01-02',
         content: 'Jakub Wojnowski shared a photo',
         description: 'Exploring the beauty of nature...',
         likes: '15'
     },   {
-        id: '2',
+        id: '5',
         date: '2024-01-02',
         content: 'Jakub Wojnowski shared a photo',
         description: 'Exploring the beauty of nature...',
         likes: '15'
     },   {
-        id: '2',
+        id: '6',
         date: '2024-01-02',
         content: 'Jakub Wojnowski shared a photo',
         description: 'Exploring the beauty of nature...',

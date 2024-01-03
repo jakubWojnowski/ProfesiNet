@@ -1,52 +1,60 @@
-import {FC} from "react";
-import {Button, Divider, Grid, Item, Reveal, Segment, Statistic} from "semantic-ui-react";
-
+import {FC, useState} from 'react';
+import {Button, Grid, Statistic, Segment, Image, Item, ItemExtra} from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
+import {useStore} from "../../app/stores/Store.ts";
+import RegisterForm from "../users/RegisterForm.tsx";
+import EditProfileHeaderForm from "./forms/EditForm.tsx"; // Ensure Semantic UI CSS is imported
 
 const ProfileHeader: FC = () => {
+    const [isFollowing, setIsFollowing] = useState(false);
+    const {userStore,modalStore} = useStore();
+
+
+    const handleFollowClick = () => {
+        setIsFollowing(!isFollowing);
+    };
+
     return (
         <Segment>
-            <Grid.Column width={12}>
-                <Item.Group>
-                    <Item>
-                        <Item.Image avatar size='small' src='/assets/user.png'/>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={11}>
+                        <Image
+                            floated='left'
+                            size='small'
+                            src='/assets/user.png' // Your user image path
+                            avatar
+                        />
                         <Item.Content verticalAlign='middle'>
                             <Item.Header as='h1'>Display Name</Item.Header>
-                            <Item.Extra> Title</Item.Extra>
-                            <Item.Description as='h2'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, placeat!</Item.Description>
+                            <Item.Extra as='h2'>Title</Item.Extra>
+                            <Item.Extra>Krakow</Item.Extra>
                         </Item.Content>
-                    </Item>
-                </Item.Group>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <Statistic.Group widths={3}>
-                    <Statistic label='Followers' value='5'/>
-                    <Statistic label='Following' value='42'/>
-                    <Statistic label='Friends' value='42'/>
-                </Statistic.Group>
-                <Divider/>
-                <Reveal animated='move'>
-                    <Reveal.Content visible style={{width: '100%'}}>
-                        <Button
-                            fluid
-                            color='teal'
-                            content='Following'
-                        />
-                    </Reveal.Content>
-                    <Reveal.Content hidden style={{width: '100%'}}>
-                        <Button
-                            fluid
-                            basic
-                            color={true ? 'red' : 'green'}
-                            content={true ? 'Unfollow' : 'Follow'}
-                        />
+                    </Grid.Column>
+                    <Statistic.Group  >
+                        <Statistic label='FOLLOWERS' value='52' />
+                        <Statistic label='FOLLOWING' value='42' />
+                        <Statistic label='FRIENDS' value='42' />
+                    </Statistic.Group>
+                    <Grid.Column width={6} textAlign='center' >
                         
-                    </Reveal.Content>
-                    
-                </Reveal>
-                
-            </Grid.Column>
+                     
+                        <Item style={{ marginTop: '1em' }} >
+                            <Button size={'large'}
+                                color={isFollowing ? 'red' : 'teal'}
+                                content={isFollowing ? 'Unfollow' : 'Follow'}
+                                onClick={handleFollowClick}
+                            />
+                            <Button basic color='blue' content='Message' size={'large'}  />
+                            <Button basic color='green' content='Send Invitation' size={'large'} />
+                        </Item>
+                    </Grid.Column>
+                    <Grid.Column width={16} textAlign='right'>
+                        <Button icon='edit' content='Edit' onClick={()=> modalStore.openModal(<EditProfileHeaderForm/>)}/>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </Segment>
-     
     );
 };
 
