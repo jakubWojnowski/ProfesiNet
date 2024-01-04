@@ -1,8 +1,7 @@
 import {FC, useState} from 'react';
-import {Button, Grid, Statistic, Segment, Image, Item, ItemExtra} from 'semantic-ui-react';
+import {Button, Grid, Statistic, Segment, Image, Item} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {useStore} from "../../app/stores/Store.ts";
-import RegisterForm from "../users/RegisterForm.tsx";
 import EditProfileHeaderForm from "./forms/EditForm.tsx"; // Ensure Semantic UI CSS is imported
 
 const ProfileHeader: FC = () => {

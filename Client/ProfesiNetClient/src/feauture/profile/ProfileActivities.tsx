@@ -3,6 +3,7 @@ import {Button, Card, Header, Icon, Segment} from 'semantic-ui-react';
 import { useTransition, animated } from 'react-spring';
 
 import './ProfileActivities.css';
+import {useStore} from "../../app/stores/Store.ts";
 
 // Mock data for activities/posts
 const MockActivities = [
@@ -50,6 +51,8 @@ const MockActivities = [
 
 const ProfileActivities: FC = () => {
     const [displayedActivities, setDisplayedActivities] = useState(3);
+    const {postStore} = useStore();
+    const {PostsByCreator} = postStore;
 
     const showMoreActivities = () => {
         setDisplayedActivities((prev) => (prev + 3 <= MockActivities.length ? prev + 3 : MockActivities.length));
@@ -59,7 +62,7 @@ const ProfileActivities: FC = () => {
         setDisplayedActivities((prev) => (prev - 3 >= 0 ? prev - 3 : 0));
     };
 
-    const visibleActivities = MockActivities.slice(0, displayedActivities);
+    const visibleActivities = PostsByCreator.slice(0, displayedActivities);
 
     const transitions = useTransition(visibleActivities, {
         keys: (item) => item.id,

@@ -6,6 +6,7 @@ import {UpdatePost} from "../modules/interfaces/UpdatePost.ts";
 
 export default class PostStore {
     postRegistry = new Map<string, Post>(); 
+    postPerCreatorRegistry = new Map<string, Post>();
     selectedPost: Post | undefined = undefined;
     editMode: boolean = false; 
     loading: boolean = false;
@@ -17,6 +18,9 @@ export default class PostStore {
     
     get PostsBy() {
         return Array.from(this.postRegistry.values());
+    }
+    get PostsByCreator() {
+        return Array.from(this.postPerCreatorRegistry.values());
     }
 
     loadPosts = async (): Promise<void> => {
@@ -126,6 +130,23 @@ export default class PostStore {
         }
         
     }
+    loadCreatorPosts = async (id: string): Promise<void> => {
+        this.setLoadingInitial(true);
+
+        try {
+            const fetchedPosts: Post[] = await agent.Posts.getAllByCreator(id);
+            fetchedPosts.forEach(post => {
+                this.postPerCreatorRegistry.set(post.id, post);
+            });
+            this.setLoadingInitial(false);
+        } catch (error) {
+            console.error(error);
+            this.setLoadingInitial(false);
+        }
+       
+        
+    }
+
     private getPost = (id: string) => {
         return this.postRegistry.get(id);
     }
@@ -161,6 +182,8 @@ export default class PostStore {
             this.editMode = false;
             this.selectedPost = undefined;
     };
+    
+    
         
     
     

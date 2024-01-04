@@ -2,7 +2,26 @@ import axios, {AxiosError, AxiosResponse} from 'axios';
 import {Post} from "../modules/interfaces/Post.ts";
 import {CreatePost} from "../modules/interfaces/CreatePost.ts";
 import {UpdatePost} from "../modules/interfaces/UpdatePost.ts";
-import {User, UserFormValues} from "../modules/interfaces/User.ts";
+import {
+    CreateUserCertificateCommand,
+    CreateUserEducationCommand,
+    CreateUserExperienceCommand,
+    CreateUserSkillCommand, DeleteUserCertificateCommand,
+    DeleteUserEducationCommand,
+    DeleteUserExperienceCommand, DeleteUserSkillCommand,
+    UpdateUserAddressCommand,
+    UpdateUserBioCommand, UpdateUserCertificateCommand,
+    UpdateUserEducationCommand,
+    UpdateUserExperienceCommand,
+    UpdateUserFullNameCommand,
+    UpdateUserInformationCommand, UpdateUserSkillCommand,
+    User,
+    UserCertificate,
+    UserEducation,
+    UserExperience,
+    UserFormValues,
+    UserSkill
+} from "../modules/interfaces/User.ts";
 import {toast} from "react-toastify";
 import {router} from "../router/Routes.tsx";
 import {store} from "../stores/Store.ts";
@@ -74,7 +93,7 @@ const requests = {
 const Posts = {
     list: async () => requests.get<Post[]>('/posts-module/Post/getAll'),
     details: async (id: string): Promise<Post> => requests.get(`/posts-module/Post/GetById/${id}`),
-    getAllByCreator: (creatorId: string) => requests.get(`/posts-module/Post/GetAllPerCreator/${creatorId}`),
+    getAllByCreator: (creatorId: string) => requests.get<Post[]>(`/posts-module/Post/GetAllPerCreator/${creatorId}`),
     getAllOwn: () => requests.get('/posts-module/Post/getAllOwn'),
     create: async (createPost: CreatePost) => {
         const formData = new FormData();
@@ -136,6 +155,67 @@ const Account = {
     login: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/login', user),
     register: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/register', user),
     current: () => requests.get<User>('/users-module/AccountProfile/GetOwnProfile'),
+    
+    //gets
+    getProfile: () => requests.get<User>('/AccountProfile/GetOwnProfile'),
+    getUserById: (userId: string) => requests.get<User>(`/AccountProfile/GetUserById/${userId}`),
+    getAllUsers: () => requests.get<User[]>('/AccountProfile/GetAllUsers'),
+    getUserExperienceById: (id: string) => requests.get<UserExperience>(`/AccountProfile/GetUserExperienceById/${id}`),
+    getAllUserExperience: (userId: string) => requests.get<UserExperience[]>(`/AccountProfile/GetAllUserExperience/${userId}`),
+    getUserEducationById: (id: string) => requests.get<UserEducation>(`/AccountProfile/GetUserEducationById/${id}`),
+    getAllUserEducation: (userId: string) => requests.get<UserEducation[]>(`/AccountProfile/GetAllUserEducation/${userId}`),
+    getUserSkillById: (id: string) => requests.get<UserSkill>(`/AccountProfile/GetSkillById/${id}`),
+    getAllUserSkills: (userId: string) => requests.get<UserSkill[]>(`/AccountProfile/GetAllUserSkills/${userId}`),
+    getUserCertificateById: (id: string) => requests.get<UserCertificate>(`/AccountProfile/GetUserCertificateById/${id}`),
+    getAllUserCertificates: (userId: string) => requests.get<UserCertificate[]>(`/AccountProfile/GetAllUserCertificates/${userId}`),
+
+    // Account management
+    updateUserFullName: (command: UpdateUserFullNameCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserFullName', command),
+    updateUserAddress: (command: UpdateUserAddressCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserAddress', command),
+    updateUserBio: (command: UpdateUserBioCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserBio', command),
+
+    // Education management
+    addUserEducation: (command: CreateUserEducationCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserEducation', command),
+    deleteUserEducation: (command: DeleteUserEducationCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserEducation', { data: command }),
+    updateUserEducation: (command: UpdateUserEducationCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserEducation', command),
+
+    // Experience management
+    addUserExperience: (command: CreateUserExperienceCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserExperience', command),
+    deleteUserExperience: (command: DeleteUserExperienceCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserExperience', { data: command }),
+    updateUserExperience: (command: UpdateUserExperienceCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserExperience', command),
+
+    // Skills management
+    addUserSkill: (command: CreateUserSkillCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserSkill', command),
+    deleteUserSkill: (command: DeleteUserSkillCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserSkill', { data: command }),
+    updateUserSkill: (command: UpdateUserSkillCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserSkill', command),
+
+    // Certificate management
+    addUserCertificate: (command: CreateUserCertificateCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserCertificate', command),
+    updateUserCertificate: (command: UpdateUserCertificateCommand) => requests.post<{}>('/users-module/AccountProfile/UpdateUserCertificate', command),
+    deleteUserCertificate: (command: DeleteUserCertificateCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserCertificate', { data: command }),
+
+    // Connection management
+    updateUserFollowings: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserFollowings', targetId),
+    updateUserConnections: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserConnections', targetId),
+    removeUserConnection: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnection', targetId),
+    removeUserFollowing: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserFollowing', targetId),
+    updateUserConnectionInvitations: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserConnectionInvitations', targetId),
+    removeUserConnectionReceivedInvitation: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnectionReceivedInvitation', targetId),
+    removeUserConnectionSentInvitation: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnectionSentInvitation', targetId),
+    getAllUserConnections: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnections/${userId}`),
+    getAllUserFollowings: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowings/${userId}`),
+    getAllUserFollowers: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowers/${userId}`),
+    getAllUserConnectionInvitationsReceived: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnectionInvitationsReceived/${userId}`),
+    getAllUserConnectionInvitationsSent: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnectionInvitationsSent/${userId}`),
+
+    // Profile picture management
+    addUserProfilePicture: (formData: FormData) => axios.post('/users-module/AccountProfile/AddUserProfilePicture', formData, {
+        headers: {'Content-Type': 'multipart/form-data'},
+    }).then(responseBody),
+    deleteUserProfilePicture: (photoId: string) => requests.del<{}>('/users-module/AccountProfile/DeleteUserProfilePicture', { data: photoId }),
+
+    // User information management
+    updateUserInformation: (command: UpdateUserInformationCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserInformation', command),
 };
 
 const agent = {

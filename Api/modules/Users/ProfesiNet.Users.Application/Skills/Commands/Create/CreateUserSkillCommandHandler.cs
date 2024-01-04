@@ -42,7 +42,7 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
                 Name = name,
                 Id = Guid.NewGuid()
             });
-            skill.UserID = user.Id;
+            skill.UserId = user.Id;
              await _skillRepository.AddAsync(skill, cancellationToken);
         }
         

@@ -349,5 +349,3 @@ internal class AccountProfileController : BaseController
         return Ok(user);
     }
 }
-
-//naprawic post certificate i education. daty sa zle
