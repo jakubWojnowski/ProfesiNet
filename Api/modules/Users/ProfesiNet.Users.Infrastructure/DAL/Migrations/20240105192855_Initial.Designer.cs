@@ -12,8 +12,8 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    [Migration("20231213205348_AltDbContextUser")]
-    partial class AltDbContextUser
+    [Migration("20240105192855_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -125,6 +125,32 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                     b.ToTable("Experiences");
                 });
 
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PictureType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Photos", (string)null);
+                });
+
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.Property<Guid>("Id")
@@ -135,12 +161,12 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Skills");
                 });
@@ -181,7 +207,11 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("NetworkConnectionInvitations")
+                    b.Property<string>("NetworkConnectionInvitationsReceived")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NetworkConnectionInvitationsSent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -190,6 +220,10 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Title")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -233,11 +267,22 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Photo", b =>
+                {
+                    b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
+                        .WithMany("Photos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProfesiNet.Users.Domain.Entities.Skill", b =>
                 {
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
                         .WithMany("Skills")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -251,6 +296,8 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");
+
+                    b.Navigation("Photos");
 
                     b.Navigation("Skills");
                 });

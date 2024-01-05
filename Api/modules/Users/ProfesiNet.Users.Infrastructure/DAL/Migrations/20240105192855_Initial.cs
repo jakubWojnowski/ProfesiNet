@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ProfesiNet.Users.Infrastructure.Migrations
+namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -12,7 +12,7 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,12 +20,18 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                     EncodedPassword = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Followings = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Followers = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NetworkConnections = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NetworkConnectionInvitationsReceived = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NetworkConnectionInvitationsSent = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,59 +48,11 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Certificates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Certificates_User_UserId",
+                        name: "FK_Certificates_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConnectionRequests",
-                columns: table => new
-                {
-                    ReceiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConnectionRequests", x => new { x.ReceiverId, x.SenderId });
-                    table.ForeignKey(
-                        name: "FK_ConnectionRequests_User_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ConnectionRequests_User_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Connections",
-                columns: table => new
-                {
-                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FriendId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Connections", x => new { x.ProfileId, x.FriendId });
-                    table.ForeignKey(
-                        name: "FK_Connections_User_FriendId",
-                        column: x => x.FriendId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Connections_User_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,11 +72,11 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Educations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Educations_User_UserId",
+                        name: "FK_Educations_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,35 +95,32 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Experiences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Experiences_User_UserId",
+                        name: "FK_Experiences_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Followings",
+                name: "Photos",
                 columns: table => new
                 {
-                    ObserverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TargetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Followings", x => new { x.ObserverId, x.TargetId });
+                    table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Followings_User_ObserverId",
-                        column: x => x.ObserverId,
-                        principalTable: "User",
+                        name: "FK_Photos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Followings_User_TargetId",
-                        column: x => x.TargetId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,15 +129,15 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Skills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Skills_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
+                        name: "FK_Skills_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -191,16 +146,6 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 name: "IX_Certificates_UserId",
                 table: "Certificates",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConnectionRequests_SenderId",
-                table: "ConnectionRequests",
-                column: "SenderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Connections_FriendId",
-                table: "Connections",
-                column: "FriendId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Educations_UserId",
@@ -213,18 +158,18 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Followings_TargetId",
-                table: "Followings",
-                column: "TargetId");
+                name: "IX_Photos_UserId",
+                table: "Photos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skills_UserID",
+                name: "IX_Skills_UserId",
                 table: "Skills",
-                column: "UserID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Email",
-                table: "User",
+                name: "IX_Users_Email",
+                table: "Users",
                 column: "Email",
                 unique: true);
         }
@@ -236,25 +181,19 @@ namespace ProfesiNet.Users.Infrastructure.Migrations
                 name: "Certificates");
 
             migrationBuilder.DropTable(
-                name: "ConnectionRequests");
-
-            migrationBuilder.DropTable(
-                name: "Connections");
-
-            migrationBuilder.DropTable(
                 name: "Educations");
 
             migrationBuilder.DropTable(
                 name: "Experiences");
 
             migrationBuilder.DropTable(
-                name: "Followings");
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Skills");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }

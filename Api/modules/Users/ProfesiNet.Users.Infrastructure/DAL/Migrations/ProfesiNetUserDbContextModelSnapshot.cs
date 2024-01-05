@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfesiNet.Users.Infrastructure.Persistence;
 
@@ -12,11 +11,9 @@ using ProfesiNet.Users.Infrastructure.Persistence;
 namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProfesiNetUserDbContext))]
-    [Migration("20240103160811_AddColumnToUserTable")]
-    partial class AddColumnToUserTable
+    partial class ProfesiNetUserDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,12 +158,12 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Skills");
                 });
@@ -282,7 +279,7 @@ namespace ProfesiNet.Users.Infrastructure.DAL.Migrations
                 {
                     b.HasOne("ProfesiNet.Users.Domain.Entities.User", "User")
                         .WithMany("Skills")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
