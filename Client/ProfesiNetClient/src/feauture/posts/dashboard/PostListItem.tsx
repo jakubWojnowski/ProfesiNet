@@ -19,7 +19,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                     <Item.Content>
                         <Item.Header className="item-header">
 
-                            <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture} size="mini" circular
+                            <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture || '/assets/user.png'} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
                             <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
                            

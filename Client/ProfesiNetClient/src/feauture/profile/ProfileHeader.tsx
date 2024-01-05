@@ -25,7 +25,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                         <Image
                             floated='left'
                             size='small'
-                            src={profile.profilePicture} // Your user image path
+                            src={profile.profilePicture || '/assets/user.png'} // Your user image path
                             avatar
                         />
                         <Item.Content verticalAlign='middle'>
