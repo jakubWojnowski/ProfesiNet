@@ -44,8 +44,8 @@ export interface UserExperience {
 export interface UserEducation {
     id: string;
     name: string;
-    description: string;
-    grade: string;
+    address: string;
+    degree: string;
     fieldOfStudy: string;
     startDate: Date;
     endDate: Date | null;

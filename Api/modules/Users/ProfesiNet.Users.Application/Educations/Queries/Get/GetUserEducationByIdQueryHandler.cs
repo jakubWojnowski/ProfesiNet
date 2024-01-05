@@ -6,7 +6,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.Get;
 
-internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, GetEducationDto>
+internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducationByIdQuery, EducationDto>
 {
     private readonly IEducationRepository _educationRepository;
 
@@ -18,13 +18,13 @@ internal class GetUserEducationByIdQueryHandler : IRequestHandler<GetUserEducati
         _educationRepository = educationRepository;
         _userRepository = userRepository;
     }
-    public async Task<GetEducationDto> Handle(GetUserEducationByIdQuery request, CancellationToken cancellationToken)
+    public async Task<EducationDto> Handle(GetUserEducationByIdQuery request, CancellationToken cancellationToken)
     {
         var education = await _educationRepository.GetByIdAsync(request.EducationId, cancellationToken);
         if (education is null)
         {
             throw new EducationNotFoundException(request.EducationId);
         }
-        return Mapper.EducationToGetEducationDto(education);
+        return Mapper.MapEducationToEducationDto(education);
     }
 }

@@ -41,7 +41,7 @@ internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEdu
         var educationToUpdateDto = new EducationDto()
         {
             Name = request.Name ?? education.Name,
-            Description = request.Description ?? education.Description,
+            Address = request.Address ?? education.Address,
             Degree = request.Degree ?? education.Degree,
             FieldOfStudy = request.FieldOfStudy ?? education.FieldOfStudy,
             StartDate = request.StartDate ?? education.StartDate,

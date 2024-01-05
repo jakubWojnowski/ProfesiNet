@@ -7,11 +7,13 @@ namespace ProfesiNet.Users.Application.Educations.Mappings;
 internal partial class EducationMapper
 {
     public partial Education MapEducationDtoToEducation(EducationDto educationDto);
+    public partial EducationDto MapEducationToEducationDto(Education education);
+    public partial IReadOnlyCollection<EducationDto> MapEducationDtosToEducations(IEnumerable<Education?> educations);
     
     public  Education MapUpdateEducationDtoToEducation(Education education, EducationDto educationDto)
     {
         education.Name = educationDto.Name;
-        education.Description = educationDto.Description;
+        education.Address = educationDto.Address;
         education.FieldOfStudy = educationDto.FieldOfStudy;
         education.StartDate = educationDto.StartDate;
         education.EndDate = educationDto.EndDate;

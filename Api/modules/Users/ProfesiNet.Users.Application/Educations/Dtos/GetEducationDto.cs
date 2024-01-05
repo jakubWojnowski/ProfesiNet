@@ -2,13 +2,12 @@
 
 public class GetEducationDto
 {
-    public Guid Id { get; init; }
-    public string? Name { get; set; }
-    public string? Description { get; set; }
-    public string? Grade { get; set; }
-    public string? FieldOfStudy { get; set; }
-    public Guid UserId { get; set; }
+    public Guid Id { get; set; }
 
+    public string? Name { get; set; }
+    public string? Address { get; set; }
+    public string? Degree { get; set; }
+    public string? FieldOfStudy { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }

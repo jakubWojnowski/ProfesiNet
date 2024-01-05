@@ -7,7 +7,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Educations.Queries.GetAll;
 
-internal class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEducationsQuery, IReadOnlyCollection<GetEducationDto>>
+internal class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEducationsQuery, IReadOnlyCollection<EducationDto>>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly IUserRepository _userRepository;
@@ -18,7 +18,7 @@ internal class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEduc
         _educationRepository = educationRepository;
         _userRepository = userRepository;
     }
-    public async Task<IReadOnlyCollection<GetEducationDto>> Handle(GetAllUserEducationsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<EducationDto>> Handle(GetAllUserEducationsQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.Id, cancellationToken);
         if (user is null)
@@ -26,6 +26,6 @@ internal class GetAllUserEducationsQueryHandler : IRequestHandler<GetAllUserEduc
             throw new UserNotFoundException(request.Id);
         }
         var educations = await _educationRepository.GetAllForConditionAsync(e => e.UserId == request.Id, cancellationToken);
-        return Mapper.GetEducationDtosToEducations(educations);
+        return Mapper.MapEducationDtosToEducations(educations);
     }
 }

@@ -31,9 +31,9 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                                 <Item key={exp.id}>
                                     <Item.Content>
                                         <Item.Header as='a'>{exp.name}</Item.Header>
-                                        <Item.Meta>{exp.description}</Item.Meta>
-                                        <Item.Meta>{exp.grade}</Item.Meta>
-                                        <Item.Meta>{exp.fieldOfStudy}</Item.Meta>
+                                        <Item.Description >{exp.fieldOfStudy}</Item.Description>
+                                        <Item.Content >{exp.degree}</Item.Content>
+                                        <Item.Meta>{exp.address}</Item.Meta>
                                         <Item.Extra>
                                             {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
                                             {' - '}
