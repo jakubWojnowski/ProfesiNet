@@ -1,115 +1,19 @@
 import {FC, useState} from "react";
 import {Button, Grid, Header, Icon, Item, Segment} from "semantic-ui-react";
 import {useTransition } from "react-spring";
+import {observer} from "mobx-react-lite";
+import {Profile} from "../../app/modules/interfaces/Profile.ts";
 
-
-const mockSkills = [
-    {
-         name: 'Java',
-    },
-    {
-        name: 'C++',
-    },
-    {
-        name: 'C#',
-    },
-{
-        name: 'Python',
-    },
-    {
-        name: 'JavaScript',
-    },
-    {
-        name: 'TypeScript',
-    },
-    {
-        name: 'React',
-    },
-    {
-        name: 'Angular',
-    },
-    {
-        name: 'Vue',
-    },
-    {
-        name: 'SQL',
-    },
-    {
-        name: 'MongoDB',
-    },
-    {
-        name: 'PostgreSQL',
-    },
-    {
-        name: 'Oracle',
-    },
-    {
-        name: 'MySQL',
-    },
-    {
-        name: 'Git',
-    },
-    {
-        name: 'GitHub',
-    },
-    {
-        name: 'GitLab',
-    },
-    {
-        name: 'Jenkins',
-    },
-    {
-        name: 'Docker',
-    },
-    {
-        name: 'Kubernetes',
-    },
-    {
-        name: 'Linux',
-    },
-    {
-        name: 'Windows',
-    },
-    {
-        name: 'MacOS',
-    },
-    {
-        name: 'AWS',
-    },
-    {
-        name: 'Azure',
-    },
-    {
-        name: 'Google Cloud',
-    },
-    {
-        name: 'Heroku',
-    },
-    {
-        name: 'Firebase',
-    },
-    {
-        name: 'Strapi',
-    },
-    {
-        name: 'Node.js',
-    },
-    {
-        name: 'ASP.NET',
-    },
-    {
-        name: 'Spring',
-    },
-];
-const ProfileSkills: FC = () => {
+export interface SkillProps {
+    profile:Profile;
+}
+const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
     const [showAllSkills, setShowAllSkills] = useState(false);
 
-    // Define the number of skills to show initially and the increment step
     const initialSkillCount = 3;
 
-    // Transition for animating the skill list
     const transitions = useTransition(
-        showAllSkills ? mockSkills : mockSkills.slice(0, initialSkillCount),
+        showAllSkills ? profile.skills : profile.skills.slice(0, initialSkillCount),
         {
             keys: skill => skill.name,
             from: { opacity: 0, transform: 'translateY(-20px)' },
@@ -149,16 +53,17 @@ const ProfileSkills: FC = () => {
                                             <Item.Header as='a'>{skill.name}</Item.Header>
                                         </Item.Content>
                                     </Item>
-                                
                             ))}
                     </Item.Group>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column textAlign='center'>
+                        {profile.skills.length > 0 && (
                         <Button onClick={toggleSkillsDisplay}>
-                            {showAllSkills ? 'Show Less' : `Show More (${mockSkills.length - 3})`}
+                            {showAllSkills ? 'Show Less' : `Show More (${profile.skills.length - 3})`}
                         </Button>
+                        )}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -166,4 +71,4 @@ const ProfileSkills: FC = () => {
     );
 };
 
-export default ProfileSkills;
+export default observer(ProfileSkills);

@@ -8,7 +8,6 @@ export default class UserStore {
     user: User | null = null;
     loading: boolean = false;
     loadingInitial: boolean = false;
-    experience: UserExperience[] | null = null;
     constructor() {
         makeAutoObservable(this);
     }
@@ -61,16 +60,6 @@ export default class UserStore {
         }
     }
     
-    addUserExperience = async (experience: any) => {
-        try {
-            await agent.Account.addUserExperience(experience);
-            runInAction(() => {
-                this.user!.experience.push(experience);
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }
     
     
         

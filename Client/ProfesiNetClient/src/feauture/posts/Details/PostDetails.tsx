@@ -28,12 +28,18 @@ const PostDetails: FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (id) {
-                await loadPost(id);
+                try {
+                    await loadPost(id);
+                } catch (error) {
+                    console.error('Error loading post:', error);
+                    // Handle error state here if needed
+                }
             }
         };
 
-        fetchData().then(r => r);
+        fetchData().then(r => console.log(r));
     }, [id, loadPost]);
+
     if (loadingInitial || !post) return <LoadingComponent content='Loading post...'/>;
     
     return (

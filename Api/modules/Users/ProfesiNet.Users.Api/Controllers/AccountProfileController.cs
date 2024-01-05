@@ -78,6 +78,12 @@ internal class AccountProfileController : BaseController
         var user = await _mediator.Send(new GetOwnProfileQuery(_context.Id));
         return Ok(user);
     }
+    [HttpGet("GetUserProfileById/{userId:guid}")]
+    public async Task<IActionResult> GetUserProfileById(Guid userId)
+    {
+        var user = await _mediator.Send(new GetUserProfileByIdQuery(userId));
+        return Ok(user);
+    }
 
     [HttpGet("GetUserById/{userId:guid}")]
     public async Task<IActionResult> GetUserById(Guid userId)

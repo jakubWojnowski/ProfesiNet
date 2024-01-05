@@ -1,3 +1,4 @@
+
 export interface User {
     id: string;
     name: string;
@@ -6,13 +7,14 @@ export interface User {
     address: string;
     bio: string;
     profilePicture: string;
-    title: string | null;
+    title: string;
     experiences: UserExperience[];
     educations: UserEducation[];
     skills: UserSkill[];
     certificates: UserCertificate[];
     followersCount: number;
     followingCount: number;
+    networkConnectionsCount: number;
 }
 
 export interface UserFormValues {

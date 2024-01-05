@@ -25,6 +25,7 @@ import {
 import {toast} from "react-toastify";
 import {router} from "../router/Routes.tsx";
 import {store} from "../stores/Store.ts";
+import {Profile} from "../modules/interfaces/Profile.ts";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -155,19 +156,22 @@ const Account = {
     login: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/login', user),
     register: (user: UserFormValues) => requests.post<User>('/users-module/UserAuthentication/register', user),
     current: () => requests.get<User>('/users-module/AccountProfile/GetOwnProfile'),
-    
+};
+const Profiles = {
+
     //gets
-    getProfile: () => requests.get<User>('/AccountProfile/GetOwnProfile'),
-    getUserById: (userId: string) => requests.get<User>(`/AccountProfile/GetUserById/${userId}`),
-    getAllUsers: () => requests.get<User[]>('/AccountProfile/GetAllUsers'),
-    getUserExperienceById: (id: string) => requests.get<UserExperience>(`/AccountProfile/GetUserExperienceById/${id}`),
-    getAllUserExperience: (userId: string) => requests.get<UserExperience[]>(`/AccountProfile/GetAllUserExperience/${userId}`),
-    getUserEducationById: (id: string) => requests.get<UserEducation>(`/AccountProfile/GetUserEducationById/${id}`),
-    getAllUserEducation: (userId: string) => requests.get<UserEducation[]>(`/AccountProfile/GetAllUserEducation/${userId}`),
-    getUserSkillById: (id: string) => requests.get<UserSkill>(`/AccountProfile/GetSkillById/${id}`),
-    getAllUserSkills: (userId: string) => requests.get<UserSkill[]>(`/AccountProfile/GetAllUserSkills/${userId}`),
-    getUserCertificateById: (id: string) => requests.get<UserCertificate>(`/AccountProfile/GetUserCertificateById/${id}`),
-    getAllUserCertificates: (userId: string) => requests.get<UserCertificate[]>(`/AccountProfile/GetAllUserCertificates/${userId}`),
+    getProfile: () => requests.get<User>('/users-module/AccountProfile/GetOwnProfile'),
+    getUserProfileById: (userId: string) => requests.get<Profile>(`/users-module/AccountProfile/GetUserProfileById/${userId}`),
+    getUserById: (userId: string) => requests.get<User>(`/users-module/GetUserById/${userId}`),
+    getAllUsers: () => requests.get<User[]>('/users-module/GetAllUsers'),
+    getUserExperienceById: (id: string) => requests.get<UserExperience>(`/users-module/GetUserExperienceById/${id}`),
+    getAllUserExperience: (userId: string) => requests.get<UserExperience[]>(`/users-module/GetAllUserExperience/${userId}`),
+    getUserEducationById: (id: string) => requests.get<UserEducation>(`/users-module/GetUserEducationById/${id}`),
+    getAllUserEducation: (userId: string) => requests.get<UserEducation[]>(`/users-module/GetAllUserEducation/${userId}`),
+    getUserSkillById: (id: string) => requests.get<UserSkill>(`/users-module/GetSkillById/${id}`),
+    getAllUserSkills: (userId: string) => requests.get<UserSkill[]>(`/users-module/GetAllUserSkills/${userId}`),
+    getUserCertificateById: (id: string) => requests.get<UserCertificate>(`/users-module/GetUserCertificateById/${id}`),
+    getAllUserCertificates: (userId: string) => requests.get<UserCertificate[]>(`/users-module/GetAllUserCertificates/${userId}`),
 
     // Account management
     updateUserFullName: (command: UpdateUserFullNameCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserFullName', command),
@@ -220,7 +224,8 @@ const Account = {
 
 const agent = {
     Posts,
-    Account
+    Account,
+    Profiles
 };
 
 export default agent;

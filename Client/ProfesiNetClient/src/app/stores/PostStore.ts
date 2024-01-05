@@ -25,7 +25,6 @@ export default class PostStore {
 
     loadPosts = async (): Promise<void> => {
         this.setLoadingInitial(true);
-
         try {
             const fetchedPosts: Post[] = await agent.Posts.list();
             fetchedPosts.forEach(post => {
@@ -131,21 +130,25 @@ export default class PostStore {
         
     }
     loadCreatorPosts = async (id: string): Promise<void> => {
-        this.setLoadingInitial(true);
+        this.setLoadingInitial(true); // Assuming setLoadingInitial is an action
+        this.postPerCreatorRegistry.clear(); // Assuming postPerCreatorRegistry is observable and clear is an action
 
         try {
             const fetchedPosts: Post[] = await agent.Posts.getAllByCreator(id);
-            fetchedPosts.forEach(post => {
-                this.postPerCreatorRegistry.set(post.id, post);
+           runInAction(() => {
+                fetchedPosts.forEach((post: Post) => {
+                    this.postPerCreatorRegistry.set(post.id, post);
+                });
+                this.setLoadingInitial(false);
             });
-            this.setLoadingInitial(false);
         } catch (error) {
             console.error(error);
-            this.setLoadingInitial(false);
+            runInAction(() => {
+                this.setLoadingInitial(false);
+            });
         }
-       
-        
-    }
+    };
+
 
     private getPost = (id: string) => {
         return this.postRegistry.get(id);

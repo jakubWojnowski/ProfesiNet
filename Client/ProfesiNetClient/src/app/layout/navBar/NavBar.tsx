@@ -15,9 +15,9 @@ const NavBar: FC = () =>  {
                 <Menu.Item as={NavLink} to='/' header>
                     <img src="/assets/logo.png" alt="logo" style={{ marginRight: '10px' }} />
                 </Menu.Item>
-                <Menu.Item as={NavLink} to={`/friends/${user?.name}`} name='Friends' />
+                <Menu.Item as={NavLink} to={`/friends/${user?.id}`} name='Friends' />
                 <Menu.Item name='Messages' />
-                <Menu.Item as={NavLink} to={`/profile/${user?.name}`} name="Profile" />
+                <Menu.Item as={NavLink} to={`/profile/${user?.id}`} name="Profile" />
                 <Menu.Item as={NavLink} to='/posts' name='Posts' />
             </Container>
             <Container fluid={true}>
@@ -26,7 +26,7 @@ const NavBar: FC = () =>  {
                    <Image src={user?.profilePicture || '/assets/user.png'} avatar spaced='right' />
                     <Dropdown pointing='top left' text={user?.name +" "+ " "+ user?.surname}>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={NavLink} to={`/profile/${user?.name}`} text='My profile' icon='user' />
+                            <Dropdown.Item as={NavLink} to={`/profile/${user?.id}`} text='My profile' icon='user' />
                             <Dropdown.Item onClick={logout} text='Logout' icon='power' />
                         </Dropdown.Menu>
                     </Dropdown>

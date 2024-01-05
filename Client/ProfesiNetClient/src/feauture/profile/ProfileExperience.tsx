@@ -1,30 +1,16 @@
 import {FC} from 'react';
-import {Button, Grid, Header, Icon, Item, Label, Segment} from 'semantic-ui-react';
+import {Button, Grid, Header, Icon, Item, Segment} from 'semantic-ui-react';
+import {observer} from "mobx-react-lite";
+import {Profile} from "../../app/modules/interfaces/Profile.ts";
+import {toJS} from "mobx";
 
-// Mock data for experiences
-const mockExperiences = [
-    {
-        id: '1',
-        title: 'Internship',
-        company: 'Silevis - Code People',
-        period: 'Sep 2023 - Nov 2023',
-        location: 'Kielce, Poland',
-        description: 'I collaborated on developing a vote-casting module using React and Strapi',
-        skills: ['React', 'TypeScript', 'Strapi']
-    },
-    {
-        id: '2',
-        title: 'Intern',
-        company: 'Infover S.A.',
-        period: 'Jun 2023 - Jul 2023',
-        location: 'Kielce, Poland',
-        description: 'I was developing a backend app called petrax with tools like ASP.NET Core and MSSQL',
-        skills: ['NHibernate', 'Fluent Migrator', 'Microsoft SQL Server', 'ASP.NET', 'C#']
-    },
-    // ... more experiences
-];
+export interface ExperienceProps {
+    profile:Profile;
+}
+    
+const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
+    const profileExperience = toJS(profile.experiences)
 
-const ProfileExperience: FC = () => {
     return (
         <Segment>
             <Grid>
@@ -42,26 +28,25 @@ const ProfileExperience: FC = () => {
                 </Grid.Row>
             </Grid>
             <Item.Group divided>
-                {mockExperiences.map(exp => (
+                {profileExperience.map(exp => (
                     <Item key={exp.id}>
                         <Item.Content>
-                            <Item.Header as='a'>{exp.title}</Item.Header>
+                            <Item.Header as='a'>{exp.company}</Item.Header>
+                            <Item.Description>
+                                {exp.description}
+                            </Item.Description>
+                
                             <Item.Meta>
-                                <span className='cinema'>{exp.company}</span>
+                                { exp.position}
                             </Item.Meta>
-                            <Item.Meta>
-                                <span>{exp.period}</span>
-                            </Item.Meta>
-                            <Item.Meta>
-                                <span>{exp.location}</span>
-                            </Item.Meta>
-                            <Item.Description>{exp.description}</Item.Description>
                             <Item.Extra>
-                                {exp.skills.map((skill, index) => (
-                                    <Label key={index}>{skill}</Label>
-                                ))}
+                                {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
+                                {' - '}
+                                {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
                                 <Button icon='edit' content='Edit' floated='right' />
                             </Item.Extra>
+                        
+                               
                            
                         </Item.Content>
                     </Item>
@@ -71,4 +56,4 @@ const ProfileExperience: FC = () => {
     );
 };
 
-export default ProfileExperience;
+export default observer(ProfileExperience);

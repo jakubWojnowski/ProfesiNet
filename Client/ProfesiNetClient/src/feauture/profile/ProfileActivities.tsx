@@ -4,68 +4,28 @@ import { useTransition, animated } from 'react-spring';
 
 import './ProfileActivities.css';
 import {useStore} from "../../app/stores/Store.ts";
+import {Link} from "react-router-dom";
+import {observer} from "mobx-react-lite";
 
 // Mock data for activities/posts
-const MockActivities = [
-    {
-        id: '1',
-        date: '2024-01-01',
-        content: 'Jakub Wojnowski published a new post',
-        description: 'Today we started a new project with my team...',
-        likes: '5'
-    },
-    {
-        id: '2',
-        date: '2024-01-02',
-        content: 'Jakub Wojnowski shared a photo',
-        description: 'Exploring the beauty of nature...',
-        likes: '15'
-    },   {
-        id: '3',
-        date: '2024-01-02',
-        content: 'Jakub Wojnowski shared a photo',
-        description: 'Exploring the beauty of nature...',
-        likes: '15'
-    },   {
-        id: '4',
-        date: '2024-01-02',
-        content: 'Jakub Wojnowski shared a photo',
-        description: 'Exploring the beauty of nature...',
-        likes: '15'
-    },   {
-        id: '5',
-        date: '2024-01-02',
-        content: 'Jakub Wojnowski shared a photo',
-        description: 'Exploring the beauty of nature...',
-        likes: '15'
-    },   {
-        id: '6',
-        date: '2024-01-02',
-        content: 'Jakub Wojnowski shared a photo',
-        description: 'Exploring the beauty of nature...',
-        likes: '15'
-    },
-    // ... more mock activities
-];
-
 
 const ProfileActivities: FC = () => {
     const [displayedActivities, setDisplayedActivities] = useState(3);
-    const {postStore} = useStore();
-    const {PostsByCreator} = postStore;
+    const { postStore } = useStore();
+    const { PostsByCreator } = postStore;
 
     const showMoreActivities = () => {
-        setDisplayedActivities((prev) => (prev + 3 <= MockActivities.length ? prev + 3 : MockActivities.length));
+        setDisplayedActivities((prev) => (prev + 3 <= PostsByCreator.length ? prev + 3 : PostsByCreator.length));
     };
 
     const hideActivities = () => {
         setDisplayedActivities((prev) => (prev - 3 >= 0 ? prev - 3 : 0));
     };
 
-    const visibleActivities = PostsByCreator.slice(0, displayedActivities);
+    const visibleActivities = PostsByCreator.slice(0, displayedActivities); // Use the local PostsByCreator
 
     const transitions = useTransition(visibleActivities, {
-        keys: (item) => item.id,
+        keys: (post) => post.id,
         from: { transform: 'translate3d(0,-40px,0)', opacity: 0 },
         enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
         leave: { transform: 'translate3d(0,-40px,0)', opacity: 0 },
@@ -74,23 +34,25 @@ const ProfileActivities: FC = () => {
     return (
         <Segment>
             <Header dividing size="large" content="Activities" />
-
-            {transitions((style, item) => (
+            {transitions((style, post) => (
                 <animated.div style={style}>
-                    <Card fluid key={item.id}>
+                    <Card fluid key={post.id}>
                         <Card.Content>
-                            <Card.Header>{item.content}</Card.Header>
-                            <Card.Meta>{item.date}</Card.Meta>
-                            <Card.Description>{item.description}</Card.Description>
+                            <Card.Header as={Link} to={`/posts/${post.id}`}>{post.description}</Card.Header>
+                            <Card.Meta>{post.publishedAt}</Card.Meta>
                         </Card.Content>
                         <Card.Content extra>
-                            <Icon name="like" />
-                            {item.likes} Likes
+                            <Icon name="like"/>
+                           <span>{post.likesCount} Likes </span>
+                            <Icon name="comment" />
+                            <span> {post.commentsCount} Comments </span>
+                            <Icon name="share" />
+                            <span> {post.sharesCount} Shares </span>
                         </Card.Content>
                     </Card>
                 </animated.div>
             ))}
-            {displayedActivities < MockActivities.length && (
+            {displayedActivities < PostsByCreator.length && (
                 <Button primary fluid onClick={showMoreActivities}>
                     Load More
                 </Button>
@@ -104,5 +66,5 @@ const ProfileActivities: FC = () => {
     );
 };
 
-export default ProfileActivities;
+export default observer(ProfileActivities);
 

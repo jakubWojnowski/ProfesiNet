@@ -1,32 +1,12 @@
 import {FC} from 'react';
 import {Button, Grid, Header, Icon, Item, Segment} from 'semantic-ui-react';
-
-// Mock data for experiences
-const mockExperiences = [
-    {
-        id: '1',
-        School: 'University of Science and Technology',
-        degree: 'Masters in Computer Science',
-        period: 'Sep 2021 - Jun 2023',
-        location: 'Kielce, Poland',
-    },
-    {
-        id: '2',
-        School: 'University of Science and Technology',
-        degree: 'Bachelor in Computer Science',
-        period: 'Sep 2018 - Jun 2021',
-        location: 'Kielce, Poland',
-    },    {
-        id: '3',
-        School: 'University of Science and Technology',
-        degree: 'Bachelor in Computer Science',
-        period: 'Sep 2018 - Jun 2021',
-        location: 'Kielce, Poland',
-    }
-
-];
-
-const ProfileEducation: FC = () => {
+import {observer} from "mobx-react-lite";
+import {Profile} from "../../app/modules/interfaces/Profile.ts";
+export interface EducationProps {
+    profile:Profile;
+}
+    
+const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
     return (
         <Segment>
             <Grid>
@@ -47,14 +27,19 @@ const ProfileEducation: FC = () => {
                 <Grid.Row>
                     <Grid.Column width={16}>
                         <Item.Group divided>
-                            {mockExperiences.map((exp) => (
+                            {profile.educations.map((exp) => (
                                 <Item key={exp.id}>
                                     <Item.Content>
-                                        <Item.Header as='a'>{exp.School}</Item.Header>
-                                        <Item.Meta>{exp.degree}</Item.Meta>
-                                        <Item.Meta>{exp.period}</Item.Meta>
-                                        <Item.Meta>{exp.location}</Item.Meta>
-                                        <Button icon='edit' content='Edit' floated='right' />
+                                        <Item.Header as='a'>{exp.name}</Item.Header>
+                                        <Item.Meta>{exp.description}</Item.Meta>
+                                        <Item.Meta>{exp.grade}</Item.Meta>
+                                        <Item.Meta>{exp.fieldOfStudy}</Item.Meta>
+                                        <Item.Extra>
+                                            {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
+                                            {' - '}
+                                            {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
+                                            <Button icon='edit' content='Edit' floated='right' />
+                                        </Item.Extra>
                                     </Item.Content>
                                 </Item>
                             ))}
@@ -66,4 +51,4 @@ const ProfileEducation: FC = () => {
     );
 };
 
-export default ProfileEducation;
+export default observer(ProfileEducation);

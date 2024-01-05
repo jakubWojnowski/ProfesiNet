@@ -2,11 +2,15 @@ import {FC, useState} from 'react';
 import {Button, Grid, Statistic, Segment, Image, Item} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {useStore} from "../../app/stores/Store.ts";
-import EditProfileHeaderForm from "./forms/EditForm.tsx"; // Ensure Semantic UI CSS is imported
-
-const ProfileHeader: FC = () => {
+import EditProfileHeaderForm from "./forms/EditForm.tsx";
+import {Profile} from "../../app/modules/interfaces/Profile.ts";
+import {observer} from "mobx-react-lite"; // Ensure Semantic UI CSS is imported
+export interface ProfileHeaderProps {
+    profile:Profile;
+}
+const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => {
     const [isFollowing, setIsFollowing] = useState(false);
-    const {userStore,modalStore} = useStore();
+    const {modalStore} = useStore();
 
 
     const handleFollowClick = () => {
@@ -21,19 +25,19 @@ const ProfileHeader: FC = () => {
                         <Image
                             floated='left'
                             size='small'
-                            src='/assets/user.png' // Your user image path
+                            src={profile.profilePicture} // Your user image path
                             avatar
                         />
                         <Item.Content verticalAlign='middle'>
-                            <Item.Header as='h1'>Display Name</Item.Header>
-                            <Item.Extra as='h2'>Title</Item.Extra>
-                            <Item.Extra>Krakow</Item.Extra>
+                            <Item.Header as='h2'>{profile.name +" " + profile.surname}</Item.Header>
+                            <Item.Extra as='h3'>{profile.title}</Item.Extra>
+                            <Item.Extra>{profile.address}</Item.Extra>
                         </Item.Content>
                     </Grid.Column>
-                    <Statistic.Group  >
-                        <Statistic label='FOLLOWERS' value='52' />
-                        <Statistic label='FOLLOWING' value='42' />
-                        <Statistic label='FRIENDS' value='42' />
+                    <Statistic.Group >
+                        <Statistic label='FOLLOWERS' value={profile.followersCount} />
+                        <Statistic label='FOLLOWING' value={profile.followingsCount} />
+                        <Statistic label='FRIENDS' value={profile.networkConnectionsCount} />
                     </Statistic.Group>
                     <Grid.Column width={6} textAlign='center' >
                         
@@ -57,4 +61,4 @@ const ProfileHeader: FC = () => {
     );
 };
 
-export default ProfileHeader;
+export default observer(ProfileHeader);

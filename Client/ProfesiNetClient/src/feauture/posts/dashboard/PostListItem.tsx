@@ -19,7 +19,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                     <Item.Content>
                         <Item.Header className="item-header">
 
-                            <ItemImage as={NavLink} to={`/profile/${post.creatorName}`} src={post.creatorProfilePicture} size="mini" circular
+                            <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
                             <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
                            
@@ -51,8 +51,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                             
                         </Item.Header>
 
-                        <Item.Description as={Link} to={`/posts/${post.id}`}
-                                          className="post-content">{post.description}</Item.Description>
+                        <Item.Description className="post-content">{post.description}</Item.Description>
                         {post.imageUrl && <Image src={post.imageUrl} alt='Post media' className="post-image"/>}
                         <ItemMeta className="post-date">{new Date(post.publishedAt).toLocaleString()}</ItemMeta>
                     </Item.Content>

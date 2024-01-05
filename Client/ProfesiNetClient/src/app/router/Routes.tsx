@@ -7,6 +7,7 @@ import NotFound from "../errors/NotFound.tsx";
 import ServerError from "../errors/ServerError.tsx";
 import ProfilePage from "../../feauture/profile/ProfilePage.tsx";
 import FriendsPage from "../../feauture/friends/FriendsPage.tsx";
+import PostDetails from "../../feauture/posts/Details/PostDetails.tsx";
 
 export const routes: RouteObject[] = [
     {
@@ -20,6 +21,13 @@ export const routes: RouteObject[] = [
                         <PostDashboard />
                     </RequireAuth>
                 ),
+            },{
+            path:'posts/:id',
+            element: (
+                <RequireAuth>
+                    <PostDetails />
+                </RequireAuth>
+            ),
             },
             {
                 path: 'friends/:username',
@@ -30,7 +38,7 @@ export const routes: RouteObject[] = [
                 ),  
             },
             {
-                path: 'profile/:username',
+                path: 'profile/:userId',
                 element: (
                     <RequireAuth>
                         <ProfilePage />

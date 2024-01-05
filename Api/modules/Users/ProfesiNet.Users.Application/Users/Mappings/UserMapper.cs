@@ -10,6 +10,7 @@ namespace ProfesiNet.Users.Application.Users.Mappings;
 internal partial class UserMapper
 {
     public partial User MapRegistrationDtoToUser(RegisterUserDto registerUserDto);
+    public partial ProfileDto MapUserToProfileDto(User user);
 
     
     public partial UserDetailsDto MapUserToUserDto(User user); 

@@ -1,7 +1,11 @@
 import {FC} from "react";
 import {Button, Grid, Header, Item, Segment} from "semantic-ui-react";
-
-const ProfileBio: FC = () => {
+import {Profile} from "../../app/modules/interfaces/Profile.ts";
+import {observer} from "mobx-react-lite";
+export interface ProfileBioProps {
+    profile:Profile;
+}
+const ProfileBio: FC<ProfileBioProps> = ({profile}:ProfileBioProps) => {
     return (
         <Segment>
             <Grid>
@@ -16,9 +20,7 @@ const ProfileBio: FC = () => {
                             <Item>
                                 <Item.Content>
                                     <Item.Description>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique
-                                        placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem
-                                        nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+                                        {profile.bio}
                                     </Item.Description>
                                     <Button icon='edit' content='Edit' floated='right' />
                                 </Item.Content>
@@ -31,4 +33,4 @@ const ProfileBio: FC = () => {
     );
 };
 
-export default ProfileBio;
+export default observer(ProfileBio);
