@@ -7,6 +7,8 @@ import {UpdateUserBioCommand, UpdateUserInformationCommand} from "../modules/int
 export default class ProfileStore {
     profile: Profile | null = null;
     loadingProfile = false;
+    uploading = false;
+    loading = false;
 
     constructor() {
      makeAutoObservable(this);
@@ -53,6 +55,41 @@ export default class ProfileStore {
             runInAction(() => {
                 if(this.profile) {
                     this.profile = {...this.profile, ...bio}
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    uploadProfilePhoto = async (file: Blob) => {
+        this.uploading = true;
+        try {
+            const photo = await agent.Profiles.addUserProfilePicture(file);
+            runInAction(() => {
+                if(this.profile) {
+                    store.userStore.setImage(photo);
+                    this.profile.profilePicture = photo;
+                }
+                this.uploading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.uploading = false;
+            }
+            )
+            
+        }
+    }
+    
+    deletePhoto = async (photoId: string) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.deleteUserProfilePicture(photoId);
+            runInAction(() => {
+                if(this.profile) {
+                    this.profile.profilePicture = null;
+                    store.userStore.setImage(null);
                 }
             })
         } catch (error) {

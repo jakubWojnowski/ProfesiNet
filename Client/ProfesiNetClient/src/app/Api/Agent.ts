@@ -215,9 +215,23 @@ const Profiles = {
     getAllUserConnectionInvitationsSent: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnectionInvitationsSent/${userId}`),
 
     // Profile picture management
-    addUserProfilePicture: (formData: FormData) => axios.post('/users-module/AccountProfile/AddUserProfilePicture', formData, {
-        headers: {'Content-Type': 'multipart/form-data'},
-    }).then(responseBody),
+    addUserProfilePicture: async (file: Blob): Promise<string> => {
+        let formData: FormData = new FormData();
+        formData.append('File', file);
+
+        try {
+            const response = await axios.post('/users-module/AccountProfile/AddUserProfilePicture', formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+            });
+            // Assuming the URL is returned directly in the response
+            const photoUrl = response.data;
+            console.log('Uploaded image URL:', photoUrl);
+            return photoUrl; // This will now return the URL to the caller
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    },
     deleteUserProfilePicture: (photoId: string) => requests.del<{}>('/users-module/AccountProfile/DeleteUserProfilePicture', { data: photoId }),
 
     // User information management

@@ -1,14 +1,22 @@
-import { FC } from 'react';
+import {FC, SyntheticEvent, useState} from 'react';
 import { Formik, Form } from 'formik';
 import { Header, Button } from 'semantic-ui-react';
 import MyTextInput from '../../../app/common/form/MyTextInput';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../../app/stores/Store';
+import ManageProfileImage from "./ManageProfileImage.tsx";
 
 const EditProfileHeaderForm: FC = () => {
     const { profileStore, modalStore } = useStore();
-    const { updateProfileInformation, profile } = profileStore;
+    const { updateProfileInformation, profile, loading } = profileStore;
     const { closeModal } = modalStore;
+    const [target, setTarget] = useState('');
+    const handleDeletePhoto = (photo: Photo, e: SyntheticEvent<HTMLButtonElement>) => {
+        setTarget(e.currentTarget.name);
+        profileStore.deletePhoto(photo).then(() => setTarget(''));
+        
+        
+    }
 
     return (
         <Formik
@@ -39,6 +47,8 @@ const EditProfileHeaderForm: FC = () => {
                         <MyTextInput name='lastName' label='Surname*' placeholder='Surname' type='text' />
                         <MyTextInput name='address' label='Address' placeholder='Address' type='text' />
                         <MyTextInput name='title' label='Title' placeholder='Position' type='text' />
+                        <Button.Group widths='3'>
+                        <Button onClick={()=> modalStore.openModal(<ManageProfileImage />)} floated={"left"} content={"Change Photo"}  />
                         <Button
                             type='submit'
                             color='blue'
@@ -47,6 +57,8 @@ const EditProfileHeaderForm: FC = () => {
                         >
                             Save
                         </Button>
+                            <Button basic color='red' content={"Delete Photo"}  loading={target === photo.id && loading} onClick={e => handleDeletePhoto(photo, e)} />
+                        </Button.Group>
                     </Form>
                 </>
             )}

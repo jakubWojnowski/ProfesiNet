@@ -6,7 +6,8 @@ export interface User {
     token: string;
     address: string;
     bio: string;
-    profilePicture: string;
+    profilePicture: string | null;
+    profilePictureId: string | null;
     title: string;
     experiences: UserExperience[];
     educations: UserEducation[];

@@ -9,4 +9,6 @@ internal class UserLoggedInDto
     public string? Address { get; set; }
     public string? Bio { get; set; }
     public string? ProfilePicture{ get; set; }
+    public Guid? ProfilePictureId { get; set; }
+    
 }

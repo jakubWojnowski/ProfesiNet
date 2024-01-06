@@ -36,6 +36,7 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, UserL
         var dto = Mapper.MapUserToUserLoggedInDto(user);
         dto.Token = _jwtProvider.GenerateJwtToken(user);
          dto.ProfilePicture = user.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture)?.Url;
+         dto.ProfilePictureId = user.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture)?.Id;
 
         return dto;
     }

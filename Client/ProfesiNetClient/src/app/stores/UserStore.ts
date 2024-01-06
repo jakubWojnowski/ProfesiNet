@@ -1,4 +1,4 @@
-import {User, UserExperience, UserFormValues} from "../modules/interfaces/User.ts";
+import {User, UserFormValues} from "../modules/interfaces/User.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
@@ -57,6 +57,12 @@ export default class UserStore {
             runInAction(() => {
                 this.loadingInitial = false;
             })
+        }
+    }
+    
+    setImage = (image: string | null) => {
+        if(this.user) {
+            this.user.profilePicture = image;
         }
     }
     

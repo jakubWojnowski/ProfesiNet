@@ -7,7 +7,8 @@ export interface IProfile{
     title: string;
     address: string;
     bio: string;
-    profilePicture: string;
+    profilePicture: string | null;
+    profilePictureId: string | null;
     followersCount: number;
     followingsCount: number;
     networkConnectionsCount: number;
@@ -26,6 +27,7 @@ export class Profile implements IProfile{
         this.title = user.title;
         this.address = user.address;
         this.profilePicture = user.profilePicture;
+        this.profilePictureId = user.profilePictureId;
         this.followersCount = user.followersCount;
         this.followingsCount = user.followingCount;
         this.networkConnectionsCount = user.networkConnectionsCount;
@@ -41,7 +43,8 @@ export class Profile implements IProfile{
     title: string;
     bio: string;
     address: string;
-    profilePicture: string;
+    profilePicture: string | null;
+    profilePictureId: string | null;
     followersCount: number;
     followingsCount: number;
     networkConnectionsCount: number;

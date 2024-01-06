@@ -51,6 +51,24 @@ internal class AddUserProfilePictureCommandHandler : IRequestHandler<AddUserProf
             UserId = user.Id
         };
         var photo = Mapper.MapPhotoDtoToPhoto(photoDto);
+     if(user.Photos.Any(x=>x.PictureType == PictureType.ProfilePicture))
+        {
+            var oldPhoto = user.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture);
+            if (oldPhoto is not null)
+            {
+                if (oldPhoto.PublicId is not null)
+                {
+                    var result = await _photoAccessor.DeletePhoto(oldPhoto.PublicId);
+                    if (result is null)
+                    {
+                        throw new Exception("Problem deleting photo");
+                    }
+                }
+
+                await _photoRepository.DeleteAsync(oldPhoto, cancellationToken);
+            }
+        }
+       
         await _photoRepository.AddAsync(photo, cancellationToken);
         await _messageBroker.PublishAsync(new UserProfilePictureAdded(user.Id, photoDto.Url));
 

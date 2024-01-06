@@ -5,7 +5,6 @@ import {useStore} from "../../app/stores/Store.ts";
 import EditProfileHeaderForm from "./forms/EditProfileHeaderForm.tsx";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {observer} from "mobx-react-lite";
-import ManageProfileImage from "./forms/ManageProfileImage.tsx";
 
 export interface ProfileHeaderProps {
     profile:Profile;
@@ -25,15 +24,12 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={11}>
-                       
-                        <Button onClick={()=> modalStore.openModal(<ManageProfileImage />)} floated={"left"}>
                         <Image
                             floated='left'
                             size='small'
                             src={profile.profilePicture || '/assets/user.png'} // Your user image path
                             avatar
                         />
-                        </Button>
                        
                        <Header as='h1'>{profile.name +" " + profile.surname}
                         <Header.Subheader>
