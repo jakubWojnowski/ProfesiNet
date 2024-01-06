@@ -1,68 +1,56 @@
-import {FC, FormEvent, useState} from "react";
-import { Form, Header, Button } from 'semantic-ui-react';
-import {useStore} from "../../../app/stores/Store.ts";
-import {UpdateUserInformationCommand} from "../../../app/modules/interfaces/User.ts";
-import {observer} from "mobx-react-lite";
+import { FC } from 'react';
+import { Formik, Form } from 'formik';
+import { Header, Button } from 'semantic-ui-react';
+import MyTextInput from '../../../app/common/form/MyTextInput';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../../app/stores/Store';
 
 const EditProfileHeaderForm: FC = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [address, setAddress] = useState('');
-    const [title, setTitle] = useState('');
-    const [loading, setLoading] = useState(false);
     const { profileStore, modalStore } = useStore();
+    const { updateProfileInformation, profile } = profileStore;
     const { closeModal } = modalStore;
-    const { profile, isCurrentUser, updateProfileInformation } = profileStore;
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // This prevents the default form submission behavior
-        setLoading(true);
-        const command: UpdateUserInformationCommand = {
-            name: firstName,
-            surname: lastName,
-            address: address,
-            title: title
-        };
-        updateProfileInformation(command).then(() => {
-            closeModal();
-        }).finally(() => setLoading(false));
-        
-    };
+
     return (
-        <>
-            <Header as='h2' content='Edytuj "O mnie"' textAlign='center' />
-            <Form onSubmit={handleSubmit}>
-                <Form.Input
-                    fluid
-                    label='Imię*'
-                    placeholder='Imię'
-                    value={firstName}
-                    onChange={(e, { value }) => setFirstName(value)}
-                />
-                <Form.Input
-                    fluid
-                    label='Nazwisko*'
-                    placeholder='Nazwisko'
-                    value={lastName}
-                    onChange={(e, { value }) => setLastName(value)}
-                />
-                <Form.Input
-                    fluid
-                    label='Dodatkowe imię/nazwisko'
-                    placeholder='Dodatkowe imię/nazwisko'
-                    value={address}
-                    onChange={(e, { value }) => setAddress(value)}
-                />
-                <Form.Input
-                    fluid
-                    label='Nagłówek'
-                    placeholder='.Net Developer'
-                    value={title}
-                    onChange={(e, { value }) => setTitle(value)}
-                />
-                <Button type='submit' color='green' loading={loading} onClick={close}>Save</Button>
-               
-            </Form>
-        </>
+        <Formik
+            initialValues={{
+                firstName: profile?.name || '',
+                lastName: profile?.surname || '',
+                address: profile?.address || '',
+                title: profile?.title || '',
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+                updateProfileInformation({
+                    name: values.firstName,
+                    surname: values.lastName,
+                    address: values.address,
+                    title: values.title,
+                }).then(() => {
+                    setSubmitting(false);
+                    closeModal();
+                });
+            }}
+            enableReinitialize 
+        >
+            {({ handleSubmit, isSubmitting, dirty, isValid }) => (
+                <>
+                    <Header as='h2' content='Edit Information"' textAlign='center' color='blue' />
+                    <Form className='ui form' onSubmit={handleSubmit}>
+                        <MyTextInput name='firstName' label='Name' placeholder='Name' type='text' />
+                        <MyTextInput name='lastName' label='Surname*' placeholder='Surname' type='text' />
+                        <MyTextInput name='address' label='Address' placeholder='Address' type='text' />
+                        <MyTextInput name='title' label='Title' placeholder='Position' type='text' />
+                        <Button
+                            type='submit'
+                            color='blue'
+                            loading={isSubmitting}
+                            disabled={!dirty || !isValid || isSubmitting}
+                        >
+                            Save
+                        </Button>
+                    </Form>
+                </>
+            )}
+        </Formik>
     );
 };
 

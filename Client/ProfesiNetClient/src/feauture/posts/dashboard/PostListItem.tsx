@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 

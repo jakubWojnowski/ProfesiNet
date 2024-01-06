@@ -2,7 +2,7 @@ import {Profile} from "../modules/interfaces/Profile.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
-import {UpdateUserInformationCommand} from "../modules/interfaces/User.ts";
+import {UpdateUserBioCommand, UpdateUserInformationCommand} from "../modules/interfaces/User.ts";
 
 export default class ProfileStore {
     profile: Profile | null = null;
@@ -40,6 +40,19 @@ export default class ProfileStore {
             runInAction(() => {
                 if(this.profile) {
                     this.profile = {...this.profile, ...command}
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    updateProfileBio = async (bio:UpdateUserBioCommand) => {
+        try {
+            await agent.Profiles.updateUserBio(bio);
+            runInAction(() => {
+                if(this.profile) {
+                    this.profile = {...this.profile, ...bio}
                 }
             })
         } catch (error) {
