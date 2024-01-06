@@ -2,11 +2,14 @@ import {FC} from 'react';
 import {Button, Grid, Header, Icon, Item, Segment} from 'semantic-ui-react';
 import {observer} from "mobx-react-lite";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
+import {useStore} from "../../app/stores/Store.ts";
 export interface EducationProps {
     profile:Profile;
 }
     
 const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
+    const {profileStore:{isCurrentUser}} = useStore();
+    
     return (
         <Segment>
             <Grid>
@@ -17,9 +20,11 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                                 <Header size={"large"}>Education</Header>
                             </Grid.Column>
                             <Grid.Column floated='right' width={8} textAlign='right'>
+                                {isCurrentUser && (
                                 <Button icon labelPosition='left' primary size='small'>
                                     <Icon name='add' /> Add
                                 </Button>
+                                )}
                             </Grid.Column>
                         </Grid>
                     </Grid.Column>
@@ -38,7 +43,9 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                                             {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
                                             {' - '}
                                             {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
+                                            {isCurrentUser && (
                                             <Button icon='edit' content='Edit' floated='right' />
+                                            )}
                                         </Item.Extra>
                                     </Item.Content>
                                 </Item>

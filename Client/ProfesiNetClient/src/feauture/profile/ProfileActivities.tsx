@@ -14,6 +14,7 @@ const ProfileActivities: FC = () => {
     const { postStore } = useStore();
     const { PostsByCreator } = postStore;
 
+
     const showMoreActivities = () => {
         setDisplayedActivities((prev) => (prev + 3 <= PostsByCreator.length ? prev + 3 : PostsByCreator.length));
     };

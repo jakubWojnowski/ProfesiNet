@@ -26,7 +26,6 @@ export interface UserFormValues {
    
 }
 export interface UpdateUserInformationCommand {
-    userId: string; 
     name?: string;
     surname?: string;
     title?: string;

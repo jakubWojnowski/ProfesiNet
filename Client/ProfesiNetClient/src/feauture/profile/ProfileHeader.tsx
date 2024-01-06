@@ -2,7 +2,7 @@ import {FC, useState} from 'react';
 import {Button, Grid, Statistic, Segment, Image, Item} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {useStore} from "../../app/stores/Store.ts";
-import EditProfileHeaderForm from "./forms/EditForm.tsx";
+import EditProfileHeaderForm from "./forms/EditProfileHeaderForm.tsx";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {observer} from "mobx-react-lite"; // Ensure Semantic UI CSS is imported
 export interface ProfileHeaderProps {
@@ -11,6 +11,7 @@ export interface ProfileHeaderProps {
 const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => {
     const [isFollowing, setIsFollowing] = useState(false);
     const {modalStore} = useStore();
+    const {profileStore:{isCurrentUser}} = useStore();
 
 
     const handleFollowClick = () => {
@@ -53,7 +54,9 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                         </Item>
                     </Grid.Column>
                     <Grid.Column width={16} textAlign='right'>
-                        <Button icon='edit' content='Edit' onClick={()=> modalStore.openModal(<EditProfileHeaderForm/>)}/>
+                        {isCurrentUser &&
+                        <Button icon='edit' content='Edit' onClick={()=> modalStore.openModal(<EditProfileHeaderForm />)}/>
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

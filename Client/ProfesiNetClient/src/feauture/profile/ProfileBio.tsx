@@ -2,10 +2,12 @@ import {FC} from "react";
 import {Button, Grid, Header, Item, Segment} from "semantic-ui-react";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {observer} from "mobx-react-lite";
+import {useStore} from "../../app/stores/Store.ts";
 export interface ProfileBioProps {
     profile:Profile;
 }
 const ProfileBio: FC<ProfileBioProps> = ({profile}:ProfileBioProps) => {
+    const {profileStore:{isCurrentUser}} = useStore();
     return (
         <Segment>
             <Grid>
@@ -22,7 +24,10 @@ const ProfileBio: FC<ProfileBioProps> = ({profile}:ProfileBioProps) => {
                                     <Item.Description>
                                         {profile.bio}
                                     </Item.Description>
-                                    <Button icon='edit' content='Edit' floated='right' />
+                                    {isCurrentUser && (
+                                        <Button icon='edit' content='Edit' floated='right' />
+                                    )}
+                                   
                                 </Item.Content>
                             </Item>
                         </Item.Group>

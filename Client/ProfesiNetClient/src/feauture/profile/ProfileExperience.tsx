@@ -3,6 +3,7 @@ import {Button, Grid, Header, Icon, Item, Segment} from 'semantic-ui-react';
 import {observer} from "mobx-react-lite";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {toJS} from "mobx";
+import {useStore} from "../../app/stores/Store.ts";
 
 export interface ExperienceProps {
     profile:Profile;
@@ -10,6 +11,8 @@ export interface ExperienceProps {
     
 const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
     const profileExperience = toJS(profile.experiences)
+    const {profileStore:{isCurrentUser}} = useStore();
+    
 
     return (
         <Segment>
@@ -21,9 +24,11 @@ const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
                         </Header>
                     </Grid.Column>
                     <Grid.Column width={6} textAlign='right'>
+                        {isCurrentUser && (
                         <Button primary icon labelPosition='left'>
                             <Icon name='add' /> Add
                         </Button>
+                        )}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -43,7 +48,9 @@ const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
                                 {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
                                 {' - '}
                                 {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
+                                {isCurrentUser && (
                                 <Button icon='edit' content='Edit' floated='right' />
+                                )}
                             </Item.Extra>
                         
                                

@@ -177,6 +177,8 @@ const Profiles = {
     updateUserFullName: (command: UpdateUserFullNameCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserFullName', command),
     updateUserAddress: (command: UpdateUserAddressCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserAddress', command),
     updateUserBio: (command: UpdateUserBioCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserBio', command),
+    updateUserInformation: (command: UpdateUserInformationCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserInformation', command),
+
 
     // Education management
     addUserEducation: (command: CreateUserEducationCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserEducation', command),
@@ -219,7 +221,6 @@ const Profiles = {
     deleteUserProfilePicture: (photoId: string) => requests.del<{}>('/users-module/AccountProfile/DeleteUserProfilePicture', { data: photoId }),
 
     // User information management
-    updateUserInformation: (command: UpdateUserInformationCommand) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserInformation', command),
 };
 
 const agent = {
