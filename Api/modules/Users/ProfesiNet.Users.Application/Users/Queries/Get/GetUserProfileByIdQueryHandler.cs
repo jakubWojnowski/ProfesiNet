@@ -25,7 +25,11 @@ internal class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileBy
         var dto = Mapper.MapUserToProfileDto(profile);
         dto.ProfilePicture = profile.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
         dto.ProfilePictureId = profile.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Id;
-        
+        var orderByDescendingExperience = dto.Experiences.OrderByDescending(x => x.EndDate).ToList();
+        var orderByDescendingEducation = dto.Educations.OrderByDescending(x => x.EndDate).ToList();
+        dto.Experiences = orderByDescendingExperience;
+        dto.Educations = orderByDescendingEducation;
+      
         return dto;
     }
 }

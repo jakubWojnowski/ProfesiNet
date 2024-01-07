@@ -79,20 +79,20 @@ export interface UpdateUserBioCommand {
 }
 export interface CreateUserEducationCommand {
     name: string;
-    description: string;
-    degree?: string;
-    fieldOfStudy?: string;
+    address: string;
+    degree: string;
+    fieldOfStudy: string;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date | null;
 }
 export interface UpdateUserEducationCommand {
     id: string;
     name: string;
-    description: string;
-    degree?: string;
-    fieldOfStudy?: string;
+    address: string;
+    degree: string;
+    fieldOfStudy: string;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date | null;
 }
 export interface DeleteUserEducationCommand {
     id: string;

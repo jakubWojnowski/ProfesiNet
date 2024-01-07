@@ -111,7 +111,7 @@ internal class AccountProfileController : BaseController
     public async Task<IActionResult> DeleteUserExperience(DeleteUserExperienceCommand command)
     {
         await _mediator.Send(command with { UserId = _context.Id });
-        return NotFound();
+        return Ok();
     }
 
     [HttpPut("UpdateUserExperience")]
@@ -153,14 +153,14 @@ internal class AccountProfileController : BaseController
     public async Task<IActionResult> DeleteUserEducation(DeleteUserEducationCommand command)
     {
         await _mediator.Send(command with { UserId = _context.Id });
-        return NotFound();
+        return Ok();
     }
 
     [HttpPut("UpdateUserEducation")]
     public async Task<IActionResult> UpdateUserEducation(UpdateUserEducationCommand command)
     {
-        await _mediator.Send(command with { UserId = _context.Id });
-        return Ok();
+       var id = await _mediator.Send(command with { UserId = _context.Id });
+        return Ok(id);
     }
 
     [HttpGet("GetUserEducationById/{id:guid}")]

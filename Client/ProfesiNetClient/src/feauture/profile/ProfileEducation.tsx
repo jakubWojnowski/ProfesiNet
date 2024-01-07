@@ -3,12 +3,14 @@ import {Button, Grid, Header, Icon, Item, Segment} from 'semantic-ui-react';
 import {observer} from "mobx-react-lite";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {useStore} from "../../app/stores/Store.ts";
+import AddEducationForm from "./forms/AddEducationForm.tsx";
+import EditEducationForm from "./forms/EditEducationForm.tsx";
 export interface EducationProps {
     profile:Profile;
 }
     
 const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
-    const {profileStore:{isCurrentUser}} = useStore();
+    const {profileStore:{isCurrentUser}, modalStore} = useStore();
     
     return (
         <Segment>
@@ -21,7 +23,7 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                             </Grid.Column>
                             <Grid.Column floated='right' width={8} textAlign='right'>
                                 {isCurrentUser && (
-                                <Button icon labelPosition='left' primary size='small'>
+                                <Button icon labelPosition='left' primary size='small' onClick={()=> modalStore.openModal(<AddEducationForm />)}>
                                     <Icon name='add' /> Add
                                 </Button>
                                 )}
@@ -44,7 +46,7 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                                             {' - '}
                                             {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
                                             {isCurrentUser && (
-                                            <Button icon='edit' content='Edit' floated='right' />
+                                            <Button icon='edit' content='Edit' floated='right' onClick={()=> modalStore.openModal(<EditEducationForm educationId={exp.id} />)} />    
                                             )}
                                         </Item.Extra>
                                     </Item.Content>

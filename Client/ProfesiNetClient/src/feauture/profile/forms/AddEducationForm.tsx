@@ -2,37 +2,43 @@ import {FC} from "react";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Form, Formik} from "formik";
 import {Button, Header} from "semantic-ui-react";
-import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
 import MyDatePickerInput from "../../../app/common/form/MyDateInput.tsx";
 import MyTextInput from "../../../app/common/form/MyTextInput.tsx";
 import * as Yup from 'yup';
 
-const AddExperienceForm: FC = () => {
+const AddEducationForm: FC = () => {
     const { profileStore, modalStore } = useStore();
-    const { addExperience } = profileStore;
+    const { addEducation } = profileStore;
     const { closeModal } = modalStore;
     return (
         <Formik
             initialValues={{
-                company: '',
-                position: '',
-                description: '',
+                name: '',
+                address: '',
+                degree: '',
+                fieldOfStudy: '',
                 startDate: new Date,
                 endDate: new Date,
             }}
             validationSchema={Yup.object({
-                company: Yup.string().required(),
-                position: Yup.string().required(),
-                description: Yup.string().required(),
-                startDate: Yup.string().required()})
+                name: Yup.string().required(),
+                address: Yup.string().required(),
+                degree: Yup.string().required(),
+                fieldOfStudy: Yup.string().required(),
+                startDate: Yup.string().required(),
+                
+            })
+                
             }
             onSubmit={(values, { setSubmitting }) => {
-                addExperience({
-                    company: values.company,
-                    position: values.position,
-                    description: values.description,
+                addEducation({
+                  name: values.name,
+                    address: values.address,
+                    degree: values.degree,
+                    fieldOfStudy: values.fieldOfStudy,
                     startDate: values.startDate,
                     endDate: values.endDate,
+                    
                 }).then(() => {
                     setSubmitting(false);
                     closeModal();
@@ -42,11 +48,12 @@ const AddExperienceForm: FC = () => {
         >
             {({ handleSubmit, isSubmitting, dirty, isValid }) => (
                 <>
-                    <Header as='h2' content='Add your Experience' textAlign='center' color='blue' />
+                    <Header as='h2' content='Add Education"' textAlign='center' color='blue' />
                     <Form className='ui form' onSubmit={handleSubmit}>
-                        <MyTextInput name='company' label='company' placeholder='Company' type='text' />
-                        <MyTextInput name='position' label='position' placeholder='Position' type='text'/>
-                        <MyTextArea name='description' label='description' placeholder='Description' type='text' rows={5} width={100} />
+                        <MyTextInput name='name' label='name' placeholder='name' type='text' />
+                        <MyTextInput name='address' label='address' placeholder='address' type='text'/>
+                        <MyTextInput name='degree' label='degree' placeholder='degree' type='text' />
+                        <MyTextInput name='fieldOfStudy' label='fieldOfStudy' placeholder='fieldOfStudy' type='text'/>
                         <MyDatePickerInput name='startDate' placeholderText={"Start Date"}/>
                         <MyDatePickerInput name='endDate' placeholderText={'End Date'}/>
 
@@ -65,4 +72,4 @@ const AddExperienceForm: FC = () => {
     );
 };
 
-export default AddExperienceForm;
+export default AddEducationForm;

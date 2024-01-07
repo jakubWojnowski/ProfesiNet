@@ -25,7 +25,7 @@ const EditProfileBio: FC = () => {
         >
             {({ handleSubmit, isSubmitting, dirty, isValid }) => (
                 <>
-                    <Header as='h2' content='Edit Bio"' textAlign='center' color='blue' />
+                    <Header as='h2' content='Edit Bio' textAlign='center' color='blue' />
                     <Form className='ui form' onSubmit={handleSubmit}>
                         <MyTextArea name='bio' label='bio' placeholder='bio' type='text' rows={5} width={100} />
                      

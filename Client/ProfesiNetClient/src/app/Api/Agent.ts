@@ -181,13 +181,13 @@ const Profiles = {
 
 
     // Education management
-    addUserEducation: (command: CreateUserEducationCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserEducation', command),
+    addUserEducation: (command: CreateUserEducationCommand) => requests.post<string>('/users-module/AccountProfile/CreateUserEducation', command),
     deleteUserEducation: (command: DeleteUserEducationCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserEducation', { data: command }),
-    updateUserEducation: (command: UpdateUserEducationCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserEducation', command),
+    updateUserEducation: (command: UpdateUserEducationCommand) => requests.put<string>('/users-module/AccountProfile/UpdateUserEducation', command),
 
     // Experience management
     addUserExperience: (command: CreateUserExperienceCommand) => requests.post<string>('/users-module/AccountProfile/CreateUserExperience', command),
-    deleteUserExperience: (command: DeleteUserExperienceCommand) => requests.del('/users-module/AccountProfile/DeleteUserExperience', { data: command }),
+    deleteUserExperience: (command: DeleteUserExperienceCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserExperience', { data: command }),
     updateUserExperience: (command: UpdateUserExperienceCommand) => requests.put<string>('/users-module/AccountProfile/UpdateUserExperience', command),
 
     // Skills management

@@ -8,6 +8,8 @@ import MyTextInput from "../../../app/common/form/MyTextInput.tsx";
 import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
 import MyDatePickerInput from "../../../app/common/form/MyDateInput.tsx";
 import {observer} from "mobx-react-lite";
+import * as Yup from "yup";
+import {DeleteUserExperienceCommand} from "../../../app/modules/interfaces/User.ts";
 
 interface EditExperienceFormProps {
     experienceId?: string; // This prop is the ID of the experience to be edited
@@ -15,7 +17,7 @@ interface EditExperienceFormProps {
 
 const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
     const { profileStore, modalStore } = useStore();
-    const { updateExperience, selectedExperience, loading } = profileStore;
+    const { updateExperience, selectedExperience } = profileStore;
     const { closeModal } = modalStore;
 
     useEffect(() => {
@@ -23,7 +25,17 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
             profileStore.selectExperience(experienceId);
         }
     }, [experienceId, profileStore]);
-
+    const handleExperienceDelete = () => {
+        console.log('Experience ID to delete:', selectedExperience?.id);
+        if (selectedExperience?.id) {
+            let command:DeleteUserExperienceCommand = {
+                id: selectedExperience?.id,
+                
+            };
+            profileStore.deleteExperience(command).then(r => console.log(r));
+            closeModal();
+        }
+    };
     return (
         <Formik
             initialValues={{
@@ -33,6 +45,12 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
                 startDate: selectedExperience?.startDate || new Date(),
                 endDate: selectedExperience?.endDate || new Date(),
             }}
+            validationSchema={Yup.object({
+                company: Yup.string().required(),
+                position: Yup.string().required(),
+                description: Yup.string().required(),
+                startDate: Yup.string().required()})
+            }
             onSubmit={(values, { setSubmitting }) => {
                 if (selectedExperience) {
                     updateExperience({
@@ -52,7 +70,7 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
         >
             {({ handleSubmit, isSubmitting, dirty, isValid }) => (
                 <>
-                    <Header as='h2' content='Edit Information' textAlign='center' color='blue' />
+                    <Header as='h2' content='Edit Experience' textAlign='center' color='blue' />
                     <Form className='ui form' onSubmit={handleSubmit}>
                         <MyTextInput name='company' label='company' placeholder='Company' type='text' />
                         <MyTextInput name='position' label='position' placeholder='Position' type='text'/>
@@ -70,10 +88,9 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
                             </Button>
                             <Button
                                 type="button"
-                                onClick={() => { /* Add your delete experience logic here */ }}
+                                onClick={handleExperienceDelete}
                                 floated="right"
                                 content="Delete Experience"
-                                loading={loading}
                             />
                         </Button.Group>
                     </Form>
