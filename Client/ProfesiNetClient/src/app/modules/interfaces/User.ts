@@ -102,7 +102,7 @@ export interface CreateUserExperienceCommand {
     position: string;
     description: string;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date | null;
 }
 export interface UpdateUserExperienceCommand {
     id: string;
@@ -110,7 +110,7 @@ export interface UpdateUserExperienceCommand {
     position: string;
     description: string;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date | null;
 }
 export interface DeleteUserExperienceCommand {
     id: string;

@@ -4,7 +4,7 @@ import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
 import {
     CreateUserExperienceCommand,
-    UpdateUserBioCommand,
+    UpdateUserBioCommand, UpdateUserExperienceCommand,
     UpdateUserInformationCommand, UserExperience
 } from "../modules/interfaces/User.ts";
 
@@ -14,6 +14,7 @@ export default class ProfileStore {
     uploading = false;
     loading = false;
     experienceRegistry = new Map<string, Profile>();
+    selectedExperience: UserExperience | undefined = undefined;
     educationRegistry = new Map<string, Profile>();
     skillRegistry = new Map<string, Profile>();
     
@@ -29,6 +30,11 @@ export default class ProfileStore {
         }
         return false;
     }
+
+    selectExperience = (experienceId: string) => {
+        this.selectedExperience = this.profile?.experiences.find(e => e.id === experienceId);
+    }
+
     loadProfile = async (id: string) => {
         this.loadingProfile = true;
         try {
@@ -106,12 +112,12 @@ export default class ProfileStore {
         }
     }
     
-    addExperience = async (experience: any) => {
+    addExperience = async (experience: CreateUserExperienceCommand) => {
         try {
-            await agent.Profiles.addUserExperience(experience);
+         const id=  await agent.Profiles.addUserExperience(experience);
             runInAction(() => {
                 if(this.profile) {
-                    this.profile.experiences.push(experience);
+                    this.profile.experiences.push({...experience, id, userId: this.profile.id});
                 }
             })
         } catch (error) {
@@ -119,7 +125,26 @@ export default class ProfileStore {
         }
     }
     
-
+    updateExperience = async (experience: UpdateUserExperienceCommand) => {
+        this.loading = true;
+        try{
+            const id = await agent.Profiles.updateUserExperience(experience);
+            runInAction(() => {
+                if(this.profile) {
+                    let updatedExperience = {...experience, id, userId: this.profile.id};
+                    this.profile.experiences = [...this.profile.experiences.filter(x => x.id !== id), updatedExperience];
+                    this.loading = false;
+                }
+            })
+        }
+        catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+    
 }
     
     

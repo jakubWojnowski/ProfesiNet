@@ -5,6 +5,7 @@ import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {toJS} from "mobx";
 import {useStore} from "../../app/stores/Store.ts";
 import AddExperienceForm from "./forms/AddExperienceForm.tsx";
+import EditExperienceForm from "./forms/EditExperienceForm.tsx";
 
 export interface ExperienceProps {
     profile:Profile;
@@ -12,7 +13,7 @@ export interface ExperienceProps {
     
 const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
     const profileExperience = toJS(profile.experiences)
-    const {profileStore:{isCurrentUser}, modalStore} = useStore();
+    const {profileStore:{isCurrentUser,selectExperience}, modalStore} = useStore();
     
 
     return (
@@ -51,7 +52,17 @@ const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
                                 {' - '}
                                 {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
                                 {isCurrentUser && (
-                                <Button icon='edit' content='Edit' floated='right' />
+                                    <Button
+                                        icon='edit'
+                                        content='Edit'
+                                        floated='right'
+                                        onClick={() => {
+                                            // First, select the experience
+                                            selectExperience(exp.id);
+                                            // Then, open the modal
+                                            modalStore.openModal(<EditExperienceForm experienceId={exp.id} />);
+                                        }}
+                                    />
                                 )}
                             </Item.Extra>
                         

@@ -117,8 +117,8 @@ internal class AccountProfileController : BaseController
     [HttpPut("UpdateUserExperience")]
     public async Task<IActionResult> UpdateUserExperience(UpdateUserExperienceCommand command)
     {
-        await _mediator.Send(command with { UserId = _context.Id });
-        return Ok();
+      var id =  await _mediator.Send(command with { UserId = _context.Id });
+        return Ok(id);
     }
 
     [HttpGet("GetUserExperienceById/{id:guid}")]

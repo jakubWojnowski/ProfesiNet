@@ -1,4 +1,4 @@
-import FC from "react";
+import {FC} from "react";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Form, Formik} from "formik";
 import {Button, Header} from "semantic-ui-react";
@@ -16,8 +16,8 @@ const AddExperienceForm: FC = () => {
                 company: '',
                 position: '',
                 description: '',
-                startDate: '',
-                endDate: '',
+                startDate: new Date,
+                endDate: new Date,
             }}
             onSubmit={(values, { setSubmitting }) => {
                 addExperience({

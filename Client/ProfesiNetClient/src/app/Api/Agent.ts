@@ -186,9 +186,9 @@ const Profiles = {
     updateUserEducation: (command: UpdateUserEducationCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserEducation', command),
 
     // Experience management
-    addUserExperience: (command: CreateUserExperienceCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserExperience', command),
-    deleteUserExperience: (command: DeleteUserExperienceCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserExperience', { data: command }),
-    updateUserExperience: (command: UpdateUserExperienceCommand) => requests.put<{}>('/users-module/AccountProfile/UpdateUserExperience', command),
+    addUserExperience: (command: CreateUserExperienceCommand) => requests.post<string>('/users-module/AccountProfile/CreateUserExperience', command),
+    deleteUserExperience: (command: DeleteUserExperienceCommand) => requests.del('/users-module/AccountProfile/DeleteUserExperience', { data: command }),
+    updateUserExperience: (command: UpdateUserExperienceCommand) => requests.put<string>('/users-module/AccountProfile/UpdateUserExperience', command),
 
     // Skills management
     addUserSkill: (command: CreateUserSkillCommand) => requests.post<{}>('/users-module/AccountProfile/CreateUserSkill', command),
