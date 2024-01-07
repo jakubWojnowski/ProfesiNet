@@ -1,16 +1,22 @@
-import {FC, useState} from "react";
+import {FC,useState} from "react";
 import {Button, Grid, Header, Icon, Item, Segment} from "semantic-ui-react";
 import {useTransition } from "react-spring";
 import {observer} from "mobx-react-lite";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
+import {useStore} from "../../app/stores/Store.ts";
+import AddSkillsForm from "./forms/AddSkillsForm.tsx";
+
+import DeleteSkill from "./forms/DeleteSkill.tsx";
 
 export interface SkillProps {
     profile:Profile;
 }
 const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
     const [showAllSkills, setShowAllSkills] = useState(false);
+    const {profileStore:{isCurrentUser}, modalStore} = useStore();
 
-    const initialSkillCount = 3;
+
+    const initialSkillCount = profile.skills.length > 3 ? 3 : profile.skills.length;
 
     const transitions = useTransition(
         showAllSkills ? profile.skills : profile.skills.slice(0, initialSkillCount),
@@ -22,11 +28,13 @@ const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
             config: { tension: 280, friction: 30 } // Adjust for smoother animation
         }
     );
-
-    // Function to toggle the full list of skills
+    
+  
     const toggleSkillsDisplay = () => {
         setShowAllSkills(!showAllSkills);
     };
+    
+
     return (
         <Segment>
             <Grid>
@@ -37,9 +45,11 @@ const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
                                 <Header size="large">Skills</Header>
                             </Grid.Column>
                             <Grid.Column floated='right' width={8} textAlign='right'>
-                                <Button icon labelPosition='left' primary size='small'>
-                                    <Icon name='add' /> Add
-                                </Button>
+                                {isCurrentUser && (
+                                    <Button icon labelPosition='left' primary size='small' onClick={()=> modalStore.openModal(<AddSkillsForm />)}>
+                                        <Icon name='add' /> Add
+                                    </Button>
+                                )}
                             </Grid.Column>
                         </Grid>
                     </Grid.Column>
@@ -48,9 +58,10 @@ const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
                     <Grid.Column width={16}>
                         <Item.Group divided>
                             {transitions((style, skill) => (
-                                    <Item style={style} key={skill.name}>
+                                    <Item style={style} key={skill.id}>
                                         <Item.Content>
                                             <Item.Header as='a'>{skill.name}</Item.Header>
+                                            <Button icon='trash' floated='right' onClick={() => modalStore.openModal(<DeleteSkill skillId={skill.id}/>)} />
                                         </Item.Content>
                                     </Item>
                             ))}

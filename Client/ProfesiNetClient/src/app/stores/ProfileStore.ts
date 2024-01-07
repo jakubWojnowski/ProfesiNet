@@ -4,9 +4,17 @@ import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
 import {
     CreateUserEducationCommand,
-    CreateUserExperienceCommand, CreateUserSkillCommand, DeleteUserEducationCommand, DeleteUserExperienceCommand,
-    UpdateUserBioCommand, UpdateUserEducationCommand, UpdateUserExperienceCommand,
-    UpdateUserInformationCommand, UserEducation, UserExperience
+    CreateUserExperienceCommand,
+    CreateUserSkillCommand,
+    DeleteUserEducationCommand,
+    DeleteUserExperienceCommand,
+    DeleteUserSkillCommand,
+    UpdateUserBioCommand,
+    UpdateUserEducationCommand,
+    UpdateUserExperienceCommand,
+    UpdateUserInformationCommand,
+    UserEducation,
+    UserExperience, UserSkill
 } from "../modules/interfaces/User.ts";
 
 export default class ProfileStore {
@@ -14,31 +22,33 @@ export default class ProfileStore {
     loadingProfile = false;
     uploading = false;
     loading = false;
-    experienceRegistry = new Map<string, UserExperience>();
     selectedExperience: UserExperience | undefined = undefined;
     selectedEducation: UserEducation | undefined = undefined;
-    educationRegistry = new Map<string, Profile>();
-    skillRegistry = new Map<string, Profile>();
+    selectedSkill: UserSkill | undefined = undefined;
+
 
 
     constructor() {
         makeAutoObservable(this);
 
-    }
+    };
 
     get isCurrentUser() {
         if (store.userStore.user && this.profile) {
             return store.userStore.user.id === this.profile.id;
         }
         return false;
-    }
+    };
 
     selectExperience = (experienceId: string) => {
         this.selectedExperience = this.profile?.experiences.find(e => e.id === experienceId);
-    }
+    };
     selectEducation = (educationId: string) => {
         this.selectedEducation = this.profile?.educations.find(e => e.id === educationId);
-    }
+    };
+    selectSkill = (skillId: string) => {
+        this.selectedSkill = this.profile?.skills.find(s => s.id === skillId);
+    };
 
     loadProfile = async (id: string) => {
         this.loadingProfile = true;
@@ -54,7 +64,7 @@ export default class ProfileStore {
                 this.loadingProfile = false;
             })
         }
-    }
+    };
     updateProfileInformation = async (command: UpdateUserInformationCommand) => {
         try {
             await agent.Profiles.updateUserInformation(command);
@@ -66,7 +76,7 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     updateProfileBio = async (bio: UpdateUserBioCommand) => {
         try {
@@ -79,7 +89,7 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
     uploadProfilePhoto = async (file: Blob) => {
         this.uploading = true;
         try {
@@ -99,7 +109,7 @@ export default class ProfileStore {
             )
 
         }
-    }
+    };
 
     deletePhoto = async (photoId: string) => {
         this.loading = true;
@@ -115,7 +125,7 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     addExperience = async (experience: CreateUserExperienceCommand) => {
         try {
@@ -128,7 +138,7 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     updateExperience = async (experience: UpdateUserExperienceCommand) => {
         this.loading = true;
@@ -147,7 +157,7 @@ export default class ProfileStore {
                 this.loading = false;
             })
         }
-    }
+    };
 
     deleteExperience = async (command: DeleteUserExperienceCommand) => {
         this.loading = true;
@@ -165,7 +175,7 @@ export default class ProfileStore {
                 this.loading = false;
             })
         }
-    }
+    };
 
     addEducation = async (education: CreateUserEducationCommand) => {
         this.loading = true;
@@ -184,7 +194,7 @@ export default class ProfileStore {
                 this.loading = false;
             })
         }
-    }
+    };
     
     updateEducation = async (education: UpdateUserEducationCommand) => {
         this.loading = true;
@@ -204,7 +214,7 @@ export default class ProfileStore {
             })
         
         }
-    }
+    };
 
 
     deleteEducation = async (command: DeleteUserEducationCommand) => {
@@ -218,45 +228,51 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
         }
-    }
-    addSkill = async (command: CreateUserSkillCommand) => {
+    };
+    addSkills = async (command: CreateUserSkillCommand) => {
+        this.loading = true; 
         try {
-            await agent.Profiles.addUserSkill(command);
+            const ids = await agent.Profiles.addUserSkills(command);
             runInAction(() => {
                 if (this.profile) {
-                    this.profile.skills.push(command);
-                }
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }
+                    // Map each skill name to an ID returned from the API call
+                    const skillsWithIds = command.names.map((name, index) => ({
+                        id: ids[index],
+                        name: name,
+                        userId: this.profile!.id 
+                    }));
 
-    updateSkill = async (skill: string) => {
-        try {
-            await agent.Profiles.updateUserSkill(skill);
-            runInAction(() => {
-                if (this.profile) {
-                    this.profile.skills.push(skill);
+                    
+                    this.profile.skills.push(...skillsWithIds);
                 }
-            })
+                this.loading = false;
+            });
         } catch (error) {
             console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            });
         }
-    }
-    
-    deleteSkill = async (skill: string) => {
+    };
+    deleteSkill = async (id: string): Promise<void> => {
+        this.loading = true;
+        console.log(id);
         try {
-            await agent.Profiles.deleteUserSkill(skill);
+            let command: DeleteUserSkillCommand = {id: id};
+            await agent.Profiles.deleteUserSkill(command);
             runInAction(() => {
                 if (this.profile) {
-                    this.profile.skills = [...this.profile.skills.filter(x => x !== skill)];
+                    this.profile.skills = this.profile.skills.filter(skill => skill.id !== id);
                 }
-            })
+                this.loading = false;
+            });
         } catch (error) {
             console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            });
         }
-    }
+    };
     
 }
     

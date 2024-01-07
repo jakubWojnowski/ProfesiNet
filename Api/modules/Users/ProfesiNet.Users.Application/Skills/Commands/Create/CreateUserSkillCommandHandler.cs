@@ -8,7 +8,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Skills.Commands.Create;
 
-internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillCommand>
+internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillCommand, IEnumerable<Guid>>
 {
     private readonly ISkillRepository _skillRepository;
     private readonly ICannotAddSkillPolicy _cannotAddSkillPolicy;
@@ -23,9 +23,10 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
         _userRepository = userRepository;
     }
 
-    public async Task Handle(CreateUserSkillCommand request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Guid>> Handle(CreateUserSkillCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
+        var skills = new List<Guid>();
         if (user is null)
         {
             throw new UserNotFoundException(request.UserId);
@@ -43,8 +44,11 @@ internal class CreateSkillCommandHandler : IRequestHandler<CreateUserSkillComman
                 Id = Guid.NewGuid()
             });
             skill.UserId = user.Id;
-             await _skillRepository.AddAsync(skill, cancellationToken);
+           var id =  await _skillRepository.AddAsync(skill, cancellationToken);
+           skills.Add(id);
+           
         }
         
+        return skills;
     }
 }
