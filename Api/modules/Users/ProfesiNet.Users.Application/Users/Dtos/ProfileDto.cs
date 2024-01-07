@@ -16,6 +16,7 @@ public class ProfileDto
     public string? Address { get; set; }
     public string? Bio { get; set; }
     public string? ProfilePicture { get; set; }
+    public Guid? ProfilePictureId { get; set; }
     public IList<Guid> Followings { get; set; } = new List<Guid>();
     public int FollowingsCount { get; set; }
     public IList<Guid> Followers { get; set; } = new List<Guid>();

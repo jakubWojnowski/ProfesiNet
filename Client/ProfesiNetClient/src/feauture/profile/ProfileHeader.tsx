@@ -30,7 +30,6 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                             src={profile.profilePicture || '/assets/user.png'} // Your user image path
                             avatar
                         />
-                       
                        <Header as='h1'>{profile.name +" " + profile.surname}
                         <Header.Subheader>
                             {profile.title}
@@ -59,9 +58,9 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                         </Item>
                     </Grid.Column>
                     <Grid.Column width={16} textAlign='right'>
-                        {isCurrentUser &&
+                        {isCurrentUser && (
                         <Button icon='edit' content='Edit' onClick={()=> modalStore.openModal(<EditProfileHeaderForm />)}/>
-                        }
+                        )  }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

@@ -24,6 +24,7 @@ internal class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileBy
         }
         var dto = Mapper.MapUserToProfileDto(profile);
         dto.ProfilePicture = profile.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+        dto.ProfilePictureId = profile.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Id;
         
         return dto;
     }

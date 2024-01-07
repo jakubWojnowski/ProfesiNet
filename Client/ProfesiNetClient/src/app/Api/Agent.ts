@@ -232,11 +232,12 @@ const Profiles = {
             throw error;
         }
     },
-    deleteUserProfilePicture: (photoId: string) => requests.del<{}>('/users-module/AccountProfile/DeleteUserProfilePicture', { data: photoId }),
-
-    // User information management
+    deleteUserProfilePicture: (photoId: string) => {
+        return requests.del(`/users-module/AccountProfile/DeleteUserProfilePicture`, {
+            data: { photoId: photoId }
+        });
+    }
 };
-
 const agent = {
     Posts,
     Account,

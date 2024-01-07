@@ -89,6 +89,7 @@ export default class ProfileStore {
             runInAction(() => {
                 if(this.profile) {
                     this.profile.profilePicture = null;
+                    this.profile.profilePictureId = null;
                     store.userStore.setImage(null);
                 }
             })
