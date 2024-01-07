@@ -4,6 +4,7 @@ import {Form, Formik} from "formik";
 import {Button, Header} from "semantic-ui-react";
 import MyTextArea from "../../../app/common/form/MyTextArea.tsx";
 import MyDatePickerInput from "../../../app/common/form/MyDateInput.tsx";
+import MyTextInput from "../../../app/common/form/MyTextInput.tsx";
 
 const AddExperienceForm: FC = () => {
     const { profileStore, modalStore } = useStore();
@@ -36,11 +37,11 @@ const AddExperienceForm: FC = () => {
                 <>
                     <Header as='h2' content='Edit Bio"' textAlign='center' color='blue' />
                     <Form className='ui form' onSubmit={handleSubmit}>
-                        <MyTextArea name='company' label='company' placeholder='company' type='text' rows={5} width={100} />
-                        <MyTextArea name='position' label='position' placeholder='position' type='text' rows={5} width={100} />
-                        <MyTextArea name='description' label='description' placeholder='description' type='text' rows={5} width={100} />
-                        <MyDatePickerInput name='startDate'/>
-                        <MyDatePickerInput name='endDate'/>
+                        <MyTextInput name='company' label='company' placeholder='Company' type='text' />
+                        <MyTextInput name='position' label='position' placeholder='Position' type='text'/>
+                        <MyTextArea name='description' label='description' placeholder='Description' type='text' rows={5} width={100} />
+                        <MyDatePickerInput name='startDate' placeholderText={"Start Date"}/>
+                        <MyDatePickerInput name='endDate' placeholderText={'End Date'}/>
 
                         <Button
                             type='submit'
