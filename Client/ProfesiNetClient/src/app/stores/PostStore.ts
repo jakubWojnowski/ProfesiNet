@@ -50,7 +50,7 @@ export default class PostStore {
                 this.selectedPost = post;
                 this.loading = false;
               
-                // this.loadPosts();
+                this.loadPosts();
                 
             });
         } catch (error) {

@@ -23,9 +23,11 @@ const PostDashboard: FC = () =>  {
     if (postStore.loadingInitial) return <LoadingComponent content='Loading app...'/>;
     const {editMode} = postStore;
     return (
-        <Grid centered={true}>
+      
+        <Grid centered={true} >
         <Grid.Column width={10} >
             <PostForm />
+            
             <PostList/>
             </Grid.Column>
             {editMode && (
@@ -34,6 +36,7 @@ const PostDashboard: FC = () =>  {
             )}
             
         </Grid>
+     
          
     );
 }
