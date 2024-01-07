@@ -4,6 +4,7 @@ import {observer} from "mobx-react-lite";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {toJS} from "mobx";
 import {useStore} from "../../app/stores/Store.ts";
+import AddExperienceForm from "./forms/AddExperienceForm.tsx";
 
 export interface ExperienceProps {
     profile:Profile;
@@ -11,7 +12,7 @@ export interface ExperienceProps {
     
 const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
     const profileExperience = toJS(profile.experiences)
-    const {profileStore:{isCurrentUser}} = useStore();
+    const {profileStore:{isCurrentUser}, modalStore} = useStore();
     
 
     return (
@@ -25,8 +26,9 @@ const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
                     </Grid.Column>
                     <Grid.Column width={6} textAlign='right'>
                         {isCurrentUser && (
-                        <Button primary icon labelPosition='left'>
-                            <Icon name='add' /> Add
+                        <Button primary icon labelPosition='left' onClick={()=> modalStore.openModal(<AddExperienceForm />)}>
+                            <Icon name='add'  /> Add
+                            
                         </Button>
                         )}
                     </Grid.Column>

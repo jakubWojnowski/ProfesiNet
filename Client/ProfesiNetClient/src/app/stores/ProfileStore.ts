@@ -2,13 +2,21 @@ import {Profile} from "../modules/interfaces/Profile.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
-import {UpdateUserBioCommand, UpdateUserInformationCommand} from "../modules/interfaces/User.ts";
+import {
+    CreateUserExperienceCommand,
+    UpdateUserBioCommand,
+    UpdateUserInformationCommand, UserExperience
+} from "../modules/interfaces/User.ts";
 
 export default class ProfileStore {
     profile: Profile | null = null;
     loadingProfile = false;
     uploading = false;
     loading = false;
+    experienceRegistry = new Map<string, Profile>();
+    educationRegistry = new Map<string, Profile>();
+    skillRegistry = new Map<string, Profile>();
+    
 
     constructor() {
      makeAutoObservable(this);
@@ -91,6 +99,19 @@ export default class ProfileStore {
                     this.profile.profilePicture = null;
                     this.profile.profilePictureId = null;
                     store.userStore.setImage(null);
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    addExperience = async (experience: any) => {
+        try {
+            await agent.Profiles.addUserExperience(experience);
+            runInAction(() => {
+                if(this.profile) {
+                    this.profile.experiences.push(experience);
                 }
             })
         } catch (error) {
