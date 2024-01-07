@@ -24,7 +24,7 @@ internal class CommentRepository : GenericRepository<Comment, Guid>, ICommentRep
         var creatorIds = comments.Select(c => c.CreatorId).Distinct();
         var creators = await _dbContext.Creators
             .Where(c => creatorIds.Contains(c.Id))
-            .ToDictionaryAsync(c => c.Id, c => new { c.Name, c.Surname }, cancellationToken: ct);
+            .ToDictionaryAsync(c => c.Id, c => new { c.Name, c.Surname, c.ProfilePicture }, cancellationToken: ct);
 
         var commentDaoes = comments.Select(c => new CommentDao
         {
@@ -35,8 +35,9 @@ internal class CommentRepository : GenericRepository<Comment, Guid>, ICommentRep
             CreatorId = c.CreatorId,
             CreatorName = creators[c.CreatorId].Name,
             CreatorSurname = creators[c.CreatorId].Surname,
+            CreatorProfilePicture = creators[c.CreatorId].ProfilePicture
            
-        });
+        }).OrderByDescending(c => c.PublishedAt);
         
         return commentDaoes.AsQueryable();
     }

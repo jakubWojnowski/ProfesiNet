@@ -1,4 +1,5 @@
 ﻿using Confab.Shared.Abstractions.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using ProfesiNet.Posts.Core.Commands.Create;
 using ProfesiNet.Posts.Core.Commands.Delete;
 using ProfesiNet.Posts.Core.Commands.Update;
@@ -30,12 +31,15 @@ internal class CommentService : ICommentService
         {
             throw new PostNotFoundException(command.PostId);
         }
+
+        if (command.Content.IsNullOrEmpty()) throw new CommentHasNoContentException();
         
         var comment = Mapper.MapCreateCommentCommandToComment(command with
         {
             Id = Guid.NewGuid()
         });
         comment.PublishedAt = _clock.CurrentDate();
+        
         comment.CreatorId = id;
 
        return await _commentRepository.AddAsync(comment, cancellationToken);
@@ -56,7 +60,13 @@ internal class CommentService : ICommentService
     public async Task<IReadOnlyList<CommentDto>> BrowseAsync(Guid postId,CancellationToken cancellationToken = default)
     {
         var comments = await _commentRepository.GetCommentsWithCreatorsPerPost(postId, cancellationToken);
-        return Mapper.MapCommentToCommentDto(comments);
+        var dtos = Mapper.MapCommentToCommentDto(comments);
+        foreach (var comment in dtos)
+        {
+            comment.CreatorProfilePicture = comment.CreatorProfilePicture;
+
+        }
+        return dtos;
     }
 
     public async Task UpdateAsync(UpdateCommentCommand command, Guid id, CancellationToken cancellationToken = default)
