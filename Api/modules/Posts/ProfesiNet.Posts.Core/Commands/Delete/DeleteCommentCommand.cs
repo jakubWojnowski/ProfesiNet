@@ -1,3 +1,3 @@
 ﻿namespace ProfesiNet.Posts.Core.Commands.Delete;
 
-internal record DeleteCommentCommand(Guid Id);
+public record DeleteCommentCommand(Guid Id);

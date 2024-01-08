@@ -24,7 +24,7 @@ internal class CommentService : ICommentService
         _clock = clock;
     }
 
-    public async Task<Guid> AddAsync(CreateCommentCommand command, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(CreateCommentCommand command, Guid creatorId, CancellationToken cancellationToken = default)
     {
         var post = await _postRepository.GetByIdAsync(command.PostId, cancellationToken);
         if (post is null)
@@ -40,7 +40,7 @@ internal class CommentService : ICommentService
         });
         comment.PublishedAt = _clock.CurrentDate();
         
-        comment.CreatorId = id;
+        comment.CreatorId = creatorId;
 
        return await _commentRepository.AddAsync(comment, cancellationToken);
     }

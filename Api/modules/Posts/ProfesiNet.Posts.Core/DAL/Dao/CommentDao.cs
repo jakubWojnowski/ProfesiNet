@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Posts.Core.DAL.Dao;
 
-internal class CommentDao
+public class CommentDao
 {
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }

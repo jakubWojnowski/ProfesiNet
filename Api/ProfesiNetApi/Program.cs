@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using NLog.Web;
+using ProfesiNet.Posts.Api.SignalR;
 using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Shared.Modules;
 using ProfesiNetApi;
@@ -33,6 +34,7 @@ foreach (var module in modules)
     module.Use(app);
 }
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 app.MapGet("/", () => "ProfesiNet API!");
 
 // app.UseRouting();// tu jest jakis problem wywala apke

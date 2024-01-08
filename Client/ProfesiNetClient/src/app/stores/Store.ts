@@ -4,13 +4,15 @@ import UserStore from "./UserStore.ts";
 import CommonStore from "./CommonStore.ts";
 import ModalStore from "./ModalStore.ts";
 import ProfileStore from "./ProfileStore.ts";
+import CommentStore from "./CommentStore.tsx";
 
 interface Store {
     postStore: PostStore
     userStore: UserStore
     commonStore: CommonStore
     modalStore: ModalStore
-    profileStore: ProfileStore
+    profileStore: ProfileStore 
+    commentStore: CommentStore
 
 }
 
@@ -19,7 +21,8 @@ export const store: Store = {
     userStore: new UserStore(),
     commonStore: new CommonStore(),
     modalStore: new ModalStore(),
-    profileStore: new ProfileStore()
+    profileStore: new ProfileStore(),
+    commentStore: new CommentStore()
     
 }
 

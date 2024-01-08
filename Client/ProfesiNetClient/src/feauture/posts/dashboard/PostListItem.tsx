@@ -1,8 +1,9 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
+import PostCommentChat from "./comments/PostCommentChat.tsx";
 
 interface Props {
     post: Post;
@@ -11,6 +12,11 @@ interface Props {
 const PostListItem: FC<Props> = ({post}: Props) => {
     const {postStore, userStore} = useStore();
     const {openForm, deletePost} = postStore;
+    const [showComments, setShowComments] = useState(false);
+
+    const handleToggleComments = () => {
+        setShowComments(!showComments);
+    };
 
     return (
         <Segment.Group>
@@ -72,11 +78,11 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                         {post.likesCount}
                     </Label>
                 </Button >
-                <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='blue'>
-                        <Icon name='comment'/>
-                        Comment
-                    </Button>
+                    <Button as='div' labelPosition='right' className="action-button">
+                        <Button color='blue' onClick={handleToggleComments}>
+                            <Icon name='comment'/>
+                            Comment
+                        </Button>
                     <Label as='a' basic color='blue' pointing='left'>
                         {post.commentsCount}
                     </Label>
@@ -93,6 +99,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
 
               
             </Segment>
+            {showComments && <PostCommentChat postId={post.id} />}
 
         </Segment.Group>
     );
