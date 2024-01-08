@@ -4,7 +4,7 @@ import UserStore from "./UserStore.ts";
 import CommonStore from "./CommonStore.ts";
 import ModalStore from "./ModalStore.ts";
 import ProfileStore from "./ProfileStore.ts";
-import CommentStore from "./CommentStore.tsx";
+import CommentStore from "./CommentStore.ts";
 
 interface Store {
     postStore: PostStore

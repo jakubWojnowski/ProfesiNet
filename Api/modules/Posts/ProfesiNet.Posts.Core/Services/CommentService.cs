@@ -7,6 +7,7 @@ using ProfesiNet.Posts.Core.Dto;
 using ProfesiNet.Posts.Core.Exceptions;
 using ProfesiNet.Posts.Core.Interfaces;
 using ProfesiNet.Posts.Core.Mappings;
+using ProfesiNet.Shared.Contexts;
 
 namespace ProfesiNet.Posts.Core.Services;
 
@@ -15,18 +16,23 @@ internal class CommentService : ICommentService
     private readonly ICommentRepository _commentRepository;
     private readonly IPostRepository _postRepository;
     private readonly IClock _clock;
+    private readonly ICreatorRepository _creatorRepository;
+    private readonly IContext _context;
     private static readonly CommentMapper Mapper = new();
 
-    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository, IClock clock)
+    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository, IClock clock, ICreatorRepository creatorRepository, IContext context)
     {
         _commentRepository = commentRepository;
         _postRepository = postRepository;
         _clock = clock;
+        _creatorRepository = creatorRepository;
+        _context = context;
     }
 
-    public async Task<Guid> AddAsync(CreateCommentCommand command, Guid creatorId, CancellationToken cancellationToken = default)
+    public async Task<CommentDto> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken = default)
     {
         var post = await _postRepository.GetByIdAsync(command.PostId, cancellationToken);
+        var creator = await _creatorRepository.GetByIdAsync(_context.Id, cancellationToken)?? throw new CreatorNotFoundException(_context.Id);
         if (post is null)
         {
             throw new PostNotFoundException(command.PostId);
@@ -36,13 +42,26 @@ internal class CommentService : ICommentService
         
         var comment = Mapper.MapCreateCommentCommandToComment(command with
         {
-            Id = Guid.NewGuid()
+            CommentId = Guid.NewGuid()
         });
         comment.PublishedAt = _clock.CurrentDate();
         
-        comment.CreatorId = creatorId;
+        comment.CreatorId = _context.Id;
 
-       return await _commentRepository.AddAsync(comment, cancellationToken);
+       var commentId= await _commentRepository.AddAsync(comment, cancellationToken);
+        var commentDto = new CommentDto
+        {
+            Id = commentId,
+            CreatorId = comment.CreatorId,
+            CreatorName = creator.Name,
+            CreatorSurname = creator.Surname,
+            CreatorProfilePicture = creator.ProfilePicture,
+            PostId = comment.PostId,
+            Content = comment.Content,
+            PublishedAt = comment.PublishedAt
+        };
+
+        return commentDto;
     }
 
     public async Task<CommentDetailsDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)

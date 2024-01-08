@@ -20,6 +20,7 @@ foreach (var module in modules)
 {
     module.Register(builder.Services);
 }
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<IValidator>();
@@ -34,7 +35,9 @@ foreach (var module in modules)
     module.Use(app);
 }
 app.MapControllers();
-app.MapHub<ChatHub>("/chat");
+app.MapHub<ChatHub>("chat");
+
+
 app.MapGet("/", () => "ProfesiNet API!");
 
 // app.UseRouting();// tu jest jakis problem wywala apke

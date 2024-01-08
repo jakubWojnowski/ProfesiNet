@@ -2,7 +2,6 @@ import {ChatComment} from "../modules/interfaces/Comment.ts";
 import {HubConnection, HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
 import {makeAutoObservable, runInAction} from "mobx";
 import {store} from "./Store.ts";
-import Agent from "../Api/Agent.ts";
 
 export default class CommentStore {
     comments:ChatComment[] = [];
@@ -15,16 +14,18 @@ export default class CommentStore {
     
     
     setHubConnection = (postId:string) => {
-        if (store.postStore.selectedPost) {
-            console.log('postId', postId);
+        console.log('postId', postId);
+        console.log('this.hubConnection', store.userStore.user?.token!);
+
+      
             this.hubConnection = new HubConnectionBuilder()
-                .withUrl('https://localhost:5000/chat?postId=' + postId, {
-                    accessTokenFactory: () => store.userStore.user?.token as string
+                .withUrl('http://localhost:5000/chat?postId=' + postId, {
+                    accessTokenFactory: () => localStorage.getItem('token')!
                 })
                 .withAutomaticReconnect()
                 .configureLogging(LogLevel.Information)
                 .build();
-
+                console.log('this.hubConnection', this.hubConnection.baseUrl);
             this.hubConnection.start().catch(error => console.log('Error establishing the connection: ', error));
             
             this.hubConnection.on('LoadComments', (comments: ChatComment[]) => {
@@ -32,11 +33,11 @@ export default class CommentStore {
                  
             })
             this.hubConnection.on('ReceiveComment', (comment: ChatComment) => {
-                runInAction(() => this.comments.push(comment));
+                this.comments.unshift(comment);
                 
             })
         }
-    }
+
     
     stopHubConnection = () => {
         this.hubConnection?.stop().catch(error => console.log('Error stopping connection: ', error));

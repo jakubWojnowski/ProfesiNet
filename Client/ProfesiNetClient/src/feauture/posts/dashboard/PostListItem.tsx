@@ -1,9 +1,10 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 import PostCommentChat from "./comments/PostCommentChat.tsx";
+import {observer} from "mobx-react-lite";
 
 interface Props {
     post: Post;
@@ -11,6 +12,7 @@ interface Props {
 
 const PostListItem: FC<Props> = ({post}: Props) => {
     const {postStore, userStore} = useStore();
+    const {selectedPost, loadPost, cancelSelectedPost} = postStore;
     const {openForm, deletePost} = postStore;
     const [showComments, setShowComments] = useState(false);
 
@@ -18,6 +20,8 @@ const PostListItem: FC<Props> = ({post}: Props) => {
         setShowComments(!showComments);
     };
 
+
+        
     return (
         <Segment.Group>
             <Segment key={post.id} className="post-segment"> {/* Move key to here */}
@@ -105,4 +109,4 @@ const PostListItem: FC<Props> = ({post}: Props) => {
     );
 }
 
-export default PostListItem;
+export default observer(PostListItem);
