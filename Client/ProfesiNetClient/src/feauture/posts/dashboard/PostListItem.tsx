@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
@@ -12,7 +12,6 @@ interface Props {
 
 const PostListItem: FC<Props> = ({post}: Props) => {
     const {postStore, userStore} = useStore();
-    const {selectedPost, loadPost, cancelSelectedPost} = postStore;
     const {openForm, deletePost} = postStore;
     const [showComments, setShowComments] = useState(false);
 

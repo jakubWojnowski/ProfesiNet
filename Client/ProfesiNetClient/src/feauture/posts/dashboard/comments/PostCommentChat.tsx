@@ -1,9 +1,10 @@
 import  {FC, useEffect, } from 'react';
-import {Comment, Form, Header, Segment, Loader} from 'semantic-ui-react';
+import {Comment, Header, Segment, Button} from 'semantic-ui-react';
 import {useStore} from "../../../../app/stores/Store.ts";
-import {Field, FieldProps, Formik} from "formik";
+import { Form, Formik} from "formik";
 import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import MyTextArea from "../../../../app/common/form/MyTextArea.tsx";
 
 interface Props {
     postId: string;
@@ -20,8 +21,6 @@ useEffect(() => {
     }
 }, [commentStore, postId]);
     
- 
-    
     return (
         <>
             <Segment
@@ -35,50 +34,42 @@ useEffect(() => {
                 
             </Segment>
             <Segment attached clearing>
-                {/*<Formik*/}
-                {/*    onSubmit={(values, { resetForm }) =>*/}
-                {/*        commentStore.addComment(values).then(() => resetForm())*/}
-                {/*    }*/}
-                {/*        */}
-                {/*    initialValues={{ body: '' }}*/}
-                {/*    */}
-                {/*>*/}
-                {/*    {({ isSubmitting, isValid, handleSubmit }) => (*/}
-                {/*        <Form className='ui form'>*/}
-                {/*            <Field name='body'>*/}
-                {/*                {(props: FieldProps) => (*/}
-                {/*                    <div style={{ position: 'relative' }}>*/}
-                {/*                        <Loader active={isSubmitting} />*/}
-                {/*                        <textarea*/}
-                {/*                            placeholder='Enter your comment (Enter to submit, SHIFT + Enter for new line)'*/}
-                {/*                            rows={2}*/}
-                {/*                            {...props.field}*/}
-                {/*                            onKeyPress={e => {*/}
-                {/*                                if (e.key === 'Enter' && e.shiftKey) {*/}
-                {/*                                    return;*/}
-                {/*                                }*/}
-                {/*                                if (e.key === 'Enter' && !e.shiftKey) {*/}
-                {/*                                    e.preventDefault();*/}
-                {/*                                    isValid && handleSubmit();*/}
-                {/*                                }*/}
-                {/*                            }}*/}
-                {/*                        />*/}
-                {/*                    </div>*/}
-                {/*                )}*/}
-                {/*            </Field>*/}
-                {/*        </Form>*/}
-                {/*    )}*/}
-                {/*</Formik>*/}
+                <Formik
+                    onSubmit={({ body }, { resetForm }) => {
+                        commentStore.addComment({ body }, postId).then(() => resetForm());
+                    }}
+                    initialValues={{ body: '' }}
+                    
+                >
+                    {({ isSubmitting, isValid }) => (
+                        <Form className='ui form'>
+                          <MyTextArea placeholder='Add comment' name='body' rows={2} />
+                            <Button
+                                loading={isSubmitting}
+                                disabled={isSubmitting }
+                                positive
+                                type='submit'
+                                content='Submit'
+                                primary
+                            />
+                        </Form>
+                    )}
+                </Formik>
                 <Comment.Group>
                     {commentStore.comments.map(comment => (
                         <Comment key={comment.id}>
-                            <Comment.Avatar src={ '/assets/user.png'} />
+                            <Comment.Avatar src={ comment.creatorProfilePicture ||'/assets/user.png'} />
                             <Comment.Content>
-                                <Comment.Author as={Link} to={`/profiles/${comment.creatorId}`}>
-                                    {comment.creatorName}
+                                <Comment.Author as={Link} to={`/profile/${comment.creatorId}`}>
+                                    {comment.creatorName} {comment.creatorSurname}
                                 </Comment.Author>
                                 <Comment.Metadata>
-                                    <div>{comment.publishedAt}</div>
+                                    <div>{new Date(comment.publishedAt.split('T')[0]).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })}</div>
+                                    <div>{comment.publishedAt.split('T')[1].slice(0, 5)}</div>
                                 </Comment.Metadata>
                                 <Comment.Text style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</Comment.Text>
                             </Comment.Content>

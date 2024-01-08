@@ -37,7 +37,6 @@ foreach (var module in modules)
 app.MapControllers();
 app.MapHub<ChatHub>("chat");
 
-
 app.MapGet("/", () => "ProfesiNet API!");
 
 // app.UseRouting();// tu jest jakis problem wywala apke

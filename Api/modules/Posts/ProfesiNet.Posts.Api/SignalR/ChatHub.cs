@@ -18,10 +18,10 @@ internal class ChatHub : Hub
         _context = context;
     }
 
-    public async Task SendComment(CreateCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task SendComment(CreateCommentCommand command)
     {
-        var comment = await _commentService.AddAsync(command, cancellationToken);
-        await Clients.Group(command.PostId.ToString()).SendAsync("ReceiveComment", comment, cancellationToken: cancellationToken);
+        var comment = await _commentService.AddAsync(command);
+        await Clients.Group(command.PostId.ToString()).SendAsync("ReceiveComment", comment);
     }
     
     public override async Task OnConnectedAsync()
