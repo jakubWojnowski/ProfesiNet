@@ -23,6 +23,10 @@ export default observer(function ProfileCard({ profile }: Props) {
                 <Card.Description>
                     {truncate(profile.title)}
                 </Card.Description>
+             
+            </Card.Content>
+            <Card.Content extra>
+                {profile.address}
             </Card.Content>
          
         </Card>

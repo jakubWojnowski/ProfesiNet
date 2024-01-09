@@ -17,13 +17,16 @@ import ProfileFollowingsPanel from "./ProfileFollowingsPanel.tsx";
 const ProfilePage: FC = () => {
     const {userId} = useParams<{userId: string}>();
     const {profileStore, postStore} = useStore();
-    const {loadingProfile, loadProfile, profile} = profileStore;
+    const {loadingProfile, loadProfile, profile, setActiveTab} = profileStore;
     const {loadCreatorPosts} = postStore;
 
 
     useEffect(() => {
         if (userId) {
             loadProfile(userId).then(() => console.log(profile));
+            return () => {
+                setActiveTab(0);
+            }
         }
     }, [loadProfile, userId]);
     

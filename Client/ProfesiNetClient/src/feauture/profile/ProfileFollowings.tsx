@@ -6,10 +6,10 @@ import {useEffect} from "react";
 
 export default observer(function ProfileFollowings(){
 const {profileStore} = useStore();
-const {loadingFollowings, profile, followings, loadFollowings, loadFollowers} = profileStore;
+const {loadingFollowings, profile, followings, loadFollowings, loadFollowers, activeTab} = profileStore;
 
     useEffect(() => {
-        loadFollowers(profile!.id);
+        loadFollowers(profile!.id).then(r => console.log(r));
     }, [loadFollowings, loadFollowers, profile!.id]);
 
     return (
@@ -20,7 +20,9 @@ const {loadingFollowings, profile, followings, loadFollowings, loadFollowers} = 
                         floated='left'
                         icon='user'
                         content={
-                             `People following ${profile!.name} ${profile!.surname}`}
+                            activeTab === 0 ? `People following ${profile?.name}` : `People ${profile?.name} is following`
+                        }
+                        
                     />
                 </Grid.Column>
                 <Grid.Column width='16'>

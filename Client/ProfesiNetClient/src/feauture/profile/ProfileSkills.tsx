@@ -70,9 +70,9 @@ const ProfileSkills: FC<SkillProps> = ({profile}:SkillProps) => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column textAlign='center'>
-                        {profile.skills.length > 0 && (
+                        {profile.skills.length > 3 && (
                         <Button onClick={toggleSkillsDisplay}>
-                            {showAllSkills ? 'Show Less' : `Show More (${profile.skills.length - 3})`}
+                            {showAllSkills ? 'Show Less' : `Show More (${profile.skills.length - initialSkillCount})`}
                         </Button>
                         )}
                     </Grid.Column>
