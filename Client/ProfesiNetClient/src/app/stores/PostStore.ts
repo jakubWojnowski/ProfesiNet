@@ -198,7 +198,7 @@ export default class PostStore {
     unSharePost = async (id: string) => {
         this.loading = true;
         try {
-            await agent.Posts.unShare();
+            await agent.Posts.unShare(id);
             runInAction(() => {
                 const post = this.postRegistry.get(id);
                 if (post) {

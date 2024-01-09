@@ -1,6 +1,4 @@
-﻿using Confab.Shared.Infrastructure.Messaging.Dispatcher;
-
-namespace ProfesiNet.Shared.Messaging.Dispatcher;
+﻿namespace ProfesiNet.Shared.Messaging.Dispatcher;
 
 internal sealed class AsyncMessageMessageDispatcher : IAsyncMessageDispatcher
 {

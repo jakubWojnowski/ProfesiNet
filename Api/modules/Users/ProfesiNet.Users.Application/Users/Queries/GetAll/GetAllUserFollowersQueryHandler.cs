@@ -2,6 +2,7 @@
 using ProfesiNet.Shared.Contexts;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
+using ProfesiNet.Users.Domain.Enums;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 
@@ -43,6 +44,8 @@ internal class GetAllUserFollowersQueryHandler : IRequestHandler<GetAllUserFollo
                     Surname = follower.Surname,
                     Address = follower.Address,
                     Bio = follower.Bio,
+                    ProfilePicture = follower.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture)?.Url,
+                    Title = follower.Title,
                     Following = follower.Followings.Contains(loggedUserId),
                     FollowedBy = follower.Followers.Contains(loggedUserId)
                 });

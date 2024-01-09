@@ -20,19 +20,6 @@ const PostListItem: FC<Props> = ({post}: Props) => {
         setShowComments(!showComments);
     };
     
-    const handleLikePost = () => {
-        if (postStore.isLiked(post.id) ===false) {
-            postStore.unLikePost(post.id).then(r => console.log(r));
-        } if (postStore.isLiked(post.id) ===true) {
-            postStore.likePost(post.id).then(r => console.log(r));
-        }
-        
-    }
-
-    
-    
-
-
         
     return (
         <Segment.Group>
@@ -43,7 +30,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
 
                             <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture || '/assets/user.png'} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
-                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname} 
+                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
                            
                             </ItemMeta>
                        
@@ -86,7 +73,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
            
 
                 <Button  as='div' labelPosition='right' className="action-button">
-                    <Button color='red' onClick={handleLikePost}>
+                    <Button color='red' onClick={()=>postStore.likePost(post.id)}>
                         <Icon name='heart'/>
                         Like
                     </Button>
@@ -101,7 +88,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                         </Button>
                 </Button>
                 <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='grey' onClick={()=>postStore.unSharePost(post.id)}>
+                    <Button color='grey' onClick={()=>postStore.sharePost(post.id)}>
                         <Icon name='share alternate'/>
                         Share
                     </Button>

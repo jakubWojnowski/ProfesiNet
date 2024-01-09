@@ -10,6 +10,7 @@ import {observer} from "mobx-react-lite";
 import {useParams} from "react-router-dom";
 import {useStore} from "../../app/stores/Store.ts";
 import LoadingComponent from "../../app/layout/components/LoadingComponent.tsx";
+import ProfileFollowingsPanel from "./ProfileFollowingsPanel.tsx";
 
 
 
@@ -22,9 +23,7 @@ const ProfilePage: FC = () => {
 
     useEffect(() => {
         if (userId) {
-            loadProfile(userId).then(() => {
-                console.log(profile); // Add this line to check if profile is updated
-            });
+            loadProfile(userId).then(() => console.log(profile));
         }
     }, [loadProfile, userId]);
     
@@ -67,6 +66,12 @@ const ProfilePage: FC = () => {
                     <ProfileSkills profile={profile}/>
                 )}
             </Grid.Column>
+            <Grid.Column width={16}>
+                {profile && (
+                    <ProfileFollowingsPanel/>
+                )}
+            </Grid.Column>
+            
             
         </Grid>
      

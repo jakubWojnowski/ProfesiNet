@@ -204,8 +204,8 @@ const Profiles = {
     updateUserFollowings: (targetId: string) => requests.patch('/users-module/AccountProfile/UpdateUserFollowings', {targetId:targetId}),
     removeUserFollowing: (targetId: string) => requests.patch('/users-module/AccountProfile/RemoveUserFollowing', {targetId:targetId}),
     updateUserConnectionInvitations: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserConnectionInvitations', targetId),
-    getAllUserFollowings: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowings/${userId}`),
-    getAllUserFollowers: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowers/${userId}`),
+    getAllUserFollowings: (userId: string) => requests.get<Profile[]>(`/users-module/AccountProfile/GetAllUserFollowings/${userId}`),
+    getAllUserFollowers: (userId: string) => requests.get<Profile[]>(`/users-module/AccountProfile/GetAllUserFollowers/${userId}`),
  
 
     // Profile picture management

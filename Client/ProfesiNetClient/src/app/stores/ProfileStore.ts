@@ -1,5 +1,5 @@
 import {Profile} from "../modules/interfaces/Profile.ts";
-import {makeAutoObservable, runInAction} from "mobx";
+import {makeAutoObservable, reaction, runInAction} from "mobx";
 import agent from "../Api/Agent.ts";
 import {store} from "./Store.ts";
 import {
@@ -22,14 +22,31 @@ export default class ProfileStore {
     loadingProfile = false;
     uploading = false;
     loading = false;
+    loadingFollowings = false;
     followings: Profile[] = [];
+    followers: Profile[] = [];
     selectedExperience: UserExperience | undefined = undefined;
     selectedEducation: UserEducation | undefined = undefined;
     selectedSkill: UserSkill | undefined = undefined;
+    activeTab: number = 0;
 
 
     constructor() {
         makeAutoObservable(this);
+        reaction(
+            () => this.activeTab,
+        activeTab =>{
+            if(activeTab === 0){
+                this.loadFollowers(this.profile!.id).then(r => console.log(r));
+            }
+            else if(activeTab === 1){
+                this.loadFollowings(this.profile!.id).then(r => console.log(r));
+            }else {
+                this.followings = [];
+                this.followers = [];
+            }
+        }
+        )
 
     };
 
@@ -273,7 +290,7 @@ export default class ProfileStore {
             });
         }
     };
-    addFollowing = async (ProfileId: string, following:boolean) => {
+    addFollowing = async (ProfileId: string, following: boolean) => {
         this.loading = true;
         try {
             await agent.Profiles.updateUserFollowings(ProfileId);
@@ -308,11 +325,48 @@ export default class ProfileStore {
                 this.loading = false;
             })
         }
-       
 
 
     }
 
+    loadFollowings = async (userId: string) => {
+        this.loadingFollowings = true;
+        try {
+            const profiles = await agent.Profiles.getAllUserFollowings(userId);
+            runInAction(() => {
+                this.followings = profiles;
+                this.loadingFollowings = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loadingFollowings = false;
+            })
+        }
+    }
+
+    loadFollowers = async (userId: string) => {
+        this.loadingFollowings = true;
+        try {
+            const profiles = await agent.Profiles.getAllUserFollowers(userId);
+            runInAction(() => {
+                this.followings = profiles;
+                this.loadingFollowings = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loadingFollowings = false;
+            })
+        }
+    }
+
+    clearProfile = () => {
+        this.profile = null;
+    }
+    setActiveTab = (activeTab: any) => {
+        this.activeTab = activeTab;
+    }
 
 }
     

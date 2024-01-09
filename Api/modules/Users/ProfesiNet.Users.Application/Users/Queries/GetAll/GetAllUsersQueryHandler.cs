@@ -25,7 +25,7 @@ internal class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IRead
         
         foreach (var dto in dtos)
         {
-            dto.ProfilePhoto = users.FirstOrDefault(x => x.Id == dto.Id)?.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+            dto.ProfilePicture = users.FirstOrDefault(x => x.Id == dto.Id)?.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
             dto.Following = (bool)users.FirstOrDefault(x => x.Id == dto.Id)?.Followers.Contains(loggedUserId);
             dto.FollowedBy = (bool)users.FirstOrDefault(x => x.Id == dto.Id)?.Followings.Contains(loggedUserId);
 

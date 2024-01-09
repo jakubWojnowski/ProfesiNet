@@ -1,5 +1,4 @@
-﻿using Confab.Shared.Infrastructure.Messaging.Dispatcher;
-using ProfesiNet.Shared.Messaging.Dispatcher;
+﻿using ProfesiNet.Shared.Messaging.Dispatcher;
 using ProfesiNet.Shared.Modules;
 
 namespace ProfesiNet.Shared.Messaging.Brokers;

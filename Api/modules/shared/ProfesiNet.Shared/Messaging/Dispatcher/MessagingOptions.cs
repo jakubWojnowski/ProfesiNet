@@ -1,4 +1,4 @@
-﻿namespace Confab.Shared.Infrastructure.Messaging.Dispatcher;
+﻿namespace ProfesiNet.Shared.Messaging.Dispatcher;
 
 public class MessagingOptions
 {
