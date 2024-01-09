@@ -9,6 +9,8 @@ export interface User {
     profilePicture: string | null;
     profilePictureId: string | null;
     title: string;
+    following: boolean;
+    followedBy: boolean;
     experiences: UserExperience[];
     educations: UserEducation[];
     skills: UserSkill[];

@@ -83,7 +83,6 @@ internal class CommentService : ICommentService
         foreach (var comment in dtos)
         {
             comment.CreatorProfilePicture = comment.CreatorProfilePicture;
-        
 
         }
       
@@ -105,7 +104,7 @@ internal class CommentService : ICommentService
 
     public async Task DeleteAsync(DeleteCommentCommand command, Guid creatorId, CancellationToken cancellationToken = default)
     {
-        var comment = await _commentRepository.GetRecordByFilterAsync(c => c.Id == command.Id && c.CreatorId == creatorId, cancellationToken);
+        var comment = await _commentRepository.GetRecordByFilterAsync(c => c.CreatorId == creatorId, cancellationToken);
         if (comment is null)
         {
             throw new CommentNotFoundException(command.Id);

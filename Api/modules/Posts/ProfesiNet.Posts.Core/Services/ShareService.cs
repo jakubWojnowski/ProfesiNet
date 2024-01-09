@@ -48,7 +48,7 @@ internal class ShareService : IShareService
     public async Task DeleteAsync(DeletePostShareCommand command, Guid id, CancellationToken ct = default)
     {
         var creatorId = id;
-        var share = await _shareRepository.GetRecordByFilterAsync(s => s.Id == command.Id && s.CreatorId == creatorId,
+        var share = await _shareRepository.GetRecordByFilterAsync(s => s.CreatorId == creatorId,
             ct);
         if (share == null)
         {

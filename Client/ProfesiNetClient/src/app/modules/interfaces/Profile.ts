@@ -11,8 +11,8 @@ export interface IProfile{
     profilePictureId: string | null;
     followersCount: number;
     followingsCount: number;
-    networkConnectionsCount: number;
     following: boolean;
+    followedBy: boolean;
     educations: UserEducation[];
     experiences: UserExperience[];
     skills: UserSkill[];
@@ -30,8 +30,8 @@ export class Profile implements IProfile{
         this.profilePictureId = user.profilePictureId;
         this.followersCount = user.followersCount;
         this.followingsCount = user.followingCount;
-        this.networkConnectionsCount = user.networkConnectionsCount;
         this.following = false;
+        this.followedBy = false;
         this.educations = user.educations;
         this.experiences = user.experiences;
         this.skills = user.skills;
@@ -47,8 +47,8 @@ export class Profile implements IProfile{
     profilePictureId: string | null;
     followersCount: number;
     followingsCount: number;
-    networkConnectionsCount: number;
     following: boolean;
+    followedBy: boolean;
     educations: UserEducation[];
     experiences: UserExperience[];
     skills: UserSkill[];

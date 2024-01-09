@@ -22,10 +22,10 @@ export default class ProfileStore {
     loadingProfile = false;
     uploading = false;
     loading = false;
+    followings: Profile[] = [];
     selectedExperience: UserExperience | undefined = undefined;
     selectedEducation: UserEducation | undefined = undefined;
     selectedSkill: UserSkill | undefined = undefined;
-
 
 
     constructor() {
@@ -195,7 +195,7 @@ export default class ProfileStore {
             })
         }
     };
-    
+
     updateEducation = async (education: UpdateUserEducationCommand) => {
         this.loading = true;
         try {
@@ -212,7 +212,7 @@ export default class ProfileStore {
             runInAction(() => {
                 this.loading = false;
             })
-        
+
         }
     };
 
@@ -230,7 +230,7 @@ export default class ProfileStore {
         }
     };
     addSkills = async (command: CreateUserSkillCommand) => {
-        this.loading = true; 
+        this.loading = true;
         try {
             const ids = await agent.Profiles.addUserSkills(command);
             runInAction(() => {
@@ -239,10 +239,10 @@ export default class ProfileStore {
                     const skillsWithIds = command.names.map((name, index) => ({
                         id: ids[index],
                         name: name,
-                        userId: this.profile!.id 
+                        userId: this.profile!.id
                     }));
 
-                    
+
                     this.profile.skills.push(...skillsWithIds);
                 }
                 this.loading = false;
@@ -273,7 +273,47 @@ export default class ProfileStore {
             });
         }
     };
-    
+    addFollowing = async (ProfileId: string, following:boolean) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.updateUserFollowings(ProfileId);
+            runInAction(() => {
+                if (this.profile && this.profile.id !== store.userStore.user?.id && this.profile.id === ProfileId) {
+                    this.profile.followersCount++;
+                    this.profile.following = following;
+                }
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+    unfollowUser = async (ProfileId: string, following: boolean) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.removeUserFollowing(ProfileId);
+            runInAction(() => {
+                if (this.profile && this.profile.id !== store.userStore.user?.id && this.profile.id === ProfileId) {
+                    this.profile.followersCount--;
+                    this.profile.following = following;
+                }
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+       
+
+
+    }
+
+
 }
     
     

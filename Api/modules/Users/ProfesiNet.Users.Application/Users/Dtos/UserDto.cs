@@ -8,8 +8,9 @@ public class UserDto
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Surname { get; set; }
-
-
+    public bool Following { get; set; }
+    public bool FollowedBy { get; set; }
+    
     public string? Address { get; set; }
     public string? Bio { get; set; }
     public string? ProfilePhoto{ get; set; }

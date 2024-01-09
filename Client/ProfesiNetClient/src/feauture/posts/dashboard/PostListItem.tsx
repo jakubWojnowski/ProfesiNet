@@ -19,6 +19,18 @@ const PostListItem: FC<Props> = ({post}: Props) => {
     const handleToggleComments = () => {
         setShowComments(!showComments);
     };
+    
+    const handleLikePost = () => {
+        if (postStore.isLiked(post.id) ===false) {
+            postStore.unLikePost(post.id).then(r => console.log(r));
+        } if (postStore.isLiked(post.id) ===true) {
+            postStore.likePost(post.id).then(r => console.log(r));
+        }
+        
+    }
+
+    
+    
 
 
         
@@ -74,7 +86,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
            
 
                 <Button  as='div' labelPosition='right' className="action-button">
-                    <Button color='red' onClick={()=>postStore.likePost(post.id)}>
+                    <Button color='red' onClick={handleLikePost}>
                         <Icon name='heart'/>
                         Like
                     </Button>
@@ -87,12 +99,9 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                             <Icon name='comment'/>
                             Comment
                         </Button>
-                    <Label as='a' basic color='blue' pointing='left'>
-                        {post.commentsCount}
-                    </Label>
                 </Button>
                 <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='grey' onClick={()=>postStore.sharePost(post.id)}>
+                    <Button color='grey' onClick={()=>postStore.unSharePost(post.id)}>
                         <Icon name='share alternate'/>
                         Share
                     </Button>

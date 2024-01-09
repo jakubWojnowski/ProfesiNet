@@ -158,6 +158,7 @@ export default class PostStore {
                 const post = this.postRegistry.get(id);
                 if (post) {
                     post.likesCount = newLikesCount;
+                    post.isLiked = true;
                     this.postRegistry.set(id, post); 
                     this.selectedPost = post;
                 }
@@ -180,6 +181,7 @@ export default class PostStore {
                 const post = this.postRegistry.get(id);
                 if (post) {
                     post.sharesCount++;
+                    post.isShared = true;
                     this.postRegistry.set(id, post);
                     this.selectedPost = post;
                     this.loading = false;
@@ -191,6 +193,65 @@ export default class PostStore {
                 this.loading = false;
             });
         }
+    }
+    
+    unSharePost = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Posts.unShare();
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.sharesCount--;
+                    post.isShared = false;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                    this.loading = false;
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+    
+    unLikePost = async (id: string) => {
+        this.loading = true;
+        try {
+             await agent.Posts.unlike(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.isLiked = false;
+                    post.likesCount --;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                }
+                this.loading = false;
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+    isLiked = (id: string) => {
+        const post = this.postRegistry.get(id);
+        if (post) {
+            return post.isLiked;
+        }
+        return false;
+    }
+    
+    isShared = (id: string) => {
+        const post = this.postRegistry.get(id);
+        if (post) {
+            return post.isShared;
+        }
+        return false;
     }
 
     private getPost = (id: string) => {

@@ -143,11 +143,11 @@ const Posts = {
     },
     delete: (id: string) => axios.delete('/posts-module/Post', {data: {postId: id}}),
     like: (postId: string) => requests.post<number>('/posts-module/Post/PostLike', {postId:postId}),
-    unlike: (id: string) => requests.del('/posts-module/Post/PostLike', {id}),
+    unlike: (id: string) => requests.del('/posts-module/Post/PostLike', {id:id}),
     getLikes: (id: string) => requests.get(`/posts-module/Post/PostLike/${id}`),
     getNumberOfLikes: (id: string) => requests.get(`/posts-module/Post/PostLikes/${id}`),
     share: (postId: string) => requests.post('/posts-module/Post/Share', {postId:postId}),
-    unShare: (id: string) => requests.del('/posts-module/Post/Share', {id}),
+    unShare: (id: string) => requests.del('/posts-module/Post/Share', {id:id}),
     getShare: (id: string) => requests.get(`/posts-module/Post/Share/${id}`),
     getSharesPerPost: (id: string) => requests.get(`/posts-module/Post/SharesPerPost/${id}`),
     getSharesPerUser: (userId: string) => requests.get(`/posts-module/Post/SharesPerUser/${userId}`),
@@ -201,18 +201,12 @@ const Profiles = {
     deleteUserCertificate: (command: DeleteUserCertificateCommand) => requests.del<{}>('/users-module/AccountProfile/DeleteUserCertificate', { data: command }),
 
     // Connection management
-    updateUserFollowings: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserFollowings', targetId),
-    updateUserConnections: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserConnections', targetId),
-    removeUserConnection: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnection', targetId),
-    removeUserFollowing: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserFollowing', targetId),
+    updateUserFollowings: (targetId: string) => requests.patch('/users-module/AccountProfile/UpdateUserFollowings', {targetId:targetId}),
+    removeUserFollowing: (targetId: string) => requests.patch('/users-module/AccountProfile/RemoveUserFollowing', {targetId:targetId}),
     updateUserConnectionInvitations: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/UpdateUserConnectionInvitations', targetId),
-    removeUserConnectionReceivedInvitation: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnectionReceivedInvitation', targetId),
-    removeUserConnectionSentInvitation: (targetId: string) => requests.patch<{}>('/users-module/AccountProfile/RemoveUserConnectionSentInvitation', targetId),
-    getAllUserConnections: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnections/${userId}`),
     getAllUserFollowings: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowings/${userId}`),
     getAllUserFollowers: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserFollowers/${userId}`),
-    getAllUserConnectionInvitationsReceived: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnectionInvitationsReceived/${userId}`),
-    getAllUserConnectionInvitationsSent: (userId: string) => requests.get<User[]>(`/users-module/AccountProfile/GetAllUserConnectionInvitationsSent/${userId}`),
+ 
 
     // Profile picture management
     addUserProfilePicture: async (file: Blob): Promise<string> => {

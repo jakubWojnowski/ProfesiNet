@@ -1,23 +1,20 @@
-import {FC, useState} from 'react';
-import {Button, Grid, Statistic, Segment, Image, Item, Header} from 'semantic-ui-react';
+import {FC} from 'react';
+import {Button, Grid, Statistic, Segment, Image, Header, Divider} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {useStore} from "../../app/stores/Store.ts";
 import EditProfileHeaderForm from "./forms/EditProfileHeaderForm.tsx";
 import {Profile} from "../../app/modules/interfaces/Profile.ts";
 import {observer} from "mobx-react-lite";
+import FollowButton from "./FollowButton.tsx";
 
 export interface ProfileHeaderProps {
     profile:Profile;
 }
 const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => {
-    const [isFollowing, setIsFollowing] = useState(false);
     const {modalStore} = useStore();
     const {profileStore:{isCurrentUser}} = useStore();
 
 
-    const handleFollowClick = () => {
-        setIsFollowing(!isFollowing);
-    };
 
     return (
         <Segment>
@@ -39,29 +36,18 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                             </Header.Content>
                         </Header>
                         </Grid.Column>
-                   
+                   <Grid.Column width={4}>
                     <Statistic.Group >
                        
                         <Statistic label='FOLLOWERS' value={profile.followersCount} />
                         <Statistic label='FOLLOWING' value={profile.followingsCount} />
                        
                     </Statistic.Group>
-               
-                    <Grid.Column width={6} textAlign='center' >
-                       
-                        <Item style={{ marginTop: '1em' }}  >
-                            {!isCurrentUser && (
-                                <Button.Group >
-                            <Button size={'medium'}
-                                color={isFollowing ? 'red' : 'teal'}
-                                content={isFollowing ? 'Unfollow' : 'Follow'}
-                                onClick={handleFollowClick}
-                            />
-                        </Button.Group>
-                        )}
-                        </Item>
-                      
-                    </Grid.Column>
+                    <Divider/>
+                       <FollowButton profile={profile}/>
+                   </Grid.Column>
+                
+                 
                     <Grid.Column width={16} textAlign='right'>
                         {isCurrentUser && (
                         <Button icon='edit' content='Edit' onClick={()=> modalStore.openModal(<EditProfileHeaderForm />)}/>

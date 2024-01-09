@@ -14,6 +14,11 @@ internal class PostDto
     public int LikesCount { get; set; }
     public int CommentsCount { get; set; }
     public int SharesCount { get; set; }
+    public bool IsLiked { get; set; }
+    public bool IsShared { get; set; }
+    public ICollection<ShareDto> Shares { get; set; } = new List<ShareDto>();
+    public ICollection<PostLikeDto> Likes { get; set; } = new List<PostLikeDto>();
+    
     
     
 }
