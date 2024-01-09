@@ -9,6 +9,7 @@ public class CommentDao
     public string? CreatorSurname { get; set; }
     public string? CreatorProfilePicture { get; set; }
     public string? Content { get; set; }
+    public int LikesCount { get; set; }
     public DateTime? PublishedAt { get; set; }
 }
 

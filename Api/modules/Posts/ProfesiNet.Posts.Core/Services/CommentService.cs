@@ -83,6 +83,7 @@ internal class CommentService : ICommentService
         foreach (var comment in dtos)
         {
             comment.CreatorProfilePicture = comment.CreatorProfilePicture;
+        
 
         }
         return dtos;

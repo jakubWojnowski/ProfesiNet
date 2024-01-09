@@ -149,6 +149,49 @@ export default class PostStore {
         }
     };
 
+    likePost = async (id: string): Promise<void> => {
+        this.loading = true;
+        try {
+            // Assuming agent.Posts.like returns the new likes count
+            const newLikesCount = await agent.Posts.like(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.likesCount = newLikesCount; // Update the likes count with the new value
+                    this.postRegistry.set(id, post); // This might be unnecessary if post is already observable
+                    this.selectedPost = post; // Update the selected post if needed
+                }
+                this.loading = false;
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+
+    sharePost = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Posts.share(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.sharesCount++;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                    this.loading = false;
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
 
     private getPost = (id: string) => {
         return this.postRegistry.get(id);

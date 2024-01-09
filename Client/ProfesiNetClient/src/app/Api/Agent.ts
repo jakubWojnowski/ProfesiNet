@@ -142,11 +142,11 @@ const Posts = {
         });
     },
     delete: (id: string) => axios.delete('/posts-module/Post', {data: {postId: id}}),
-    like: (postId: string, userId: string) => requests.post('/posts-module/Post/PostLike', {postId, id: userId}),
+    like: (postId: string) => requests.post('/posts-module/Post/PostLike', {postId:postId}),
     unlike: (id: string) => requests.del('/posts-module/Post/PostLike', {id}),
     getLikes: (id: string) => requests.get(`/posts-module/Post/PostLike/${id}`),
     getNumberOfLikes: (id: string) => requests.get(`/posts-module/Post/PostLikes/${id}`),
-    share: (postId: string, userId: string) => requests.post('/posts-module/Post/Share', {postId, id: userId}),
+    share: (postId: string) => requests.post('/posts-module/Post/Share', {postId:postId}),
     unShare: (id: string) => requests.del('/posts-module/Post/Share', {id}),
     getShare: (id: string) => requests.get(`/posts-module/Post/Share/${id}`),
     getSharesPerPost: (id: string) => requests.get(`/posts-module/Post/SharesPerPost/${id}`),

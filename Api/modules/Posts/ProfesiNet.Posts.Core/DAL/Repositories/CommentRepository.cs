@@ -18,7 +18,7 @@ internal class CommentRepository : GenericRepository<Comment, Guid>, ICommentRep
     public async Task<IQueryable<CommentDao>?> GetCommentsWithCreatorsPerPost( Guid postId,CancellationToken ct = default)
     {
         var comments = await _dbContext.Comments
-            .Where(c => c.PostId == postId)
+            .Where(c => c.PostId == postId).Include(comment => comment.Likes)
             .ToListAsync(cancellationToken: ct);
 
         var creatorIds = comments.Select(c => c.CreatorId).Distinct();
@@ -33,6 +33,7 @@ internal class CommentRepository : GenericRepository<Comment, Guid>, ICommentRep
             PostId = postId,
             PublishedAt = c.PublishedAt,
             CreatorId = c.CreatorId,
+            LikesCount = c.Likes.Count,
             CreatorName = creators[c.CreatorId].Name,
             CreatorSurname = creators[c.CreatorId].Surname,
             CreatorProfilePicture = creators[c.CreatorId].ProfilePicture

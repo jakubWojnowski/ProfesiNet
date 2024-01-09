@@ -6,6 +6,7 @@ export interface ChatComment{
     creatorProfilePicture: string;
     postId: string;
     content: string;
+    likesCount: number;
     publishedAt: string;
 }
 

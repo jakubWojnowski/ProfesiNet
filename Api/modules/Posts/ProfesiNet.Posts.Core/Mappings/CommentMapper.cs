@@ -13,7 +13,7 @@ internal partial class CommentMapper
     public partial Comment MapCreateCommentCommandToComment(CreateCommentCommand command);
 
 
-    public partial IReadOnlyList<CommentDetailsDto> MapCommentToCommentDto(IQueryable<CommentDao>? comment);
+    public partial IReadOnlyList<CommentDto> MapCommentToCommentDto(IQueryable<CommentDao>? comment);
 
 
     public partial CommentDetailsDto MapCommentToCommentDetailsDto(CommentDao commentDao);

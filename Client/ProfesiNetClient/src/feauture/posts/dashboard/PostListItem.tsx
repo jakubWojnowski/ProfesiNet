@@ -73,7 +73,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
            
 
                 <Button  as='div' labelPosition='right' className="action-button">
-                    <Button color='red'>
+                    <Button color='red' onClick={()=>postStore.likePost(post.id)}>
                         <Icon name='heart'/>
                         Like
                     </Button>
@@ -91,11 +91,11 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                     </Label>
                 </Button>
                 <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='grey'>
+                    <Button color='grey' onClick={()=>postStore.sharePost(post.id)}>
                         <Icon name='share alternate'/>
                         Share
                     </Button>
-                    <Label as='a' basic color='grey' pointing='left'>
+                    <Label as='a' basic color='grey' pointing='left'  >
                         {post.sharesCount}
                     </Label>
                 </Button>
