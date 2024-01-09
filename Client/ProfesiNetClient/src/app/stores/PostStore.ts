@@ -157,9 +157,9 @@ export default class PostStore {
             runInAction(() => {
                 const post = this.postRegistry.get(id);
                 if (post) {
-                    post.likesCount = newLikesCount; // Update the likes count with the new value
-                    this.postRegistry.set(id, post); // This might be unnecessary if post is already observable
-                    this.selectedPost = post; // Update the selected post if needed
+                    post.likesCount = newLikesCount;
+                    this.postRegistry.set(id, post); 
+                    this.selectedPost = post;
                 }
                 this.loading = false;
             });
@@ -228,6 +228,10 @@ export default class PostStore {
             this.editMode = false;
             this.selectedPost = undefined;
     };
+    
+    clearSelectedPost = () => {
+        this.selectedPost = undefined;
+    }
     
     
         

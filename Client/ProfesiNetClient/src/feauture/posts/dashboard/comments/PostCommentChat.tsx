@@ -1,4 +1,4 @@
-import  {FC, useEffect,} from 'react';
+import {FC, useEffect,} from 'react';
 import {Comment, Header, Segment, Button, Loader, Icon, Label} from 'semantic-ui-react';
 import {useStore} from "../../../../app/stores/Store.ts";
 import {Field, FieldProps, Form, Formik} from "formik";
@@ -93,13 +93,13 @@ const PostCommentChat: FC<Props> = ({postId}: Props) => {
                                 <Comment.Text style={{whiteSpace: 'pre-wrap'}}>{comment.content}</Comment.Text>
                                 <Comment.Actions>
                                     <Comment.Action>
-                                        <Button as='div' labelPosition='right' size={"mini"}>
-                                            <Button color='red' size={"mini"}>
-                                                <Icon name='heart' />
-                                                Like
-                                            </Button>
-                                            <Label size={"mini"} as='a' basic color='red' pointing='left' content={comment.likesCount? comment.likesCount : 0}/>
-                                        </Button>
+                                        {/*<Button as='div' labelPosition='right' size={"mini"}>*/}
+                                        {/*    <Button color='red' size={"mini"}>*/}
+                                        {/*        <Icon name='heart' />*/}
+                                        {/*        Like*/}
+                                        {/*    </Button>*/}
+                                        {/*    <Label size={"mini"} as='a' basic color='red' pointing='left' content={comment.likesCount? comment.likesCount : 0}/>*/}
+                                        {/*</Button>*/}
                                     </Comment.Action>
                                 </Comment.Actions>
                             </Comment.Content>

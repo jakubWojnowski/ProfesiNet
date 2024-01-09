@@ -16,7 +16,6 @@ const NavBar: FC = () =>  {
                     <img src="/assets/logo.png" alt="logo" style={{ marginRight: '10px' }} />
                 </Menu.Item>
                 <Menu.Item as={NavLink} to={`/friends/${user?.id}`} name='Friends' />
-                <Menu.Item name='Messages' />
                 <Menu.Item as={NavLink} to={`/profile/${user?.id}`} name="Profile" />
                 <Menu.Item as={NavLink} to='/posts' name='Posts' />
             </Container>

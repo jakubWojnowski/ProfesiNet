@@ -30,8 +30,8 @@ export default class CommentStore {
 
             })
             this.hubConnection.on('ReceiveComment', (comment: ChatComment) => {
-                this.comments.unshift(comment);
-
+                runInAction(() =>   this.comments.unshift(comment)
+                );
             })
         }
     }

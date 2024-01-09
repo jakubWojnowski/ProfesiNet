@@ -44,23 +44,19 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({profile}:ProfileHeaderProps) => 
                        
                         <Statistic label='FOLLOWERS' value={profile.followersCount} />
                         <Statistic label='FOLLOWING' value={profile.followingsCount} />
-                        <Statistic label='FRIENDS' value={profile.networkConnectionsCount} />
                        
                     </Statistic.Group>
                
                     <Grid.Column width={6} textAlign='center' >
-
                        
-                        <Item style={{ marginTop: '1em' }} >
+                        <Item style={{ marginTop: '1em' }}  >
                             {!isCurrentUser && (
-                                <Button.Group widths='3'>
-                            <Button size={'small'}
+                                <Button.Group >
+                            <Button size={'medium'}
                                 color={isFollowing ? 'red' : 'teal'}
                                 content={isFollowing ? 'Unfollow' : 'Follow'}
                                 onClick={handleFollowClick}
                             />
-                            <Button basic color='blue' content='Message' size={'small'}  />
-                            <Button basic color='green' content='Send Invitation' size={'small'} />
                         </Button.Group>
                         )}
                         </Item>

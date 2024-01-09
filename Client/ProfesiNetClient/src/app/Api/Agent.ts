@@ -142,7 +142,7 @@ const Posts = {
         });
     },
     delete: (id: string) => axios.delete('/posts-module/Post', {data: {postId: id}}),
-    like: (postId: string) => requests.post('/posts-module/Post/PostLike', {postId:postId}),
+    like: (postId: string) => requests.post<number>('/posts-module/Post/PostLike', {postId:postId}),
     unlike: (id: string) => requests.del('/posts-module/Post/PostLike', {id}),
     getLikes: (id: string) => requests.get(`/posts-module/Post/PostLike/${id}`),
     getNumberOfLikes: (id: string) => requests.get(`/posts-module/Post/PostLikes/${id}`),

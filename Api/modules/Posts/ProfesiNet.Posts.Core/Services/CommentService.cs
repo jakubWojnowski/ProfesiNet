@@ -29,7 +29,7 @@ internal class CommentService : ICommentService
         _context = context;
     }
 
-    public async Task<CommentDto> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task<CommentDto> AddAsync(CreateCommentCommand command,Guid creatorId, CancellationToken cancellationToken = default)
     {
         var post = await _postRepository.GetByIdAsync(command.PostId, cancellationToken);
         var creator = await _creatorRepository.GetByIdAsync(_context.Id, cancellationToken)?? throw new CreatorNotFoundException(_context.Id);
@@ -46,7 +46,7 @@ internal class CommentService : ICommentService
         });
         comment.PublishedAt = _clock.CurrentDate();
         
-        comment.CreatorId = _context.Id;
+        comment.CreatorId = creatorId;
 
        var commentId= await _commentRepository.AddAsync(comment, cancellationToken);
         var commentDto = new CommentDto
@@ -86,6 +86,7 @@ internal class CommentService : ICommentService
         
 
         }
+      
         return dtos;
     }
 

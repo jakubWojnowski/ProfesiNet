@@ -20,7 +20,7 @@ internal class ChatHub : Hub
 
     public async Task SendComment(CreateCommentCommand command)
     {
-        var comment = await _commentService.AddAsync(command);
+        var comment = await _commentService.AddAsync(command, _context.Id);
         await Clients.Group(command.PostId.ToString()).SendAsync("ReceiveComment", comment);
     }
     

@@ -1,10 +1,11 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
 import PostCommentChat from "./comments/PostCommentChat.tsx";
 import {observer} from "mobx-react-lite";
+
 
 interface Props {
     post: Post;
@@ -30,7 +31,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
 
                             <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture || '/assets/user.png'} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
-                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
+                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname} 
                            
                             </ItemMeta>
                        

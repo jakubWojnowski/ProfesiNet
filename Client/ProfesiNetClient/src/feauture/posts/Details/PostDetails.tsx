@@ -22,7 +22,7 @@ import PostCommentChat from "../dashboard/comments/PostCommentChat.tsx";
 
 const PostDetails: FC = () => {
     const {postStore, userStore} = useStore();
-    const {selectedPost: post, deletePost, openForm, loadPost, loadingInitial, editMode} = postStore;
+    const {selectedPost: post, deletePost, openForm, loadPost, loadingInitial, editMode, clearSelectedPost} = postStore;
     const [showComments, setShowComments] = useState(false);
     const {id} = useParams();
     const handleToggleComments = () => {
@@ -30,19 +30,11 @@ const PostDetails: FC = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (id) {
-                try {
-                    await loadPost(id);
-                } catch (error) {
-                    console.error('Error loading post:', error);
-                    // Handle error state here if needed
-                }
-            }
-        };
-
-        fetchData().then(r => console.log(r));
-    }, [id, loadPost]);
+        if (id) loadPost(id).then();
+        return () => {
+            clearSelectedPost();
+        }
+    }, [id, loadPost, clearSelectedPost]);
 
     if (loadingInitial || !post) return <LoadingComponent content='Loading post...'/>;
 

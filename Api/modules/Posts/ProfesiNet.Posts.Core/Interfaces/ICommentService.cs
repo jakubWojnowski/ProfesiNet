@@ -7,7 +7,7 @@ namespace ProfesiNet.Posts.Core.Interfaces;
 
 internal interface ICommentService
 {
-    Task<CommentDto>  AddAsync(CreateCommentCommand command, CancellationToken cancellationToken = default);
+    Task<CommentDto>  AddAsync(CreateCommentCommand command,Guid creatorId, CancellationToken cancellationToken = default);
     Task<CommentDetailsDto?> GetAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<CommentDto>> BrowseAsync(Guid postId,CancellationToken cancellationToken = default);
     Task UpdateAsync(UpdateCommentCommand command, Guid id, CancellationToken cancellationToken = default);
