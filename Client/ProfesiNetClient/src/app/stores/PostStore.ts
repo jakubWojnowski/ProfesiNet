@@ -6,6 +6,7 @@ import {UpdatePost} from "../modules/interfaces/UpdatePost.ts";
 
 export default class PostStore {
     postRegistry = new Map<string, Post>(); 
+    postPerCreatorRegistry = new Map<string, Post>();
     selectedPost: Post | undefined = undefined;
     editMode: boolean = false; 
     loading: boolean = false;
@@ -18,10 +19,12 @@ export default class PostStore {
     get PostsBy() {
         return Array.from(this.postRegistry.values());
     }
+    get PostsByCreator() {
+        return Array.from(this.postPerCreatorRegistry.values());
+    }
 
     loadPosts = async (): Promise<void> => {
         this.setLoadingInitial(true);
-
         try {
             const fetchedPosts: Post[] = await agent.Posts.list();
             fetchedPosts.forEach(post => {
@@ -47,7 +50,7 @@ export default class PostStore {
                 this.selectedPost = post;
                 this.loading = false;
               
-                // this.loadPosts();
+                this.loadPosts();
                 
             });
         } catch (error) {
@@ -126,6 +129,131 @@ export default class PostStore {
         }
         
     }
+    loadCreatorPosts = async (id: string): Promise<void> => {
+        this.setLoadingInitial(true); // Assuming setLoadingInitial is an action
+        this.postPerCreatorRegistry.clear(); // Assuming postPerCreatorRegistry is observable and clear is an action
+
+        try {
+            const fetchedPosts: Post[] = await agent.Posts.getAllByCreator(id);
+           runInAction(() => {
+                fetchedPosts.forEach((post: Post) => {
+                    this.postPerCreatorRegistry.set(post.id, post);
+                });
+                this.setLoadingInitial(false);
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.setLoadingInitial(false);
+            });
+        }
+    };
+
+    likePost = async (id: string): Promise<void> => {
+        this.loading = true;
+        try {
+            // Assuming agent.Posts.like returns the new likes count
+            const newLikesCount = await agent.Posts.like(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.likesCount = newLikesCount;
+                    post.isLiked = true;
+                    this.postRegistry.set(id, post); 
+                    this.selectedPost = post;
+                }
+                this.loading = false;
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+
+    sharePost = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Posts.share(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.sharesCount++;
+                    post.isShared = true;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                    this.loading = false;
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+    
+    unSharePost = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Posts.unShare(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.sharesCount--;
+                    post.isShared = false;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                    this.loading = false;
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+    
+    unLikePost = async (id: string) => {
+        this.loading = true;
+        try {
+             await agent.Posts.unlike(id);
+            runInAction(() => {
+                const post = this.postRegistry.get(id);
+                if (post) {
+                    post.isLiked = false;
+                    post.likesCount --;
+                    this.postRegistry.set(id, post);
+                    this.selectedPost = post;
+                }
+                this.loading = false;
+            });
+        } catch (error) {
+            console.error(error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+    isLiked = (id: string) => {
+        const post = this.postRegistry.get(id);
+        if (post) {
+            return post.isLiked;
+        }
+        return false;
+    }
+    
+    isShared = (id: string) => {
+        const post = this.postRegistry.get(id);
+        if (post) {
+            return post.isShared;
+        }
+        return false;
+    }
+
     private getPost = (id: string) => {
         return this.postRegistry.get(id);
     }
@@ -161,6 +289,12 @@ export default class PostStore {
             this.editMode = false;
             this.selectedPost = undefined;
     };
+    
+    clearSelectedPost = () => {
+        this.selectedPost = undefined;
+    }
+    
+    
         
     
     

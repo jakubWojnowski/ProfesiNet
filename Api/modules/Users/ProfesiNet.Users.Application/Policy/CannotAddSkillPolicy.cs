@@ -13,7 +13,7 @@ internal class CannotAddSkillPolicy : ICannotAddSkillPolicy
 
     public async Task<bool> CheckSkillsAsync(string name, Guid userId, CancellationToken ct = default)
     {
-        var skill = await _skillRepository.GetRecordByFilterAsync(u => u.UserID == userId && u.Name == name, ct);
+        var skill = await _skillRepository.GetRecordByFilterAsync(u => u.UserId == userId && u.Name == name, ct);
         return skill == null;
     }
 }

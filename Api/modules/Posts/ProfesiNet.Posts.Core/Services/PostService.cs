@@ -93,7 +93,14 @@ internal class PostService : IPostService
         if (newestCreatorPost == null) return Mapper.MapPostsToPostDtos(sortedPosts);
         sortedPosts.Remove(newestCreatorPost);
         sortedPosts.Insert(0, newestCreatorPost);
-        return Mapper.MapPostsToPostDtos(sortedPosts);
+       var dtos = Mapper.MapPostsToPostDtos(sortedPosts);
+       foreach (var post in dtos)
+       {
+           post.IsLiked = post.Likes.Any(l => l.CreatorId == creatorId);
+           post.IsShared = post.Shares.Any(s => s.CreatorId == creatorId);
+           
+       }
+       return dtos;
     }
 
     public async Task<IReadOnlyList<PostDto>> BrowsePerCreatorAsync(Guid creatorId,
@@ -110,7 +117,15 @@ internal class PostService : IPostService
         var sortedPosts = enumerable.OrderByDescending(p => p.Likes.Count)
             .ThenByDescending(p => p.Shares.Count )
             .ThenByDescending(p => p.PublishedAt).ToList();
-        return Mapper.MapPostsToPostDtos(sortedPosts);
+        var dtos = Mapper.MapPostsToPostDtos(sortedPosts);
+        foreach (var post in dtos)
+        {
+            post.IsLiked = post.Likes.Any(l => l.CreatorId == creatorId);
+            post.IsShared = post.Shares.Any(s => s.CreatorId == creatorId);
+           
+        }
+        return dtos;
+        
     }
 
     public async Task<IReadOnlyList<PostDto>> BrowseAllOwnAsync(Guid id, CancellationToken cancellationToken = default)
@@ -126,7 +141,14 @@ internal class PostService : IPostService
         var sortedPosts = enumerable.OrderByDescending(p => p.Likes.Count)
             .ThenByDescending(p => p.Shares.Count )
             .ThenByDescending(p => p.PublishedAt).ToList();
-        return Mapper.MapPostsToPostDtos(sortedPosts);
+        var dtos = Mapper.MapPostsToPostDtos(sortedPosts);
+        foreach (var post in dtos)
+        {
+            post.IsLiked = post.Likes.Any(l => l.CreatorId == creator.Id);
+            post.IsShared = post.Shares.Any(s => s.CreatorId == creator.Id);
+           
+        }
+        return dtos;
     }
 
 

@@ -23,7 +23,7 @@ internal class PostLikeService : IPostLikeService
         _userCantAddLikeToPostPolicy = userCantAddLikeToPostPolicy;
     }
 
-    public async Task<Guid> AddAsync(CreatePostLikeCommand command, Guid id, CancellationToken cancellationToken = default)
+    public async Task<int> AddAsync(CreatePostLikeCommand command, Guid id, CancellationToken cancellationToken = default)
     {
         var creatorId = id;
         var post = await _postRepository.GetByIdAsync(command.PostId, cancellationToken);
@@ -46,7 +46,9 @@ internal class PostLikeService : IPostLikeService
         postLike.Id = Guid.NewGuid();
 
 
-        return await _postLikeRepository.AddAsync(postLike, cancellationToken);
+         await _postLikeRepository.AddAsync(postLike, cancellationToken);
+         var likesCount = post.Likes.Count;
+         return likesCount;
     }
 
     public async Task DeleteAsync(DeletePostLikeCommand command, Guid id, CancellationToken cancellationToken = default)

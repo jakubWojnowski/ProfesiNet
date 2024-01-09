@@ -30,8 +30,8 @@ internal class CommentController : BaseController
     [HttpPost]
     public async Task<ActionResult> AddAsync(CreateCommentCommand command, CancellationToken cancellationToken)
     {
-        await _commentService.AddAsync(command,_context.Id, cancellationToken);
-        return CreatedAtAction(nameof(Get), new {id = command.Id}, null);
+        var comment =await _commentService.AddAsync(command,_context.Id, cancellationToken);
+        return CreatedAtAction(nameof(Get), new {id = command.CommentId}, comment); 
     }
     
     [HttpPut]

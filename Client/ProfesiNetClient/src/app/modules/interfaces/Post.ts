@@ -10,4 +10,22 @@ export interface Post {
     likesCount: number
     commentsCount: number
     sharesCount: number
+    isLiked: boolean
+    isShared: boolean
+    
+    shares: Shares[]
+    likes: Likes[]
+}
+
+export interface Shares {
+    id: string
+    creatorId: string
+    postId: string
+}
+
+
+export interface Likes {
+    id: string
+    creatorId: string
+    postId: string
 }

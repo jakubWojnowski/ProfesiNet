@@ -35,7 +35,7 @@ internal class CreateUserEducationCommandHandler : IRequestHandler<CreateUserEdu
            FieldOfStudy = request.FieldOfStudy,
            StartDate = request.StartDate,
            EndDate = request.EndDate,
-           Description = request.Description
+           Address = request.Address
        };
        if (_cannotSetDatePolicy.IsSatisfiedBy(educationDto.StartDate, educationDto.EndDate) is false)
        {

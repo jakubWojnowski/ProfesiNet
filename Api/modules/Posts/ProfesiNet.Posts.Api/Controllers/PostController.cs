@@ -67,8 +67,8 @@ internal class PostController : BaseController
     public async Task<ActionResult> AddPostLikeAsync(CreatePostLikeCommand command,
         CancellationToken cancellationToken = default)
     {
-        await _postLikeService.AddAsync(command,_context.Id, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id = command.Id }, null);
+       var likesCount = await _postLikeService.AddAsync(command,_context.Id, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = command.Id }, likesCount);
     }
 
     [HttpDelete("PostLike")]

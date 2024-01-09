@@ -19,15 +19,55 @@ export default class UserStore {
             store.commonStore.setToken(user.token);
             runInAction(() => {
                 router.navigate('/posts')
+                this.user = user;
+                store.modalStore.closeModal();
             });
     
     };
+    register = async (values: UserFormValues): Promise<void> => {
+        try {
+            await agent.Account.register(values); 
+            const user = await agent.Account.login(values);
+            runInAction(() => {
+                this.user = user;
+                store.commonStore.setToken(user.token);
+                router.navigate('/posts');
+            });
+            store.modalStore.closeModal();
+        } catch (error) {
+            throw error;
+        }
+    };
     logout = () => {
         store.commonStore.setToken(null);
-        window.localStorage.removeItem('jwt');
         this.user = null;
-        router.navigate('/')
+        router.navigate('/').then(r => console.log(r));
     }
+    
+    getUser = async () => {
+        this.loadingInitial = true;
+        try {
+            const user = await agent.Account.current();
+            runInAction(() => {
+                this.user = user;
+            })
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loadingInitial = false;
+            })
+        }
+    }
+    
+    setImage = (image: string | null) => {
+        if(this.user) {
+            this.user.profilePicture = image;
+        }
+    }
+    
+  
+    
     
         
 }

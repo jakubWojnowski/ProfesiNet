@@ -1,6 +1,6 @@
 ﻿namespace ProfesiNet.Posts.Core.Commands.Create;
 
-internal record CreateCommentCommand(string? Content, Guid PostId)
+public record CreateCommentCommand(string? Content, Guid PostId)
 {
-    public Guid Id { get; init; }
+    public Guid CommentId { get; init; }
 }

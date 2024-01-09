@@ -7,7 +7,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Educations.Commands.Update;
 
-internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEducationCommand>
+internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEducationCommand, Guid>
 {
     private readonly IEducationRepository _educationRepository;
     private readonly IUserRepository _userRepository;
@@ -22,7 +22,7 @@ internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEdu
         _cannotSetDatePolicy = cannotSetDatePolicy;
     }
 
-    public async Task Handle(UpdateUserEducationCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateUserEducationCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
@@ -41,7 +41,7 @@ internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEdu
         var educationToUpdateDto = new EducationDto()
         {
             Name = request.Name ?? education.Name,
-            Description = request.Description ?? education.Description,
+            Address = request.Address ?? education.Address,
             Degree = request.Degree ?? education.Degree,
             FieldOfStudy = request.FieldOfStudy ?? education.FieldOfStudy,
             StartDate = request.StartDate ?? education.StartDate,
@@ -54,5 +54,6 @@ internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEdu
 
         var updatedEducation = Mapper.MapUpdateEducationDtoToEducation(education, educationToUpdateDto);
         await _educationRepository.UpdateAsync(updatedEducation, cancellationToken);
+        return updatedEducation.Id;
     }
 }

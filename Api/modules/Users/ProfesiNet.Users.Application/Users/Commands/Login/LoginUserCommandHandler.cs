@@ -4,6 +4,7 @@ using ProfesiNet.Shared.Exceptions;
 using ProfesiNet.Users.Application.Users.Dtos;
 using ProfesiNet.Users.Application.Users.Mappings;
 using ProfesiNet.Users.Domain.Entities;
+using ProfesiNet.Users.Domain.Enums;
 using ProfesiNet.Users.Domain.Exceptions;
 using ProfesiNet.Users.Domain.Interfaces;
 
@@ -34,6 +35,8 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, UserL
         if (result == PasswordVerificationResult.Failed) throw new InvalidPasswordException();
         var dto = Mapper.MapUserToUserLoggedInDto(user);
         dto.Token = _jwtProvider.GenerateJwtToken(user);
+         dto.ProfilePicture = user.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture)?.Url;
+         dto.ProfilePictureId = user.Photos.FirstOrDefault(x => x.PictureType == PictureType.ProfilePicture)?.Id;
 
         return dto;
     }

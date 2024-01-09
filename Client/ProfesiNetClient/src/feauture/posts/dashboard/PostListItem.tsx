@@ -1,17 +1,26 @@
-import {FC} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";
 import {Post} from "../../../app/modules/interfaces/Post.ts";
+import PostCommentChat from "./comments/PostCommentChat.tsx";
+import {observer} from "mobx-react-lite";
+
 
 interface Props {
     post: Post;
 }
 
 const PostListItem: FC<Props> = ({post}: Props) => {
-    const {postStore} = useStore();
+    const {postStore, userStore} = useStore();
     const {openForm, deletePost} = postStore;
+    const [showComments, setShowComments] = useState(false);
 
+    const handleToggleComments = () => {
+        setShowComments(!showComments);
+    };
+    
+        
     return (
         <Segment.Group>
             <Segment key={post.id} className="post-segment"> {/* Move key to here */}
@@ -19,10 +28,14 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                     <Item.Content>
                         <Item.Header className="item-header">
 
-                            <ItemImage src={post.creatorProfilePicture} size="mini" circular
+                            <ItemImage as={NavLink} to={`/profile/${post.creatorId}`} src={post.creatorProfilePicture || '/assets/user.png'} size="mini" circular
                                        className="post-creator-image" spaced="right"/>
-                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}</ItemMeta>
+                            <ItemMeta>{post.creatorName} {" "} {post.creatorSurname}
+                           
+                            </ItemMeta>
+                       
                             <ItemMeta className="dropdown">
+                                {userStore.user?.id === post.creatorId && (
                                 <Dropdown icon='ellipsis horizontal' className="options-button" closeOnEscape>
                                     <Dropdown.Menu>
                                         <Dropdown.Item
@@ -41,12 +54,13 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                                         />
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                )}
                             </ItemMeta>
+                         
                             
                         </Item.Header>
 
-                        <Item.Description as={Link} to={`/posts/${post.id}`}
-                                          className="post-content">{post.description}</Item.Description>
+                        <Item.Description className="post-content">{post.description}</Item.Description>
                         {post.imageUrl && <Image src={post.imageUrl} alt='Post media' className="post-image"/>}
                         <ItemMeta className="post-date">{new Date(post.publishedAt).toLocaleString()}</ItemMeta>
                     </Item.Content>
@@ -59,7 +73,7 @@ const PostListItem: FC<Props> = ({post}: Props) => {
            
 
                 <Button  as='div' labelPosition='right' className="action-button">
-                    <Button color='red'>
+                    <Button color='red' onClick={()=>postStore.likePost(post.id)}>
                         <Icon name='heart'/>
                         Like
                     </Button>
@@ -67,30 +81,28 @@ const PostListItem: FC<Props> = ({post}: Props) => {
                         {post.likesCount}
                     </Label>
                 </Button >
-                <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='blue'>
-                        <Icon name='comment'/>
-                        Comment
-                    </Button>
-                    <Label as='a' basic color='blue' pointing='left'>
-                        {post.commentsCount}
-                    </Label>
+                    <Button as='div' labelPosition='right' className="action-button">
+                        <Button color='blue' onClick={handleToggleComments}>
+                            <Icon name='comment'/>
+                            Comment
+                        </Button>
                 </Button>
                 <Button as='div' labelPosition='right' className="action-button">
-                    <Button color='grey'>
+                    <Button color='grey' onClick={()=>postStore.sharePost(post.id)}>
                         <Icon name='share alternate'/>
                         Share
                     </Button>
-                    <Label as='a' basic color='grey' pointing='left'>
+                    <Label as='a' basic color='grey' pointing='left'  >
                         {post.sharesCount}
                     </Label>
                 </Button>
 
               
             </Segment>
+            {showComments && <PostCommentChat postId={post.id} />}
 
         </Segment.Group>
     );
 }
 
-export default PostListItem;
+export default observer(PostListItem);

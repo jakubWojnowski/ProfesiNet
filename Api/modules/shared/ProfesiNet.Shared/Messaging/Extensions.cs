@@ -1,5 +1,4 @@
-﻿using Confab.Shared.Infrastructure.Messaging.Dispatcher;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Shared.Messaging.Brokers;
 using ProfesiNet.Shared.Messaging.Dispatcher;

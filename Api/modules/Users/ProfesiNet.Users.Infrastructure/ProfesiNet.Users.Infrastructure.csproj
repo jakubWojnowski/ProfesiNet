@@ -20,4 +20,10 @@
       <ProjectReference Include="..\ProfesiNet.Users.Application\ProfesiNet.Users.Application.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="DAL\" />
+    </ItemGroup>
+
 </Project>

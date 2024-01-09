@@ -28,6 +28,8 @@ internal class GetAllUserExperienceQueryHandler : IRequestHandler<GetAllUserExpe
             throw new UserNotFoundException(request.Id);
         }
         var experiences = await _experienceRepository.GetAllForConditionAsync(e => e.UserId == user.Id, cancellationToken);
-        return Mapper.MapExperiencesToGetExperienceDtos(experiences);
+        var enumerable = experiences.ToList();
+        var filteredExperiences = enumerable.AsQueryable().OrderByDescending(e => e.StartDate).ToList();
+        return Mapper.MapExperiencesToGetExperienceDtos(filteredExperiences);
     }
 }

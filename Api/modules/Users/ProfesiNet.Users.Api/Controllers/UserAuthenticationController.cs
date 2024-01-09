@@ -23,7 +23,7 @@ internal class UserAuthenticationController : BaseController
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterUserCommand command)
     {
-            await _mediator.Send(command);
-            return Created("/api/user", null);
+           var registerResult = await _mediator.Send(command);
+              return Ok(registerResult);
     }
 }

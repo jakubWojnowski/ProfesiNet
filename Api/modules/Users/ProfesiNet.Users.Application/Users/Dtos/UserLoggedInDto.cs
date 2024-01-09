@@ -8,5 +8,7 @@ internal class UserLoggedInDto
     public string? Token { get; set; }
     public string? Address { get; set; }
     public string? Bio { get; set; }
-    public string? ProfilePhoto{ get; set; }
+    public string? ProfilePicture{ get; set; }
+    public Guid? ProfilePictureId { get; set; }
+    
 }

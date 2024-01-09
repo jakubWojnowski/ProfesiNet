@@ -16,7 +16,7 @@ internal class GetAllSkillsPerUserQueryHandler : IRequestHandler<GetAllSkillsPer
     }
     public async Task<IReadOnlyCollection<SkillDto>> Handle(GetAllSkillsPerUserQuery request, CancellationToken cancellationToken)
     {
-        var skills = await _skillRepository.GetAllForConditionAsync(u => u.UserID == request.Id, cancellationToken);
+        var skills = await _skillRepository.GetAllForConditionAsync(u => u.UserId == request.Id, cancellationToken);
         
         return Mapper.MapSkillToSkillDtos(skills);
     }

@@ -7,7 +7,7 @@ using ProfesiNet.Users.Domain.Interfaces;
 
 namespace ProfesiNet.Users.Application.Experiences.Commands.Update;
 
-internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExperienceCommand>
+internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserExperienceCommand, Guid>
 {
     private readonly IExperienceRepository _experienceRepository;
     private readonly IUserRepository _userRepository;
@@ -23,7 +23,7 @@ internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserEx
         _cannotSetDatePolicy = cannotSetDatePolicy;
     }
 
-    public async Task Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateUserExperienceCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetRecordByFilterAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
@@ -54,7 +54,10 @@ internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserEx
         }
 
         var updatedExperience = Mapper.MapUpdateExperienceDtoToExperience(experience, experienceToUpdateDto);
+        
 
-        await _experienceRepository.UpdateAsync(updatedExperience, cancellationToken);
+         await _experienceRepository.UpdateAsync(updatedExperience, cancellationToken);
+         
+         return updatedExperience.Id;
     }
 }

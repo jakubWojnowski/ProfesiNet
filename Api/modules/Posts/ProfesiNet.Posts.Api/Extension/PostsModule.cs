@@ -14,6 +14,7 @@ public class PostsModule : IModule
     public void Register(IServiceCollection services)
     {
         services.AddCore();
+        services.AddSignalR();
     }
 
     public void Use(IApplicationBuilder app)

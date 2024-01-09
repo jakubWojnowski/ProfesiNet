@@ -19,6 +19,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.Surname).HasMaxLength(50);
         builder.Property(x => x.Address).HasMaxLength(100);
         builder.Property(x => x.Bio).HasMaxLength(500);
+        builder.Property(x => x.Title).HasMaxLength(50);
         
     }
 }

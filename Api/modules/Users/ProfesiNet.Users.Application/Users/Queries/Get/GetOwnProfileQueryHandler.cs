@@ -25,7 +25,7 @@ internal class GetOwnProfileQueryHandler : IRequestHandler<GetOwnProfileQuery, U
         }
 
         var dto = Mapper.MapUserToUserDto(user);
-        dto.ProfilePhoto = user.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
+        dto.ProfilePicture = user.Photos.FirstOrDefault(x => x.PictureType == Domain.Enums.PictureType.ProfilePicture)?.Url;
         return dto;
     }
 }
