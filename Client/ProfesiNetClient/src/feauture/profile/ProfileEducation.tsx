@@ -44,7 +44,7 @@ const ProfileEducation: FC<EducationProps> = ({profile}:EducationProps) => {
                                         <Item.Extra>
                                             {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
                                             {' - '}
-                                            {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
+                                            {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'Ongoing'}
                                             {isCurrentUser && (
                                             <Button icon='edit' content='Edit' floated='right' onClick={()=> modalStore.openModal(<EditEducationForm educationId={exp.id} />)} />    
                                             )}

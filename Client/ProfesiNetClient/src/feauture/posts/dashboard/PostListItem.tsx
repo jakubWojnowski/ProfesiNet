@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useState} from 'react';
 import {Button,  Dropdown, Icon, Image, Item, ItemImage, ItemMeta, Label, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {useStore} from "../../../app/stores/Store.ts";

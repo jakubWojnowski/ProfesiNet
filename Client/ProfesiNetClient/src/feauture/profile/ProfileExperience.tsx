@@ -50,7 +50,7 @@ const ProfileExperience: FC<ExperienceProps> = ({profile}:ExperienceProps) => {
                             <Item.Extra>
                                 {exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US') : 'No start date'}
                                 {' - '}
-                                {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'No end date'}
+                                {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US') : 'Ongoing'}
                                 {isCurrentUser && (
                                     <Button
                                         icon='edit'

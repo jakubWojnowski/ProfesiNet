@@ -39,10 +39,13 @@ internal class CreateUserExperienceCommandHandler : IRequestHandler<CreateUserEx
             StartDate = request.StartDate,
             EndDate = request.EndDate ?? null
         };
-        if (_cannotSetDatePolicy.IsSatisfiedBy(experienceDto.StartDate, experienceDto.EndDate) is false)
-        {
-            throw new CannotSetDateException(experienceDto.StartDate, experienceDto.EndDate);
-        }
+     
+   
+            if (_cannotSetDatePolicy.IsSatisfiedBy(experienceDto.StartDate, experienceDto.EndDate) is false)
+            {
+                throw new CannotSetDateException(experienceDto.StartDate, experienceDto.EndDate);
+            }
+    
 
         var experience = Mapper.MapAddExperienceDtoToExperience(experienceDto);
         experience.UserId = user.Id;

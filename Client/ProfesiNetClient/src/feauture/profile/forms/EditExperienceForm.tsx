@@ -43,7 +43,7 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
                 position: selectedExperience?.position || '',
                 description: selectedExperience?.description || '',
                 startDate: selectedExperience?.startDate || new Date(),
-                endDate: selectedExperience?.endDate || new Date(),
+                endDate: selectedExperience?.endDate || null,
             }}
             validationSchema={Yup.object({
                 company: Yup.string().required(),
@@ -59,7 +59,7 @@ const EditExperienceForm: FC<EditExperienceFormProps> = ({ experienceId }) => {
                         position: values.position,
                         description: values.description,
                         startDate: values.startDate,
-                        endDate: values.endDate,
+                        endDate: values.endDate ?? null,
                     }).then(() => {
                         setSubmitting(false);
                         closeModal();

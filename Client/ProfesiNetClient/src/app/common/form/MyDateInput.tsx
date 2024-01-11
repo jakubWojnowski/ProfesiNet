@@ -7,7 +7,8 @@ const MyDatePickerInput: FC<Partial<ReactDatePickerProps>> = (props: Partial<Rea
     const [field, meta, helpers] = useField(props.name!);
     return (
         <Form.Field error={meta.touched && !!meta.error}>
-            <DatePicker 
+            <DatePicker
+                dateFormat={'dd/MM/yyyy'}
                 {...field}
                 {...props}
                 selected={(field.value && new Date(field.value)) || null}

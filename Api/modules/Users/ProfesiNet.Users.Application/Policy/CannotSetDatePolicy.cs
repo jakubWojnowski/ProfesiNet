@@ -13,16 +13,23 @@ internal class CannotSetDatePolicy : ICannotSetDatePolicy
     
     public bool IsSatisfiedBy(DateTime? startDate, DateTime? endDate)
     {
-        if (!startDate.HasValue || !endDate.HasValue)
+        if (!startDate.HasValue)
         {
             return false;
         }
+    
+        var startDateTime = startDate.Value.Date;
+        var todayDateTime = _clock.CurrentDate().Date;
+
+ 
+        if (!endDate.HasValue)
+        {
+            return startDateTime <= todayDateTime;
+        }
+
         
-        var start = startDate.Value.Date;
-        var end = endDate.Value.Date;
-        var today = _clock.CurrentDate().Date; 
-        
-        return start <= end && start <= today;
+        var endDateTime = endDate.Value.Date;
+        return startDateTime <= endDateTime && startDateTime <= todayDateTime;
     }
 
 }

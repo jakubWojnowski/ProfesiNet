@@ -46,7 +46,7 @@ internal class UpdateUserExperienceCommandHandler : IRequestHandler<UpdateUserEx
             Position = request.Position ?? experience.Position,
             Description = request.Description ?? experience.Description,
             StartDate = request.StartDate ?? experience.StartDate,
-            EndDate = request.EndDate ?? experience.EndDate
+            EndDate = request.EndDate ?? null
         };
         if (_cannotSetDatePolicy.IsSatisfiedBy(experienceToUpdateDto.StartDate, experienceToUpdateDto.EndDate) is false)
         {

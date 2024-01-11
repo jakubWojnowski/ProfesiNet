@@ -37,7 +37,7 @@ const AddEducationForm: FC = () => {
                     degree: values.degree,
                     fieldOfStudy: values.fieldOfStudy,
                     startDate: values.startDate,
-                    endDate: values.endDate,
+                    endDate: values.endDate ?? null,
                     
                 }).then(() => {
                     setSubmitting(false);

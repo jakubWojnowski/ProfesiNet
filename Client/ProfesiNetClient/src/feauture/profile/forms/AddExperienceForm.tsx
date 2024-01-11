@@ -32,7 +32,7 @@ const AddExperienceForm: FC = () => {
                     position: values.position,
                     description: values.description,
                     startDate: values.startDate,
-                    endDate: values.endDate,
+                    endDate: values.endDate ?? null,
                 }).then(() => {
                     setSubmitting(false);
                     closeModal();
@@ -48,7 +48,7 @@ const AddExperienceForm: FC = () => {
                         <MyTextInput name='position' label='position' placeholder='Position' type='text'/>
                         <MyTextArea name='description' label='description' placeholder='Description' type='text' rows={5} width={100} />
                         <MyDatePickerInput name='startDate' placeholderText={"Start Date"}/>
-                        <MyDatePickerInput name='endDate' placeholderText={'End Date'}/>
+                        <MyDatePickerInput name='endDate' placeholderText={'End Date'} />
 
                         <Button
                             type='submit'

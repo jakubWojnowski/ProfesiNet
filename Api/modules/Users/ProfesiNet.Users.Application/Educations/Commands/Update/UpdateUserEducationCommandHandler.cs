@@ -45,7 +45,7 @@ internal class UpdateUserEducationCommandHandler : IRequestHandler<UpdateUserEdu
             Degree = request.Degree ?? education.Degree,
             FieldOfStudy = request.FieldOfStudy ?? education.FieldOfStudy,
             StartDate = request.StartDate ?? education.StartDate,
-            EndDate = request.EndDate ?? education.EndDate
+            EndDate = request.EndDate ?? null
         };
         if (_cannotSetDatePolicy.IsSatisfiedBy(educationToUpdateDto.StartDate, educationToUpdateDto.EndDate) is false)
         {
