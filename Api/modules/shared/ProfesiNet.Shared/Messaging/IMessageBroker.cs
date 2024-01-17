@@ -2,6 +2,6 @@
 {
     public interface IMessageBroker
     {
-        Task PublishAsync(params IMessage[] messages);
+        Task PublishAsync(params IMessage[]? messages);
     }
 }

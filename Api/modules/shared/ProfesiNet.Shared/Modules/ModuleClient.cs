@@ -10,22 +10,7 @@ internal sealed class ModuleClient : IModuleClient
         _moduleSerializer = moduleSerializer;
         _moduleRegistry = moduleRegistry;
     }
-    //
-    // public Task SendAsync(string path, object request) => SendAsync<object>(path, request);
-    //
-    // public async Task<TResult> SendAsync<TResult>(string path, object request) where TResult : class
-    // {
-    //     var registration = _moduleRegistry.GetRequestRegistration(path);
-    //     if (registration is null)
-    //     {
-    //         throw new InvalidOperationException($"No action has been defined for path: '{path}'.");
-    //     }
-    //
-    //     var receiverRequest = TranslateType(request, registration.RequestType);
-    //     var result = await registration.Action(receiverRequest);
-    //
-    //     return result is null ? null : TranslateType<TResult>(result);
-    // }
+
 
     public async Task PublishAsync(object message)
     {
@@ -40,15 +25,15 @@ internal sealed class ModuleClient : IModuleClient
         {
             var action = registration.Action;
             var receiverMessage = TranslateType(message, registration.ReceiverType);
-            tasks.Add(action(receiverMessage));
+            if (receiverMessage != null) tasks.Add(action(receiverMessage));
         }
 
         await Task.WhenAll(tasks);
     }
 
-    private T TranslateType<T>(object value)
+    private T? TranslateType<T>(object value)
         => _moduleSerializer.Deserialize<T>(_moduleSerializer.Serialize(value));
         
-    private object TranslateType(object value, Type type)
+    private object? TranslateType(object value, Type type)
         => _moduleSerializer.Deserialize(_moduleSerializer.Serialize(value), type);
 }

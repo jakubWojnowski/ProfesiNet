@@ -48,7 +48,7 @@ const AddEducationForm: FC = () => {
         >
             {({ handleSubmit, isSubmitting, dirty, isValid }) => (
                 <>
-                    <Header as='h2' content='Add Education"' textAlign='center' color='blue' />
+                    <Header as='h2' content='Add Education' textAlign='center' color='blue' />
                     <Form className='ui form' onSubmit={handleSubmit}>
                         <MyTextInput name='name' label='name' placeholder='name' type='text' />
                         <MyTextInput name='address' label='address' placeholder='address' type='text'/>

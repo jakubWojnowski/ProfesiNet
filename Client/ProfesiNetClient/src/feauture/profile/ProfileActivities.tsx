@@ -31,7 +31,11 @@ const ProfileActivities: FC = () => {
         enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
         leave: { transform: 'translate3d(0,-40px,0)', opacity: 0 },
     });
-
+    function truncate(str: string | undefined) {
+        if (str) {
+            return str.length > 5 ? str.substring(0, 50) + '...' : str;
+        }
+    }
     return (
         <Segment>
             <Header dividing size="large" content="Activities" />
@@ -39,7 +43,7 @@ const ProfileActivities: FC = () => {
                 <animated.div style={style}>
                     <Card fluid key={post.id}>
                         <Card.Content>
-                            <Card.Header as={Link} to={`/posts/${post.id}`}>{post.description}</Card.Header>
+                            <Card.Header as={Link} to={`/posts/${post.id}`}>{truncate(post.description)}</Card.Header>
                             <Card.Meta>{post.publishedAt}</Card.Meta>
                         </Card.Content>
                         <Card.Content extra>
