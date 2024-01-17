@@ -1,26 +1,33 @@
 ﻿networks:
-  mynetwork: null
+  profesinet:
+
 services:
-  api:
+  profesinet-db:
+    container_name: profesiNet-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "8002:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourComplexPassword123!
+      - MSSQL_SA_PASSWORD=YourComplexPassword123!
+      - MSSQL_PID=Developer
+      - MSSQL_TCP_PORT=1433
+    networks:
+      - profesinet
+  
+  profesinet-api:
+    container_name: profesiNet-api
+    image: profesinet-api
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: profesiNet-api
+    ports:
+      - "5000:80"
     depends_on:
-      - db
-    networks:
-      - mynetwork
-    ports:
-      - 80:80
-  db:
-    container_name: profesiNet-db
+      - profesinet-db
     environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: YourComplexPassword123!
-      SA_USERNAME: sa
-    image: mcr.microsoft.com/mssql/server:2019-latest
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
     networks:
-      - mynetwork
-    ports:
-      - 1433:1433
-version: '3.9'
+      - profesinet

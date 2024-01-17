@@ -1,6 +1,5 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using NLog.Web;
 using ProfesiNet.Posts.Api.SignalR;
 using ProfesiNet.Shared.Configurations;
 using ProfesiNet.Shared.Modules;
@@ -11,8 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureModules();
 var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
-// builder.Logging.ClearProviders();
-// builder.WebHost.UseNLog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(assemblies, modules, builder.Configuration);
 

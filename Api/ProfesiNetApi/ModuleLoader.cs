@@ -40,8 +40,6 @@ internal class ModuleLoader
         
         return assemblies;
     }
-// /.Where(a => !string.Equals(a.FullName, "Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5", StringComparison.OrdinalIgnoreCase))
-//GetExportedTypes()
     public static IList<IModule> LoadModules(IEnumerable<Assembly> assemblies)
         => assemblies
             .SelectMany(x => x.GetTypes())
