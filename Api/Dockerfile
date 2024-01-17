@@ -46,13 +46,13 @@ WORKDIR /src
 COPY ["ProfesiNet.sln", "./"]
 COPY ["ProfesiNetApi/ProfesiNetApi.csproj", "ProfesiNetApi/"]
 COPY ["modules/Users/ProfesiNet.Users.Api/ProfesiNet.Users.Api.csproj", "modules/Users/ProfesiNet.Users.Api/"]
-COPY ["modules/Posts/ProfesiNet.Posts.Api/ProfesiNet.Posts.Api.csproj", "modules/Posts/ProfesiNet.Posts.Api/"]
 COPY ["modules/Users/ProfesiNet.Users.Application/ProfesiNet.Users.Application.csproj", "modules/Users/ProfesiNet.Users.Application/"]
 COPY ["modules/Users/ProfesiNet.Users.Infrastructure/ProfesiNet.Users.Infrastructure.csproj", "modules/Users/ProfesiNet.Users.Infrastructure/"]
 COPY ["modules/Users/ProfesiNet.Users.Domain/ProfesiNet.Users.Domain.csproj", "modules/Users/ProfesiNet.Users.Domain/"]
-COPY ["modules/LiveChats/ProfesiNet.LiveChats.Api/ProfesiNet.LiveChats.Api.csproj", "modules/LiveChats/ProfesiNet.LiveChats.Api/"]
+COPY ["modules/Posts/ProfesiNet.Posts.Api/ProfesiNet.Posts.Api.csproj", "modules/Posts/ProfesiNet.Posts.Api/"]
 COPY ["modules/Posts/ProfesiNet.Posts.Core/ProfesiNet.Posts.Core.csproj", "modules/Posts/ProfesiNet.Posts.Core/"]
 COPY ["modules/Shared/ProfesiNet.Shared/ProfesiNet.Shared.csproj", "modules/Shared/ProfesiNet.Shared/"]
+COPY ["modules/LiveChats/ProfesiNet.LiveChats.Api/ProfesiNet.LiveChats.Api.csproj", "modules/LiveChats/ProfesiNet.LiveChats.Api/"]
 COPY ["modules/LiveChats/ProfesiNet.LiveChats.Core/ProfesiNet.LiveChats.Core.csproj", "modules/LiveChats/ProfesiNet.LiveChats.Core/"]
 
 # Restore the packages
