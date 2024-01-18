@@ -19,7 +19,7 @@ internal class UpdateUserFollowingsCommandHandler : IRequestHandler<UpdateUserFo
     public async Task Handle(UpdateUserFollowingsCommand request, CancellationToken cancellationToken)
     {
         await _userRepository.UpdateFollowingsAsync(request.UserId, request.TargetId, cancellationToken);
-        await _messageBroker.PublishAsync(new UserFollowingsUpdated(request.UserId,request.TargetId));
+        await _messageBroker.PublishMessageAsync(new UserFollowingsUpdated(request.UserId,request.TargetId));
     }
         
 }

@@ -31,6 +31,6 @@ internal class UpdateUserFullNameCommandHandler : IRequestHandler<UpdateUserFull
         user.Surname = request.Surname ?? user.Surname;
 
         await _userRepository.UpdateAsync(user, cancellationToken);
-        await _messageBroker.PublishAsync(new UserFullNameUpdated(user.Id, user.Name, user.Surname));
+        await _messageBroker.PublishMessageAsync(new UserFullNameUpdated(user.Id, user.Name, user.Surname));
     }
 }

@@ -70,7 +70,7 @@ internal class AddUserProfilePictureCommandHandler : IRequestHandler<AddUserProf
         }
        
         await _photoRepository.AddAsync(photo, cancellationToken);
-        await _messageBroker.PublishAsync(new UserProfilePictureAdded(user.Id, photoDto.Url));
+        await _messageBroker.PublishMessageAsync(new UserProfilePictureAdded(user.Id, photoDto.Url));
 
 
         return photoDto.Url;

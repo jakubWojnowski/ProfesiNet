@@ -19,7 +19,7 @@ internal class DeleteFollowingCommandHandler : IRequestHandler<DeleteFollowingCo
     public async Task Handle(DeleteFollowingCommand request, CancellationToken cancellationToken)
     { 
         await _userRepository.DeleteFollowingAsync(request.UserId, request.TargetId, cancellationToken);
-        await _messageBroker.PublishAsync(new UserFollowingsDeleted(request.UserId,request.TargetId));
+        await _messageBroker.PublishMessageAsync(new UserFollowingsDeleted(request.UserId,request.TargetId));
     }
        
 }

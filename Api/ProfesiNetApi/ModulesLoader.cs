@@ -3,9 +3,9 @@ using ProfesiNet.Shared.Modules;
 
 namespace ProfesiNetApi;
 
-internal class ModuleLoader
+internal class ModulesLoader
 {
-    public static IList<Assembly> LoadAssemblies(IConfiguration configuration)
+    public static IList<Assembly> LoadAssemblies(IConfiguration config)
     {
 
         const string modulePart = "ProfesiNet.Modules.";
@@ -25,7 +25,7 @@ internal class ModuleLoader
             }
 
             var moduleName = file.Split(modulePart)[1].Split(".")[0].ToLowerInvariant();
-            var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
+            var enabled = config.GetValue<bool>($"{moduleName}:module:enabled");
             if (!enabled)
             {
                 disabledModules.Add(file);
@@ -40,7 +40,7 @@ internal class ModuleLoader
         
         return assemblies;
     }
-    public static IList<IModule> LoadModules(IEnumerable<Assembly> assemblies)
+    public static IList<IModule> Load(IEnumerable<Assembly> assemblies)
         => assemblies
             .SelectMany(x => x.GetTypes())
             .Where(x => typeof(IModule).IsAssignableFrom(x) && !x.IsInterface)

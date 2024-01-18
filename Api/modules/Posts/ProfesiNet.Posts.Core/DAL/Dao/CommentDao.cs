@@ -12,11 +12,3 @@ public class CommentDao
     public int LikesCount { get; set; }
     public DateTime? PublishedAt { get; set; }
 }
-
-// //   Id = c.Id,
-// Content = c.Content,
-// PostId = postId,
-// PublishedAt = c.PublishedAt,
-// CreatorId = c.CreatorId,
-// CreatorName = creators[c.CreatorId].Name,
-// CreatorSurname = creators[c.CreatorId].Surname,

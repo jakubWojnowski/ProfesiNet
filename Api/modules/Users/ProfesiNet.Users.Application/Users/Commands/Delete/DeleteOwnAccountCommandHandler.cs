@@ -26,7 +26,7 @@ internal class DeleteOwnAccountCommandHandler : IRequestHandler<DeleteOwnAccount
             throw new UserNotFoundException(request.Id);
         }
         await _userRepository.DeleteAsync(user, cancellationToken);
-        await _messageBroker.PublishAsync(new UserDeleted(user.Id));
+        await _messageBroker.PublishMessageAsync(new UserDeleted(user.Id));
         
         
     }

@@ -19,6 +19,6 @@ internal class UpdateConnectionCommandHandler : IRequestHandler<UpdateConnection
     public async Task Handle(UpdateConnectionCommand request, CancellationToken cancellationToken)
     {
         await _userRepository.UpdateConnectionAsync(request.UserId, request.TargetId, cancellationToken);
-        await _messageBroker.PublishAsync(new UserNetworkConnectionUpdated(request.UserId, request.TargetId));
+        await _messageBroker.PublishMessageAsync(new UserNetworkConnectionUpdated(request.UserId, request.TargetId));
     }
 }

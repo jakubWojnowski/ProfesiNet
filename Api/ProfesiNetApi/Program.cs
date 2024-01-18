@@ -8,8 +8,8 @@ using ProfesiNetApi;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureModules();
-var assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
-var modules = ModuleLoader.LoadModules(assemblies);
+var assemblies = ModulesLoader.LoadAssemblies(builder.Configuration);
+var modules = ModulesLoader.Load(assemblies);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(assemblies, modules, builder.Configuration);
 

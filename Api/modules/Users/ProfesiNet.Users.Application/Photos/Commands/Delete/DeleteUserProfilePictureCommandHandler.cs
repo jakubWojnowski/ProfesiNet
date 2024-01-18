@@ -38,6 +38,6 @@ internal class DeleteUserProfilePictureCommandHandler : IRequestHandler<DeleteUs
         }
 
         await _photoRepository.DeleteAsync(photo, cancellationToken);
-        await _messageBroker.PublishAsync(new UserProfilePictureDeleted(request.UserId));
+        await _messageBroker.PublishMessageAsync(new UserProfilePictureDeleted(request.UserId));
     }
 }
