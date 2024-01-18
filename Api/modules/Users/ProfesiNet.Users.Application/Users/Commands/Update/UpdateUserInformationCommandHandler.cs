@@ -31,7 +31,7 @@ internal class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserI
        await _userRepository.UpdateAsync(user, cancellationToken);
         if (user.Name != request.Name || user.Surname != request.Surname || request.Name != null || request.Surname != null)
         {
-            await _messageBroker.PublishAsync(new UserFullNameUpdated(user.Id, user.Name, user.Surname));
+            await _messageBroker.PublishMessageAsync(new UserFullNameUpdated(user.Id, user.Name, user.Surname));
 
         }
         var dto = Mapper.MapUserToUserDto(user);

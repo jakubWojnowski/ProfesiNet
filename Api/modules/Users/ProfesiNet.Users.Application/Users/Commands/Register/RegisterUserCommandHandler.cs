@@ -50,7 +50,7 @@ internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand,
         user.EncodedPassword = encoded;
         
         await _userRepository.AddAsync(user, cancellationToken);
-        await _messageBroker.PublishAsync(new UserCreated(user.Id, user.Name, user.Surname));
+        await _messageBroker.PublishMessageAsync(new UserCreated(user.Id, user.Name, user.Surname));
         var result = new RegisterResultDto
         {
             Email = dto.Email,

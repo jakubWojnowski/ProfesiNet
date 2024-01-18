@@ -19,6 +19,6 @@ internal class DeleteConnectionCommandHandler : IRequestHandler<DeleteConnection
     public async Task Handle(DeleteConnectionCommand request, CancellationToken cancellationToken)
     {
         await _userRepository.DeleteConnectionAsync(request.UserId, request.TargetId, cancellationToken);
-        await _messageBroker.PublishAsync(new UserNetworkConnectionDeleted(request.UserId, request.TargetId));
+        await _messageBroker.PublishMessageAsync(new UserNetworkConnectionDeleted(request.UserId, request.TargetId));
     }
 }

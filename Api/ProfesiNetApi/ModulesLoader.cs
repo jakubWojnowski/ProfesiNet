@@ -3,7 +3,7 @@ using ProfesiNet.Shared.Modules;
 
 namespace ProfesiNetApi;
 
-internal class ModuleLoader
+internal class ModulesLoader
 {
     public static IList<Assembly> LoadAssemblies(IConfiguration configuration)
     {
@@ -43,7 +43,7 @@ internal class ModuleLoader
         return assemblies;
     }
 
-    public static IList<IModule> LoadModules(IEnumerable<Assembly> assemblies)
+    public static IList<IModule> Load(IEnumerable<Assembly> assemblies)
         => assemblies
             .SelectMany(x => x.GetTypes())
             .Where(x => typeof(IModule).IsAssignableFrom(x) && !x.IsInterface)
