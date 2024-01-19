@@ -13,30 +13,5 @@ services:
     networks:
       - mynetwork
     container_name: profesiNet-db
-
-  # RabbitMQ Service
-  rabbitmq:
-    image: rabbitmq:3.12.8
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - mynetwork
-    container_name: profesiNet-rabbitmq
-
-  # Your .NET API Service (use the image you built)
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - db
-      - rabbitmq
-    networks:
-      - mynetwork
-    container_name: profesiNet-api
-
 networks:
   mynetwork:
