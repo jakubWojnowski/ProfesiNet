@@ -1,0 +1,27 @@
+Autor: Jakub Wojnowski 92271
+Promotor: dr inż. Katarzyna Poczęta
+Tytuł Pracy: Projekt i implementacja systemu zarządzania kontaktami zawodowo-biznesowymi.
+wymagania:
+- docker
+- .net core 8
+- node.js
+- ide (np. JetBrains Rider: Pozwala na uruchomienie aplikacji API oraz aplikacji Front endowej)
+instrukcja uruchomienia:
+1. W katalogu głównym projektu API należy uruchomić komendę `docker-compose up`.
+2. uruchomić aplikację API. aplikacja ma apiinitilizer, który tworzy bazę danych. aplikacja jest dostępna pod adresem `http://localhost:5000`
+3. w katalogu głównym projektu Client/ProfesiNetClient należy uruchomić komendę `npm install` a następnie `vite`. aplikacja jest dostępna pod adresem `http://localhost:3000`.
+Rejestracja użytkownika:
+1. W aplikacji należy wybrać przycisk "Register".
+2. Wypełnić formularz rejestracji.
+- W polu "Email" należy wpisać adres email.
+- W polu "Password" należy wpisać hasło. minimalna długość hasła to 8 znaków jedna cyfra i jedna wielka litera oraz znak specjalny.
+- W polu "Confirm password" należy wpisać ponownie hasło.
+- W polu "Name" należy wpisać imię.
+- W polu "Surname" należy wpisać nazwisko.
+po wypełnieniu formularza należy wybrać przycisk "Register". Uzytkownik zostanie zarejestrowany i automatycznie zalogowany.
+Logowanie użytkownika:
+1. W aplikacji należy wybrać przycisk "Login".
+2. Wypełnić formularz logowania.
+- W polu "Email" należy wpisać adres email.
+- W polu "Password" należy wpisać hasło.
+po wypełnieniu formularza należy wybrać przycisk "Login". Uzytkownik zostanie zalogowany.
