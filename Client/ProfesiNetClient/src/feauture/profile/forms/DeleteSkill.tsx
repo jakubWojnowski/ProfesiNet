@@ -39,6 +39,7 @@ const DeleteSkillFormProps: FC<DeleteSkillFormProps> = ({skillId}) => {
                     onClick={handleDeleteSkill}
                     floated="right"
                     content="Delete skill"
+                    
                 />
             </Button.Group>
         </>

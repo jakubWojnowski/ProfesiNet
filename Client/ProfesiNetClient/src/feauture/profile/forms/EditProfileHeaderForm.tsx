@@ -61,7 +61,7 @@ const EditProfileHeaderForm: FC = () => {
                                 loading={isSubmitting}
                                 disabled={!dirty || !isValid || isSubmitting}
                             >
-                                Save
+                                Save 
                             </Button>
                             <Button
                                 type="button" // Prevent form submission
