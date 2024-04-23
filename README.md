@@ -55,8 +55,8 @@ Users module adheres to clean architecture principles, ensuring a clear separati
 * **Home Page**
 ![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/491f2cfe-2318-4058-8509-eb2ba095bab3)
 
-* **Main Page**
-![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/58f90599-da55-46da-9a83-4a3f1e7cd41f)
+* **Home Page**
+![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/491f2cfe-2318-4058-8509-eb2ba095bab3)
 
 * **Profile Page**
 ![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/00b13334-e1c4-4734-9dc8-39187635a25d)
