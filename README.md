@@ -45,7 +45,9 @@ ProfesiNet adopts a modular monolith architecture, dividing the application into
 * **Posts Module:**  Manages post creation, interactions (likes, shares, comments), and the post feed.
 * **Shared Module:** Provides common infrastructure components like message broker and error handling.
 
-Each module adheres to clean architecture principles, ensuring a clear separation of concerns between the domain layer, application layer, and infrastructure layer. This promotes code testability and maintainability.
+Users module adheres to clean architecture principles, ensuring a clear separation of concerns between the domain layer, application layer, and infrastructure layer. This promotes code testability and maintainability.
+* **Diagrams**
+
 
 ## Future Development
 
