@@ -47,7 +47,7 @@ ProfesiNet adopts a modular monolith architecture, dividing the application into
 
 Users module adheres to clean architecture principles, ensuring a clear separation of concerns between the domain layer, application layer, and infrastructure layer. This promotes code testability and maintainability.
 * **Diagrams**
-![Uploading image.png…]()
+![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/f3353845-8d28-4f6d-b77a-622ca4c28af4)
 
 
 ## Future Development
