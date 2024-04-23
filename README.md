@@ -56,10 +56,11 @@ Each module adheres to clean architecture principles, ensuring a clear separatio
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/your-username/profesiNet.git`
-2. Install the required dependencies: `npm install`
-3. Configure the application settings.
-4. Run the application: `npm start`
+1. Clone the repository: Master
+2. Install the required dependencies: `npm install` For the Front end
+3. docker-compose up for a database Image
+4. Configure the application settings.
+5. Run the application: `npm start`
 
 ## Contributing
 
