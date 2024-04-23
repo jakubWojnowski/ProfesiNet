@@ -52,6 +52,15 @@ Users module adheres to clean architecture principles, ensuring a clear separati
 * **Database Diagram**
 ![__EFMigrationsHistory](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/4f386378-9fa7-47eb-8f50-a1df2efe5f07)
 
+* **Home Page**
+![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/491f2cfe-2318-4058-8509-eb2ba095bab3)
+
+* **Main Page**
+![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/aab672b1-eff4-4871-ad0a-c041d6ed3afe)
+
+* **Profile Page**
+![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/00b13334-e1c4-4734-9dc8-39187635a25d)
+
 ## Future Development
 
 * Enhance the user interface for a more engaging experience.
