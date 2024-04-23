@@ -46,9 +46,11 @@ ProfesiNet adopts a modular monolith architecture, dividing the application into
 * **Shared Module:** Provides common infrastructure components like message broker and error handling.
 
 Users module adheres to clean architecture principles, ensuring a clear separation of concerns between the domain layer, application layer, and infrastructure layer. This promotes code testability and maintainability.
-* **Diagrams**
+* **Architecture Diagram**
 ![image](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/f3353845-8d28-4f6d-b77a-622ca4c28af4)
 
+* **Database Diagram**
+![__EFMigrationsHistory](https://github.com/jakubWojnowski/ProfesiNet/assets/83953649/4f386378-9fa7-47eb-8f50-a1df2efe5f07)
 
 ## Future Development
 
