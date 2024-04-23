@@ -1,7 +1,5 @@
 # ProfesiNet: A Professional Networking Platform
 
-[![Build Status](https://travis-ci.org/your-username/profesiNet.svg?branch=master)](https://travis-ci.org/your-username/profesiNet)
-[![Coverage Status](https://coveralls.io/repos/github/your-username/profesiNet/badge.svg?branch=master)](https://coveralls.io/github/your-username/profesiNet?branch=master)
 
 ProfesiNet is a web application designed to facilitate professional networking and career development. Users can create profiles, share their experiences through posts, and interact with others in the community.
 
