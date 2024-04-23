@@ -59,12 +59,11 @@ Each module adheres to clean architecture principles, ensuring a clear separatio
 1. Clone the repository: Master
 2. Install the required dependencies: `npm install` For the Front end
 3. docker-compose up for a database Image
-4. Configure the application settings.
-5. Run the application: `npm start`
+4. Run BackEnd app
+6. Run the Front End application: `Vite`
 
 ## Contributing
 
-Contributions are welcome! Please refer to the [contribution guidelines](CONTRIBUTING.md) for more information.
 
 ## License
 
